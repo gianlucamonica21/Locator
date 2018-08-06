@@ -1,51 +1,69 @@
 package com.gianlucamonica.locator.model.myLocationManager;
 
-import android.content.Context;
+import android.app.Activity;
 import android.location.Location;
+import android.util.Log;
 
 import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.WifiAlgorithm;
-import com.gianlucamonica.locator.model.indoorAlgorithmInterface.IndoorAlgorithmInterface;
+import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.model.outdoorLocationManager.OutdoorLocationManager;
 import com.gianlucamonica.locator.utils.AlgorithmName;
+import com.gianlucamonica.locator.utils.MyApp;
 
-public class MyLocationManager {
+public class MyLocationManager implements LocalizationAlgorithmInterface {
 
-    private final Context context;
     private AlgorithmName algoName;
-    private OutdoorLocationManager outdoorLocationManager; // manager for GPS localization
-    private IndoorAlgorithmInterface indoorLocationManager;
-    private Object manager;
+    private LocalizationAlgorithmInterface localizationAlgorithmInterface;
 
     /**
      * @param algoName
-     * @param context
      */
-    public MyLocationManager(AlgorithmName algoName, Context context) {
+    public MyLocationManager(AlgorithmName algoName) {
 
-        this.context = context;
         switch (algoName) {
             case GPS:
                 this.algoName = algoName;
-                outdoorLocationManager = new OutdoorLocationManager(this.context);
+                if(MyApp.getContext() == null)
+                    Log.i("Context: ", "null");
+                localizationAlgorithmInterface = new OutdoorLocationManager(MyApp.getContext());
                 break;
             case WIFI:
                 this.algoName = algoName;
-                indoorLocationManager = new WifiAlgorithm();
+                localizationAlgorithmInterface = new WifiAlgorithm();
                 break;
             default:
         }
+    }
+
+    @Override
+    public Object getBuildClass(Activity activity) {
+        return localizationAlgorithmInterface.getBuildClass(activity);
+    }
+
+    @Override
+    public void build() {
+
     }
 
     public Location locate() {
         Location l;
         switch (this.algoName) {
             case GPS:
-                l = outdoorLocationManager.locate();
+                l = localizationAlgorithmInterface.locate();
                 break;
             default:
-                l = indoorLocationManager.locate();
+                l = localizationAlgorithmInterface.locate();
         }
         return null;
+    }
+
+    @Override
+    public boolean canGetLocation() {
+        return false;
+    }
+
+    public boolean isProviderEnabled(){
+        return localizationAlgorithmInterface.isProviderEnabled();
     }
 
 }

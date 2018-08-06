@@ -1,6 +1,7 @@
 package com.gianlucamonica.locator.activities.gps;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
+import com.gianlucamonica.locator.utils.AlgorithmName;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,8 +44,8 @@ import java.util.List;
 public class GPSActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private Context context;
     // location's stuff
+    private MyLocationManager myLocationManager;
     private LocationManager locationManager;
     private LocationListener listener;
     private Location mLocation;
@@ -51,42 +53,22 @@ public class GPSActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_gps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); // istantiate manager
-
-        listener = new LocationListener() { // istantiate listener
-            @Override
-            public void onLocationChanged(Location location) {
-                mLocation = location;
-                Log.i("onLocationChanged:","\n " + location.getLongitude() + " " + location.getLatitude());
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-                Log.i("onStatusChanged","i am here");
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-                Log.i("onProviderEnabled","i am here");
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-                Log.i("onProviderDisabled","i am here");
-                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(i);
-            }
-        };
-        configure_button();
+        myLocationManager = new MyLocationManager(AlgorithmName.GPS);
+        if(myLocationManager.isProviderEnabled() == false){
+            configure_button();
+            //Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            //startActivity(i);
+        }
+        this.mLocation = myLocationManager.locate();
 
     }
-
 
     /**
      * Manipulates the map once available.
@@ -102,11 +84,13 @@ public class GPSActivity extends FragmentActivity implements OnMapReadyCallback 
         mMap = googleMap;
 
         // drawing location on map
-        if(mLocation != null){
+        if(this.mLocation != null){
             LatLng mPos = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
             googleMap.addMarker(new MarkerOptions().position(mPos)
                     .title("You are here"));
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(mPos));
+        }else{
+            Log.i("onMapReady:", "location null");
         }
 
     }
@@ -133,15 +117,7 @@ public class GPSActivity extends FragmentActivity implements OnMapReadyCallback 
         }
 
         // getting last location or requesting update from listener
-        mLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(mLocation == null){
-            Log.i("configure:button","i am requesting loc upd");
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
-            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null);
-        }else{
-            Log.i("mLocation: ",mLocation.toString());
-        }
-        //noinspection MissingPermission
+        mLocation = myLocationManager.locate();
     }
 
 

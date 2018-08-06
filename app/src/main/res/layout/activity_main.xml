@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mainActivity"
     tools:context=".activities.main.MainActivity">
 
     <Button
@@ -26,6 +27,7 @@
         android:layout_marginBottom="186dp"
         android:layout_marginEnd="148dp"
         android:layout_marginStart="148dp"
+        android:onClick="openWIFIActivity"
         android:text="Wifi"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
