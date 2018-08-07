@@ -35,6 +35,28 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
         }
     }
 
+    /**
+     *
+     * @param algoName
+     * @param activity
+     */
+    public MyLocationManager(AlgorithmName algoName, Activity activity) {
+
+        switch (algoName) {
+            case GPS:
+                this.algoName = algoName;
+                if(MyApp.getContext() == null)
+                    Log.i("Context: ", "null");
+                localizationAlgorithmInterface = new OutdoorLocationManager(MyApp.getContext());
+                break;
+            case WIFI:
+                this.algoName = algoName;
+                localizationAlgorithmInterface = new WifiAlgorithm(activity);
+                break;
+            default:
+        }
+    }
+
     @Override
     public Object getBuildClass(Activity activity) {
         return localizationAlgorithmInterface.getBuildClass(activity);
@@ -42,7 +64,7 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
 
     @Override
     public void build() {
-
+        localizationAlgorithmInterface.build();
     }
 
     public Location locate() {

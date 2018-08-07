@@ -10,17 +10,25 @@ import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.Localizat
 
 public class WifiAlgorithm implements LocalizationAlgorithmInterface {
 
+    private WIFIMapBuilder wifiMapBuilder;
+    private Activity activity;
+
     public WifiAlgorithm(){
+    }
+
+    public WifiAlgorithm(Activity activity){
+        this.activity = activity;
     }
 
     @Override
     public Object getBuildClass(Activity activity) {
-        return new WIFIMapBuilder(activity);
+        return new WIFIMapBuilder(this.activity);
     }
 
     @Override
     public void build() {
-
+        this.wifiMapBuilder = new WIFIMapBuilder(this.activity);
+        wifiMapBuilder.build();
     }
 
     @Override

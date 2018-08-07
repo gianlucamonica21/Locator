@@ -2,13 +2,20 @@ package com.gianlucamonica.locator.activities.wifi.mapBuilder;
 
 import android.app.Activity;
 import android.arch.persistence.room.Room;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,20 +45,65 @@ public class WIFIMapBuilder extends AppCompatActivity{
 
     public void build(){
         setupDB();
-        gridView = (GridView) this.activity.findViewById(R.id.gridView1);
         final ProvaLettereDAO letteraDAO = this.appDatabase.getLetteraDAO();
 
+        gridView = (GridView) this.activity.findViewById(R.id.gridView1);
+        gridView.setNumColumns(4);
+        gridView.setColumnWidth(3);
+        gridView.setBackgroundColor(Color.WHITE);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.activity,
-                android.R.layout.simple_list_item_1, numbers);
+                android.R.layout.simple_list_item_1, numbers){
+            public View getView(int position, View convertView, ViewGroup parent) {
+                // Return the GridView current item as a View
+                View view = super.getView(position, convertView, parent);
+
+                // Convert the view as a TextView widget
+                TextView tv = (TextView) view;
+
+                // set the TextView text color (GridView item color)
+                tv.setBackgroundColor(Color.LTGRAY);
+
+                // Set the layout parameters for TextView widget
+                RelativeLayout.LayoutParams lp =  new RelativeLayout.LayoutParams(
+                        GridLayout.LayoutParams.MATCH_PARENT, GridLayout.LayoutParams.MATCH_PARENT
+                );
+                tv.setLayoutParams(lp);
+
+                // Get the TextView LayoutParams
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)tv.getLayoutParams();
+
+                // Set the width of TextView widget (item of GridView)
+                params.width = 250;
+
+                // Set the TextView layout parameters
+                tv.setLayoutParams(params);
+
+                // Display TextView text in center position
+                tv.setGravity(Gravity.CENTER);
+
+                // Set the TextView text font family and text size
+                tv.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+
+                // Set the TextView text (GridView item text)
+                //tv.setText(plantsList.get(position));
+
+                // Set the TextView background color
+                tv.setBackgroundColor(Color.parseColor("#FFFF4F25"));
+                return tv;
+            }
+        };
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-
+                //todo
+                //wifi RSS scan and insert in DB
                 Lettera newL = new Lettera();
                 newL.setName((String) ((TextView) v).getText().toString());
+                //letteraDAO.insert(newL);
 
-                letteraDAO.insert(newL);
+
                 v.setVisibility(View.GONE);
                 Toast.makeText(MyApp.getContext(),
                         "inserting " + ((TextView) v).getText(), Toast.LENGTH_SHORT).show();
