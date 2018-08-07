@@ -41,6 +41,9 @@
             android:name=".activities.gps.GPSActivity"
             android:label="@string/title_activity_gps" />
         <activity android:name=".activities.wifi.WIFIActivity" />
+        <activity
+            android:name=".activities.gps.fragments.MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
     </application>
 
 </manifest>
