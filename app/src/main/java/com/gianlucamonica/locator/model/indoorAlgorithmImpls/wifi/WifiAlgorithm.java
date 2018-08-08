@@ -2,9 +2,10 @@ package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
+import android.view.View;
 
+import com.gianlucamonica.locator.activities.wifi.mapBuilder.MapView;
 import com.gianlucamonica.locator.activities.wifi.mapBuilder.WIFIMapBuilder;
 import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
 
@@ -26,9 +27,9 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
     }
 
     @Override
-    public void build() {
+    public <T extends View> T build(Class<T> type) {
         this.wifiMapBuilder = new WIFIMapBuilder(this.activity);
-        wifiMapBuilder.build();
+        return wifiMapBuilder.build(type);
     }
 
     @Override

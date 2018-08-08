@@ -2,48 +2,60 @@ package com.gianlucamonica.locator.activities.wifi.mapBuilder;
 
 import android.app.Activity;
 import android.arch.persistence.room.Room;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridLayout;
-import android.widget.GridView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
-import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.activities.wifi.WIFIActivity;
+import com.gianlucamonica.locator.utils.Coordinate;
 import com.gianlucamonica.locator.utils.MyApp;
+import com.gianlucamonica.locator.utils.Rectangle;
 import com.gianlucamonica.locator.utils.db.AppDatabase;
-import com.gianlucamonica.locator.utils.db.Lettera;
-import com.gianlucamonica.locator.utils.db.ProvaLettereDAO;
 
 public class WIFIMapBuilder extends AppCompatActivity{
 
     private AppDatabase appDatabase;
     public Activity activity;
-    GridView gridView;
-    static final String[] numbers = new String[] {
-            "A", "B", "C", "D", "E",
-            "F", "G", "H", "I", "J",
-            "K", "L", "M", "N", "O",
-            "P", "Q", "R", "S", "T",
-            "U", "V", "W", "X", "Y", "Z"};
+    public MapView mV;
 
     public WIFIMapBuilder(Activity activity){
         this.activity = activity;
     }
 
-    public void build(){
+    public  <T extends View> T build(Class<T> type){
+        setupDB();
+
+        mV = new MapView(this.activity);
+        mV.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN){
+                    float x = event.getX();
+                    float y = event.getY();
+                    Log.i("TOUCHED ", x + " " + y);
+                    //Toast.makeText(MyApp.getContext(), "Touched " + "x: " + x +" y: " + y, Toast.LENGTH_SHORT).show();
+                    //todo controllare che punto toccato si all'interno di x rettangolo
+                    Rectangle rects[] = mV.getRects();
+                    for(int i = 0; i < rects.length; i = i + 1){
+                        if( x >= rects[i].getA().getX() && x <= rects[i].getB().getX()){
+                            if( y <= rects[i].getB().getY() && y >= rects[i].getA().getY()  ){
+                                Toast.makeText(MyApp.getContext(), "Sei in  " + rects[i].getName(), Toast.LENGTH_SHORT).show();
+                                //todo scan wifi rss
+                                //todo inserisco in db
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+        });
+
+        return type.cast(mV);
+
+    }
+    /*public void build(){
         setupDB();
         final ProvaLettereDAO letteraDAO = this.appDatabase.getLetteraDAO();
 
@@ -109,7 +121,9 @@ public class WIFIMapBuilder extends AppCompatActivity{
                         "inserting " + ((TextView) v).getText(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
+
+
+    }*/
 
     public void setupDB(){
         //setting db

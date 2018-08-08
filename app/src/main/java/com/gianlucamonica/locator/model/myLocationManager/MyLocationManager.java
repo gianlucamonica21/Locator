@@ -3,7 +3,9 @@ package com.gianlucamonica.locator.model.myLocationManager;
 import android.app.Activity;
 import android.location.Location;
 import android.util.Log;
+import android.view.View;
 
+import com.gianlucamonica.locator.activities.wifi.mapBuilder.MapView;
 import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.WifiAlgorithm;
 import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.model.outdoorLocationManager.OutdoorLocationManager;
@@ -63,8 +65,8 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
     }
 
     @Override
-    public void build() {
-        localizationAlgorithmInterface.build();
+    public  <T extends View> T build(Class<T> type) {
+        return localizationAlgorithmInterface.build(type);
     }
 
     public Location locate() {

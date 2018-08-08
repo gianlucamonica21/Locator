@@ -17,10 +17,11 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.gianlucamonica.locator.activities.wifi.mapBuilder.MapView;
 import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 public class OutdoorLocationManager extends Service implements LocalizationAlgorithmInterface, LocationListener {
 
@@ -35,7 +36,7 @@ public class OutdoorLocationManager extends Service implements LocalizationAlgor
     double longitude;
 
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;//10;
-    private static final long MIN_TIME_BW_UPDATES = 0; //1000 * 60 * 1;
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
 
     protected LocationManager locationManager;
 
@@ -216,8 +217,8 @@ public class OutdoorLocationManager extends Service implements LocalizationAlgor
     }
 
     @Override
-    public void build() {
-
+    public <T extends View> T build(Class<T> type) {
+        return null;
     }
 
     @Override

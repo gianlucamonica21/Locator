@@ -2,7 +2,9 @@ package com.gianlucamonica.locator.model.indoorAlgorithmImpls.magneticField;
 
 import android.app.Activity;
 import android.location.Location;
+import android.view.View;
 
+import com.gianlucamonica.locator.activities.wifi.mapBuilder.MapView;
 import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
 
 public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
@@ -14,8 +16,8 @@ public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
     }
 
     @Override
-    public void build() {
-
+    public <T extends View> T build(Class<T> type)  {
+        return null;
     }
 
     @Override
