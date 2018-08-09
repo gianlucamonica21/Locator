@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.activities.wifi.mapBuilder;
+package com.gianlucamonica.locator.activities.wifi.offlineActivity.mapBuilder;
 
 import android.app.Activity;
 import android.arch.persistence.room.Room;
@@ -40,8 +40,8 @@ public class WIFIMapBuilder extends AppCompatActivity{
 
                     ArrayList<Rectangle> rects = mV.getRects();
                     for(int i = 0; i < rects.size(); i = i + 1){
-                        if( x >= ((rects.get(i).getA().getX()*mV.getSeg())+ mV.getAdd()) && x <= ((rects.get(i).getB().getX()*mV.getSeg())+ mV.getAdd())){
-                            if( y <= ((rects.get(i).getB().getY()*mV.getSeg())+ mV.getAdd()) && y >= ((rects.get(i).getA().getY()*mV.getSeg())+ mV.getAdd())  ){
+                        if( x >= ((rects.get(i).getA().getX()*mV.getScaleFactor())+ mV.getAdd()) && x <= ((rects.get(i).getB().getX()*mV.getScaleFactor())+ mV.getAdd())){
+                            if( y <= ((rects.get(i).getB().getY()*mV.getScaleFactor())+ mV.getAdd()) && y >= ((rects.get(i).getA().getY()*mV.getScaleFactor())+ mV.getAdd())  ){
                                 Toast.makeText(MyApp.getContext(), "Sei in  " + rects.get(i).getName(), Toast.LENGTH_SHORT).show();
                                 //todo scan wifi rss
                                 //todo inserisco in db

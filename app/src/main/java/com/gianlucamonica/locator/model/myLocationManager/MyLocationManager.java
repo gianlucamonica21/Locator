@@ -5,7 +5,6 @@ import android.location.Location;
 import android.util.Log;
 import android.view.View;
 
-import com.gianlucamonica.locator.activities.wifi.mapBuilder.MapView;
 import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.WifiAlgorithm;
 import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.model.outdoorLocationManager.OutdoorLocationManager;
@@ -88,6 +87,21 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
 
     public boolean isProviderEnabled(){
         return localizationAlgorithmInterface.isProviderEnabled();
+    }
+
+    @Override
+    public void showSettingsAlert() {
+        localizationAlgorithmInterface.showSettingsAlert();
+    }
+
+    @Override
+    public double getLongitude() {
+        return localizationAlgorithmInterface.getLongitude();
+    }
+
+    @Override
+    public double getLatitude() {
+        return localizationAlgorithmInterface.getLatitude();
     }
 
 }

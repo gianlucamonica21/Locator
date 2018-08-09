@@ -5,8 +5,7 @@ import android.app.Activity;
 import android.location.Location;
 import android.view.View;
 
-import com.gianlucamonica.locator.activities.wifi.mapBuilder.MapView;
-import com.gianlucamonica.locator.activities.wifi.mapBuilder.WIFIMapBuilder;
+import com.gianlucamonica.locator.activities.wifi.offlineActivity.mapBuilder.WIFIMapBuilder;
 import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
 
 public class WifiAlgorithm implements LocalizationAlgorithmInterface {
@@ -45,5 +44,20 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
     @Override
     public boolean isProviderEnabled() {
         return false;
+    }
+
+    @Override
+    public void showSettingsAlert() {
+
+    }
+
+    @Override
+    public double getLongitude() {
+        return 0;
+    }
+
+    @Override
+    public double getLatitude() {
+        return 0;
     }
 }

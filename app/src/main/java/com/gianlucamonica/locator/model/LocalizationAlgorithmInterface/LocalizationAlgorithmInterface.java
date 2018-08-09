@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.location.Location;
 import android.view.View;
 
-import com.gianlucamonica.locator.activities.wifi.mapBuilder.MapView;
-
 public interface LocalizationAlgorithmInterface {
 
     public Object getBuildClass(Activity activity);
@@ -14,4 +12,9 @@ public interface LocalizationAlgorithmInterface {
     public boolean canGetLocation();
     public boolean isProviderEnabled(); // to check if permission is needed
 
+    void showSettingsAlert();
+
+    double getLongitude();
+
+    double getLatitude();
 }

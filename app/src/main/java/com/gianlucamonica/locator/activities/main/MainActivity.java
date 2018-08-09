@@ -33,17 +33,11 @@ import com.gianlucamonica.locator.utils.MyApp;
 import com.gianlucamonica.locator.utils.db.AppDatabase;
 import com.gianlucamonica.locator.utils.db.Contact;
 import com.gianlucamonica.locator.utils.db.ContactDAO;
-import com.karumi.dexter.BuildConfig;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
+
 
 import java.util.List;
 
-public class   MainActivity extends AppCompatActivity {
+public class   MainActivity extends Activity {
 
     private LocationManager locationManager;
     private LocationListener listener;
