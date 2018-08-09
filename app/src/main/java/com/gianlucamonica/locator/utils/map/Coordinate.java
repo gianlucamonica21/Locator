@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.utils;
+package com.gianlucamonica.locator.utils.map;
 
 public class Coordinate {
 
@@ -11,6 +11,12 @@ public class Coordinate {
         this.y = y;
     }
 
+    public void mult(int mult, int add){
+        this.x *= mult;
+        this.y *= mult;
+        this.x += add;
+        this.y += add;
+    }
 
     public void setX(int x) {
         this.x = x;
@@ -28,5 +34,13 @@ public class Coordinate {
     public int getX() {
 
         return x;
+    }
+
+    @Override
+    public String toString() {
+        return "Coordinate{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }

@@ -1,4 +1,6 @@
-package com.gianlucamonica.locator.utils;
+package com.gianlucamonica.locator.utils.map;
+
+import com.gianlucamonica.locator.utils.map.Coordinate;
 
 public class Rectangle {
 
@@ -10,6 +12,11 @@ public class Rectangle {
         this.a = a;
         this.b = b;
         this.name = name;
+    }
+
+    public void mult(int mult,int add){
+        this.a.mult(mult,add);
+        this.b.mult(mult,add);
     }
 
     public String getName() {
@@ -34,5 +41,14 @@ public class Rectangle {
 
     public void setB(Coordinate b) {
         this.b = b;
+    }
+
+    @Override
+    public String toString() {
+        return "Rectangle{" +
+                "a=" + a +
+                ", b=" + b +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

@@ -41,7 +41,6 @@ import java.io.InputStreamReader;
 public class WIFIActivity extends AppCompatActivity {
 
     private MyLocationManager myLocationManager;
-    private AppDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

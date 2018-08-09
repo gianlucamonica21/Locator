@@ -5,53 +5,57 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.v4.view.GestureDetectorCompat;
-import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 
-import com.gianlucamonica.locator.utils.Coordinate;
+import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.utils.map.Coordinate;
 import com.gianlucamonica.locator.utils.MyApp;
-import com.gianlucamonica.locator.utils.Rectangle;
+import com.gianlucamonica.locator.utils.map.JSONReader;
+import com.gianlucamonica.locator.utils.map.JSONToRectangleConverter;
+import com.gianlucamonica.locator.utils.map.Rectangle;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class MapView extends View{
 
-    int seg = 400;
+    int seg = 250;
+    int add = 10;
+    JSONReader jsonReader;
     JSONObject config;
-    private Rectangle[] rects = new Rectangle[]{
-            new Rectangle(new Coordinate(10,10), new Coordinate(10 + seg, 10 + seg),"U-L"),
-            new Rectangle(new Coordinate(10 + seg, 10 + seg), new Coordinate(10 + (seg * 2), 10 + (seg * 2)),"D-R"),
-            new Rectangle(new Coordinate(10, 10 + seg), new Coordinate(10 + (seg), 10 + (seg *2)),"D-L")
-    };
+    JSONToRectangleConverter jsonToRectangleConverter;
+    private ArrayList<Rectangle> rects;
+
 
     public MapView(Context context){
         super(context);
-        String s = readFromFile(MyApp.getContext());
-        try {
-            config = new JSONObject(s);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.i("LETTO ", s);
+        jsonReader = new JSONReader("mapConfig.json");
+        jsonToRectangleConverter = new JSONToRectangleConverter();
+
+        config = jsonReader.getConfig();
+        rects = jsonToRectangleConverter.convert(config);
     }
 
-    public void drawMap(Rectangle[] rects, Canvas canvas){
-
-        for(int i = 0; i < rects.length; i++){
+    public void drawMap(ArrayList<Rectangle> rects, Canvas canvas){
+        Log.i("size rects", String.valueOf(rects.size()));
+         for(int i = 0; i < rects.size(); i++){
             Paint myPaint = new Paint();
             myPaint.setStyle(Paint.Style.FILL);
             myPaint.setColor(Color.WHITE);
             myPaint.setColor(Color.parseColor("#CD5C5C"));
             myPaint.setStrokeWidth(10);
-            Rect r = new Rect(rects[i].getA().getX(), rects[i].getA().getY(), rects[i].getB().getX(), rects[i].getB().getY());
+            //rects.get(i).mult(seg,add);
+            Log.i("rects",rects.get(i).toString());
+            Rect r = new Rect(
+                    ((rects.get(i).getA().getX()*seg)+add),
+                    ((rects.get(i).getA().getY()*seg)+add),
+                    ((rects.get(i).getB().getX()*seg)+add),
+                    ((rects.get(i).getB().getY()*seg)+add));
             canvas.drawRect(r, myPaint);
             myPaint.setStyle(Paint.Style.STROKE);
             myPaint.setColor(Color.BLACK);
@@ -60,45 +64,35 @@ public class MapView extends View{
 
     }
 
-    private String readFromFile(Context context) {
-        String json = null;
-        try {
-            InputStream is = context.getAssets().open("mapConfig.json");
-
-            int size = is.available();
-
-            byte[] buffer = new byte[size];
-
-            is.read(buffer);
-
-            is.close();
-
-            json = new String(buffer, "UTF-8");
-
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         // TODO Auto-generated method stub
-        super.onDraw(canvas);
+        //super.onDraw(canvas);
 
         drawMap(rects,canvas);
-
     }
 
-    public Rectangle[] getRects() {
+    public ArrayList<Rectangle> getRects() {
         return rects;
     }
 
-    public void setRects(Rectangle[] rects) {
+    public void setRects(ArrayList<Rectangle> rects) {
         this.rects = rects;
     }
 
+    public int getSeg() {
+        return seg;
+    }
 
+    public void setSeg(int seg) {
+        this.seg = seg;
+    }
+
+    public int getAdd() {
+        return add;
+    }
+
+    public void setAdd(int add) {
+        this.add = add;
+    }
 }
