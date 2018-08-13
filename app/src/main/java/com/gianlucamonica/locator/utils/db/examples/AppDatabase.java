@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.utils.db;
+package com.gianlucamonica.locator.utils.db.examples;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;

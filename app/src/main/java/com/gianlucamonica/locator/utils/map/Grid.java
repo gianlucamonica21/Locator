@@ -2,21 +2,17 @@ package com.gianlucamonica.locator.utils.map;
 
 import com.gianlucamonica.locator.utils.map.Coordinate;
 
-public class Rectangle {
+public class Grid {
 
     Coordinate a;
     Coordinate b;
     String name;
+    int id;
 
-    public Rectangle (Coordinate a, Coordinate b, String name){
+    public Grid(Coordinate a, Coordinate b, String name){
         this.a = a;
         this.b = b;
         this.name = name;
-    }
-
-    public void mult(int mult,int add){
-        this.a.mult(mult,add);
-        this.b.mult(mult,add);
     }
 
     public String getName() {
@@ -43,9 +39,17 @@ public class Rectangle {
         this.b = b;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "Rectangle{" +
+        return "Grid{" +
                 "a=" + a +
                 ", b=" + b +
                 ", name='" + name + '\'' +

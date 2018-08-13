@@ -4,17 +4,18 @@ import android.app.Activity;
 import android.location.Location;
 import android.view.View;
 
+import java.io.Serializable;
+
 public interface LocalizationAlgorithmInterface {
 
-    public Object getBuildClass(Activity activity);
-    public  <T extends View> T build(Class<T> type);
-    public Location locate();
-    public boolean canGetLocation();
-    public boolean isProviderEnabled(); // to check if permission is needed
+    Object getBuildClass(Activity activity);
+    <T extends View> T build(Class<T> type);
+    Location locate();
+    void checkPermissions();
+    boolean canGetLocation();
+    boolean isProviderEnabled(); // to check if permission is needed
 
-    void showSettingsAlert();
 
     double getLongitude();
-
     double getLatitude();
 }

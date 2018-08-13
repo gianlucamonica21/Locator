@@ -25,6 +25,11 @@ public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
     }
 
     @Override
+    public void checkPermissions() {
+
+    }
+
+    @Override
     public boolean canGetLocation() {
         return false;
     }

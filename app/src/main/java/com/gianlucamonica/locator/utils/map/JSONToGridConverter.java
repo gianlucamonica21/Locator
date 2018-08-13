@@ -6,19 +6,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class JSONToRectangleConverter {
+public class JSONToGridConverter {
 
-    public JSONToRectangleConverter() {
+    public JSONToGridConverter() {
     }
 
-    public ArrayList<Rectangle> convert(JSONObject config){
+    public ArrayList<Grid> convert(JSONObject config){
 
         ArrayList<Coordinate> coo = new ArrayList<Coordinate>();
-        ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
+        ArrayList<Grid> rects = new ArrayList<Grid>();
         ArrayList<String> rectsName = new ArrayList<String>();
 
         Iterator<String> iter = config.keys();
@@ -30,7 +29,7 @@ public class JSONToRectangleConverter {
 
                 coo.add(new Coordinate((int) value.get(0),(int) value.get(1)));
                 coo.add(new Coordinate((int) value.get(2),(int) value.get(3)));
-                rects.add(new Rectangle(
+                rects.add(new Grid(
                         new Coordinate((int) value.get(0),(int) value.get(1)),
                         new Coordinate((int) value.get(2),(int) value.get(3)),
                         key.toString()));
@@ -38,10 +37,8 @@ public class JSONToRectangleConverter {
                 // Something went wrong!
             }
         }
-        for (int i = 0; i < coo.size(); i = i + 2) {
-            //rects.add(new Rectangle(coo.get(i),coo.get(i+1),"c"));
-        }
-        Log.i("Rectangle conv", rects.toString());
+
+        Log.i("Grid conv", rects.toString());
         return rects;
     }
 }

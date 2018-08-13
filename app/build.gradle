@@ -33,6 +33,9 @@ dependencies {
     // location play services
     implementation 'com.google.android.gms:play-services-location:15.0.1'
 
+    //compile 'com.github.ralphpina:Android-Permissions-Manager:v2.0.1'
+    compile 'com.anthonycr.grant:permissions:1.0'
+
     // dexter runtime permissions
     //implementation 'com.karumi:dexter:4.2.0'
 
@@ -50,4 +53,7 @@ dependencies {
     //debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
 
     //implementation 'com.android.support:gridlayout-v7:27.1.1'
+}
+repositories {
+    maven { url "https://jitpack.io" }
 }

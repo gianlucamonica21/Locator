@@ -1,7 +1,11 @@
 package com.gianlucamonica.locator.model.myLocationManager;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 
@@ -10,34 +14,19 @@ import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.Localizat
 import com.gianlucamonica.locator.model.outdoorLocationManager.OutdoorLocationManager;
 import com.gianlucamonica.locator.utils.AlgorithmName;
 import com.gianlucamonica.locator.utils.MyApp;
+import com.gianlucamonica.locator.utils.permissionsManager.MyPermissionsManager;
+
+import java.io.Serializable;
+import java.util.Arrays;
 
 public class MyLocationManager implements LocalizationAlgorithmInterface {
 
     private AlgorithmName algoName;
     private LocalizationAlgorithmInterface localizationAlgorithmInterface;
+    private MyPermissionsManager myPermissionsManager;
+    private String[] permissions;
 
-    /**
-     * @param algoName
-     */
-    public MyLocationManager(AlgorithmName algoName) {
-
-        switch (algoName) {
-            case GPS:
-                this.algoName = algoName;
-                if(MyApp.getContext() == null)
-                    Log.i("Context: ", "null");
-                localizationAlgorithmInterface = new OutdoorLocationManager(MyApp.getContext());
-                break;
-            case WIFI:
-                this.algoName = algoName;
-                localizationAlgorithmInterface = new WifiAlgorithm();
-                break;
-            default:
-        }
-    }
-
-    /**
-     *
+    /*
      * @param algoName
      * @param activity
      */
@@ -46,16 +35,21 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
         switch (algoName) {
             case GPS:
                 this.algoName = algoName;
-                if(MyApp.getContext() == null)
-                    Log.i("Context: ", "null");
                 localizationAlgorithmInterface = new OutdoorLocationManager(MyApp.getContext());
+                permissions = new String[] {Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION};
                 break;
             case WIFI:
                 this.algoName = algoName;
                 localizationAlgorithmInterface = new WifiAlgorithm(activity);
+                permissions = new String[] {Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION};
                 break;
             default:
         }
+
+        myPermissionsManager = new MyPermissionsManager(activity);
+        checkPermissions();
     }
 
     @Override
@@ -69,20 +63,19 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
     }
 
     public Location locate() {
-        Location l;
-        switch (this.algoName) {
-            case GPS:
-                l = localizationAlgorithmInterface.locate();
-                break;
-            default:
-                l = localizationAlgorithmInterface.locate();
-        }
-        return null;
+        Location l = localizationAlgorithmInterface.locate();
+        return l;
+    }
+
+    @Override
+    public void checkPermissions() {
+        myPermissionsManager.requestPermission(permissions);
+        myPermissionsManager.turnOnServiceIfOff(algoName);
     }
 
     @Override
     public boolean canGetLocation() {
-        return false;
+        return localizationAlgorithmInterface.canGetLocation();
     }
 
     public boolean isProviderEnabled(){
@@ -104,4 +97,13 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
         return localizationAlgorithmInterface.getLatitude();
     }
 
+    @Override
+    public String toString() {
+        return "MyLocationManager{" +
+                "algoName=" + algoName +
+                ", localizationAlgorithmInterface=" + localizationAlgorithmInterface +
+                ", myPermissionsManager=" + myPermissionsManager +
+                ", permissions=" + Arrays.toString(permissions) +
+                '}';
+    }
 }

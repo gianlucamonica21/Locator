@@ -25,6 +25,8 @@ import android.webkit.PermissionRequest;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.anthonycr.grant.PermissionsManager;
+import com.anthonycr.grant.PermissionsResultAction;
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.gps.fragments.MapsActivity;
 import com.gianlucamonica.locator.activities.wifi.WIFIActivity;
@@ -45,6 +47,7 @@ import java.util.List;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.ACCESS_WIFI_STATE;
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class GPSActivity extends Activity implements OnMapReadyCallback {
@@ -53,7 +56,7 @@ public class GPSActivity extends Activity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     // location's stuff
-    //private MyLocationManager myLocationManager;;
+    private MyLocationManager myLocationManager;;
     private OutdoorLocationManager outdoorLocationManager;
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
@@ -66,35 +69,20 @@ public class GPSActivity extends Activity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_gps);
-
-        outdoorLocationManager = new OutdoorLocationManager(this);
-        //getting the permesses
-        permissions.add(ACCESS_FINE_LOCATION);
-        permissions.add(ACCESS_COARSE_LOCATION);
-
-        permissionsToRequest = findUnAskedPermissions(permissions);
-        //get the permissions we have asked for before but are not granted..
-        //we will store this in a global list to access later.
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-
-            if (permissionsToRequest.size() > 0)
-                requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
-        }
-
         Button btn = (Button) findViewById(R.id.button3);
+
+        myLocationManager = new MyLocationManager(AlgorithmName.GPS,this);
+
 
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //getting location
-                if (outdoorLocationManager.canGetLocation()) {
+                if (myLocationManager.canGetLocation()) {
 
-
-                    double longitude = outdoorLocationManager.getLongitude();
-                    double latitude = outdoorLocationManager.getLatitude();
+                    double longitude = myLocationManager.getLongitude();
+                    double latitude = myLocationManager.getLatitude();
 
                     Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
 
@@ -110,19 +98,11 @@ public class GPSActivity extends Activity implements OnMapReadyCallback {
 
                     outdoorLocationManager.showSettingsAlert();
                 }
-                outdoorLocationManager = new OutdoorLocationManager(GPSActivity.this);
-
+                //outdoorLocationManager = new OutdoorLocationManager(GPSActivity.this);
+                //myLocationManager = new MyLocationManager(AlgorithmName.GPS,this);
 
             }
         });
-
-
-
-    // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-//    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//            .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-
 
 
     }
@@ -152,75 +132,5 @@ public class GPSActivity extends Activity implements OnMapReadyCallback {
 
     }
 
-    private ArrayList<String> findUnAskedPermissions(ArrayList<String> wanted) {
-        ArrayList<String> result = new ArrayList<String>();
 
-        for (String perm : wanted) {
-            if (!hasPermission(perm)) {
-                result.add(perm);
-            }
-        }
-
-        return result;
-    }
-
-    private boolean hasPermission(String permission) {
-        if (canMakeSmores()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED);
-            }
-        }
-        return true;
-    }
-
-    private boolean canMakeSmores() {
-        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-        switch (requestCode) {
-
-            case ALL_PERMISSIONS_RESULT:
-                for (String perms : permissionsToRequest) {
-                    if (!hasPermission(perms)) {
-                        permissionsRejected.add(perms);
-                    }
-                }
-
-                if (permissionsRejected.size() > 0) {
-
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
-                            showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                requestPermissions(permissionsRejected.toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
-                                            }
-                                        }
-                                    });
-                            return;
-                        }
-                    }
-
-                }
-
-                break;
-        }
-
-    }
-
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(GPSActivity.this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
-    }
 }

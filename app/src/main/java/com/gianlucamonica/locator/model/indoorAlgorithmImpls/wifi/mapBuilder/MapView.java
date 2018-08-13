@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.activities.wifi.offlineActivity.mapBuilder;
+package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.mapBuilder;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,20 +9,20 @@ import android.util.Log;
 import android.view.View;
 
 import com.gianlucamonica.locator.utils.map.JSONReader;
-import com.gianlucamonica.locator.utils.map.JSONToRectangleConverter;
-import com.gianlucamonica.locator.utils.map.Rectangle;
+import com.gianlucamonica.locator.utils.map.JSONToGridConverter;
+import com.gianlucamonica.locator.utils.map.Grid;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MapView extends View{
+public class MapView extends View {
 
-    private ArrayList<Rectangle> rects; // rects to draw which compounds the map
+    private ArrayList<Grid> rects; // rects to draw which compounds the map
     // JSON manager stuff
     JSONReader jsonReader;
     JSONObject config;
-    JSONToRectangleConverter jsonToRectangleConverter;
+    JSONToGridConverter jsonToGridConverter;
     // scale factors for drawing map
     int scaleFactor = 250;
     int add = 40;
@@ -34,17 +34,17 @@ public class MapView extends View{
         super(context);
 
         jsonReader = new JSONReader("mapConfig.json");
-        jsonToRectangleConverter = new JSONToRectangleConverter();
+        jsonToGridConverter = new JSONToGridConverter();
 
         config = jsonReader.getConfig();
-        rects = jsonToRectangleConverter.convert(config);
+        rects = jsonToGridConverter.convert(config);
     }
 
     /**
      * @param rects
      * @param canvas
      */
-    public void drawMap(ArrayList<Rectangle> rects, Canvas canvas){
+    public void drawMap(ArrayList<Grid> rects, Canvas canvas){
         Log.i("size rects", String.valueOf(rects.size()));
 
         for(int i = 0; i < rects.size(); i++){
@@ -66,6 +66,16 @@ public class MapView extends View{
             myPaint.setStyle(Paint.Style.STROKE);
             myPaint.setColor(Color.BLACK);
             canvas.drawRect(r, myPaint);
+
+            Paint textPaint = new Paint();
+            textPaint.setColor(Color.WHITE);
+            textPaint.setTextAlign(Paint.Align.CENTER);
+            textPaint.setTextSize(65);
+
+            float x = ( ((rects.get(i).getA().getX()* scaleFactor)+add) + ((rects.get(i).getB().getX()* scaleFactor)+add) )/2;
+            float y = ( ((rects.get(i).getA().getY()* scaleFactor)+add) + ((rects.get(i).getB().getY()* scaleFactor)+add) )/2;
+
+            canvas.drawText(rects.get(i).getName(), x  , y + 15, textPaint);
         }
 
     }
@@ -81,14 +91,14 @@ public class MapView extends View{
     /**
      * @return rects
      */
-    public ArrayList<Rectangle> getRects() {
+    public ArrayList<Grid> getRects() {
         return rects;
     }
 
     /**
      * @param rects
      */
-    public void setRects(ArrayList<Rectangle> rects) {
+    public void setRects(ArrayList<Grid> rects) {
         this.rects = rects;
     }
 

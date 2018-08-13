@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.utils.db;
+package com.gianlucamonica.locator.utils.db.examples;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

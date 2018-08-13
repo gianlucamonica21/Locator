@@ -5,13 +5,15 @@ import android.app.Activity;
 import android.location.Location;
 import android.view.View;
 
-import com.gianlucamonica.locator.activities.wifi.offlineActivity.mapBuilder.WIFIMapBuilder;
+import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.mapBuilder.WIFIMapBuilder;
 import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
 
-public class WifiAlgorithm implements LocalizationAlgorithmInterface {
+import java.io.Serializable;
 
-    private WIFIMapBuilder wifiMapBuilder;
-    private Activity activity;
+public class WifiAlgorithm implements Serializable, LocalizationAlgorithmInterface {
+
+    private transient WIFIMapBuilder wifiMapBuilder;
+    private transient Activity activity;
 
     public WifiAlgorithm(){
     }
@@ -34,6 +36,11 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
     @Override
     public Location locate() {
         return null;
+    }
+
+    @Override
+    public void checkPermissions() {
+
     }
 
     @Override

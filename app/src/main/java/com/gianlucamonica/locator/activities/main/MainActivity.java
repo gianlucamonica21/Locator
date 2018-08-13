@@ -1,39 +1,24 @@
 package com.gianlucamonica.locator.activities.main;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Build;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.facebook.stetho.Stetho;
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.gps.GPSActivity;
 import com.gianlucamonica.locator.activities.wifi.WIFIActivity;
-import com.gianlucamonica.locator.utils.MyApp;
-import com.gianlucamonica.locator.utils.db.AppDatabase;
-import com.gianlucamonica.locator.utils.db.Contact;
-import com.gianlucamonica.locator.utils.db.ContactDAO;
-
+import com.gianlucamonica.locator.utils.db.examples.AppDatabase;
+import com.gianlucamonica.locator.utils.db.examples.Contact;
+import com.gianlucamonica.locator.utils.db.examples.ContactDAO;
 
 import java.util.List;
 
@@ -51,25 +36,6 @@ public class   MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //setUpDB();
-
-        /**
-         * getting WIFI rss and manage on click on UI
-         */
-        this.wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-
-        ConstraintLayout root = (ConstraintLayout) findViewById(R.id.mainActivity);
-        root.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("MainActivity: ","you are clicking");
-                int numberOfLevels = 5;
-                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-                int level = WifiManager.calculateSignalLevel(wifiInfo.getRssi(), numberOfLevels);
-                wifiManager.getScanResults();
-                Log.i("MainActivity level: ", String.valueOf(wifiManager.getScanResults()));
-            }
-        });
     }
 
     public void openGPSActivity(View view)
@@ -112,9 +78,6 @@ public class   MainActivity extends Activity {
             }
         }
     }
-
-
-
 
 
 }
