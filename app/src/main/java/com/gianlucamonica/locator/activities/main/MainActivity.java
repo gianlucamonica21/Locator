@@ -24,13 +24,7 @@ import java.util.List;
 
 public class   MainActivity extends Activity {
 
-    private LocationManager locationManager;
-    private LocationListener listener;
-    private Location mLocation;
-    private Context mContext;
     private AppDatabase database;
-    WifiManager wifiManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

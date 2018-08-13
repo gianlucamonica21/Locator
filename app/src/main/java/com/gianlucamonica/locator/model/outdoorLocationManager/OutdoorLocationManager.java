@@ -157,7 +157,7 @@ public class OutdoorLocationManager extends Service implements LocalizationAlgor
         return this.canGetLocation;
     }
 
-    @Override
+
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 

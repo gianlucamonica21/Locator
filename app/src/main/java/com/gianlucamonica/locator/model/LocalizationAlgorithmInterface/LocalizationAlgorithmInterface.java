@@ -14,8 +14,6 @@ public interface LocalizationAlgorithmInterface {
     void checkPermissions();
     boolean canGetLocation();
     boolean isProviderEnabled(); // to check if permission is needed
-
-
     double getLongitude();
     double getLatitude();
 }

@@ -40,7 +40,6 @@ public class WifiAlgorithm implements Serializable, LocalizationAlgorithmInterfa
 
     @Override
     public void checkPermissions() {
-
     }
 
     @Override
@@ -51,11 +50,6 @@ public class WifiAlgorithm implements Serializable, LocalizationAlgorithmInterfa
     @Override
     public boolean isProviderEnabled() {
         return false;
-    }
-
-    @Override
-    public void showSettingsAlert() {
-
     }
 
     @Override

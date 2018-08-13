@@ -63,8 +63,7 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
     }
 
     public Location locate() {
-        Location l = localizationAlgorithmInterface.locate();
-        return l;
+        return localizationAlgorithmInterface.locate();
     }
 
     @Override
@@ -80,11 +79,6 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
 
     public boolean isProviderEnabled(){
         return localizationAlgorithmInterface.isProviderEnabled();
-    }
-
-    @Override
-    public void showSettingsAlert() {
-        localizationAlgorithmInterface.showSettingsAlert();
     }
 
     @Override

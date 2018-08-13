@@ -40,11 +40,6 @@ public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
     }
 
     @Override
-    public void showSettingsAlert() {
-
-    }
-
-    @Override
     public double getLongitude() {
         return 0;
     }
