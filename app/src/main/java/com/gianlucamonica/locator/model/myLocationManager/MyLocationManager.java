@@ -32,24 +32,31 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
      */
     public MyLocationManager(AlgorithmName algoName, Activity activity) {
 
+        myPermissionsManager = new MyPermissionsManager(activity);
+
         switch (algoName) {
             case GPS:
                 this.algoName = algoName;
-                localizationAlgorithmInterface = new OutdoorLocationManager(MyApp.getContext());
                 permissions = new String[] {Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION};
+                checkPermissions();
+
+                if ( myPermissionsManager.isCheckGPS())
+                    localizationAlgorithmInterface = new OutdoorLocationManager(MyApp.getContext());
                 break;
             case WIFI:
                 this.algoName = algoName;
-                localizationAlgorithmInterface = new WifiAlgorithm(activity);
                 permissions = new String[] {Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION};
+
+                checkPermissions();
+
+                if (myPermissionsManager.isCheckWIFI())
+                    localizationAlgorithmInterface = new WifiAlgorithm(activity);
                 break;
             default:
         }
 
-        myPermissionsManager = new MyPermissionsManager(activity);
-        checkPermissions();
     }
 
     @Override
@@ -99,5 +106,9 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
                 ", myPermissionsManager=" + myPermissionsManager +
                 ", permissions=" + Arrays.toString(permissions) +
                 '}';
+    }
+
+    public MyPermissionsManager getMyPermissionsManager() {
+        return myPermissionsManager;
     }
 }

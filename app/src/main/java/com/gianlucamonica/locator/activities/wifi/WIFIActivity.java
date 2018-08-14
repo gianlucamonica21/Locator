@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.anthonycr.grant.PermissionsManager;
@@ -32,8 +33,16 @@ public class WIFIActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi);
+        Button btnOffline = (Button) findViewById(R.id.button5);
+        Button btnOnline = (Button) findViewById(R.id.button4);
+
         myLocationManager = new MyLocationManager(AlgorithmName.WIFI, this);
         MyApp.setMyLocationManagerInstance(myLocationManager);
+
+        if(!myLocationManager.getMyPermissionsManager().isCheckWIFI()){
+            btnOffline.setEnabled(false);
+            btnOnline.setEnabled(false);
+        }
     }
 
     public void openOfflineActivity(View view){

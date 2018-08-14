@@ -1,6 +1,7 @@
 package com.gianlucamonica.locator.activities.gps;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -57,10 +58,6 @@ public class GPSActivity extends Activity implements OnMapReadyCallback {
     private GoogleMap mMap;
     // location's stuff
     private MyLocationManager myLocationManager;;
-    private OutdoorLocationManager outdoorLocationManager;
-    private ArrayList<String> permissionsToRequest;
-    private ArrayList<String> permissionsRejected = new ArrayList<>();
-    private ArrayList<String> permissions = new ArrayList<>();
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
 
@@ -73,8 +70,9 @@ public class GPSActivity extends Activity implements OnMapReadyCallback {
 
         myLocationManager = new MyLocationManager(AlgorithmName.GPS,this);
 
-
-
+        if(!myLocationManager.getMyPermissionsManager().isCheckGPS()){
+            btn.setEnabled(false);
+        }
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,20 +85,11 @@ public class GPSActivity extends Activity implements OnMapReadyCallback {
                     Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(GPSActivity.this, MapsActivity.class);
-
-                    //EditText editText = (EditText) findViewById(R.id.editText);
-                    //String message = editText.getText().toString();
                     intent.putExtra(EXTRA_LAT, longitude);
                     intent.putExtra(EXTRA_LNG, latitude);
 
                     startActivity(intent);
-                } else {
-
-                    outdoorLocationManager.showSettingsAlert();
                 }
-                //outdoorLocationManager = new OutdoorLocationManager(GPSActivity.this);
-                //myLocationManager = new MyLocationManager(AlgorithmName.GPS,this);
-
             }
         });
 

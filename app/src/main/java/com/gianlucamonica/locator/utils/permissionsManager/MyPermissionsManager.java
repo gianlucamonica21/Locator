@@ -35,6 +35,9 @@ import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 public class MyPermissionsManager {
 
     private Activity activity;
+    private boolean checkGPS;
+    private boolean checkWIFI;
+    private String providerMsg = "";
 
     public MyPermissionsManager(Activity activity){
         this.activity = activity;
@@ -71,7 +74,7 @@ public class MyPermissionsManager {
                         .getSystemService(LOCATION_SERVICE);
 
                 // get GPS status
-                boolean checkGPS = locationManager
+                checkGPS = locationManager
                         .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
                 if(!checkGPS){
@@ -81,7 +84,8 @@ public class MyPermissionsManager {
             case WIFI:
                 // to turn on WIFI
                 WifiManager wifi = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(MyApp.getContext().WIFI_SERVICE);
-                if (!wifi.isWifiEnabled()){
+                checkWIFI = wifi.isWifiEnabled();
+                if (!checkWIFI){
                     //wifi is not enabled
                     showDialog(Settings.ACTION_WIFI_SETTINGS);
                 }
@@ -90,7 +94,7 @@ public class MyPermissionsManager {
     }
 
     public void showDialog(final String providerToEnable){
-        String providerMsg = "";
+
         switch (providerToEnable){
             case ACTION_LOCATION_SOURCE_SETTINGS:
                 providerMsg = "GPS";
@@ -118,10 +122,24 @@ public class MyPermissionsManager {
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                android.support.v7.app.AlertDialog.Builder alertDialog2 = new android.support.v7.app.AlertDialog.Builder(activity);
+
+                alertDialog2.setTitle("Info");
+
+                alertDialog2.setMessage("You must turn on " + providerMsg + " to continue!");
+                alertDialog2.show();
             }
         });
 
 
         alertDialog.show();
+    }
+
+    public boolean isCheckGPS() {
+        return checkGPS;
+    }
+
+    public boolean isCheckWIFI() {
+        return checkWIFI;
     }
 }
