@@ -6,8 +6,6 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.gianlucamonica.locator.utils.db.examples.Contact;
-
 import java.util.List;
 
 @Dao
@@ -25,5 +23,5 @@ public interface APDAO {
     public List<AP> getAP();
 
     @Query("SELECT * FROM ap WHERE id = :id")
-    public Contact getAPWithId(int id);
+    public AP getAPWithId(int id);
 }

@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.mapBuilder;
+package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.offline;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -75,7 +75,9 @@ public class MapView extends View {
             float x = ( ((rects.get(i).getA().getX()* scaleFactor)+add) + ((rects.get(i).getB().getX()* scaleFactor)+add) )/2;
             float y = ( ((rects.get(i).getA().getY()* scaleFactor)+add) + ((rects.get(i).getB().getY()* scaleFactor)+add) )/2;
 
+
             canvas.drawText(rects.get(i).getName(), x  , y + 15, textPaint);
+
         }
 
     }

@@ -6,19 +6,25 @@ import android.support.annotation.NonNull;
 
 import com.gianlucamonica.locator.utils.map.Coordinate;
 
-@Entity(tableName = "ap")
+@Entity(tableName = "ap",primaryKeys = {"id","mac"})
 public class AP {
 
-    @PrimaryKey
     @NonNull
     int id;
-    @PrimaryKey
     @NonNull
     String mac;
     @NonNull
     String ssid;
 
-    Coordinate c;
+    //Coordinate c;
+
+    public AP(){}
+
+    public AP(int id, String mac, String ssid){
+        this.id = id;
+        this.mac = mac;
+        this.ssid = ssid;
+    }
 
     @NonNull
     public int getId() {
@@ -47,11 +53,20 @@ public class AP {
         this.ssid = ssid;
     }
 
-    public Coordinate getC() {
+    /*public Coordinate getC() {
         return c;
     }
 
     public void setC(Coordinate c) {
         this.c = c;
+    }*/
+
+    @Override
+    public String toString() {
+        return "AP{" +
+                "id=" + id +
+                ", mac='" + mac + '\'' +
+                ", ssid='" + ssid + '\'' +
+                '}';
     }
 }

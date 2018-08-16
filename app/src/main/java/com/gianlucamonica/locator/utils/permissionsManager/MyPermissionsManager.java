@@ -37,6 +37,8 @@ public class MyPermissionsManager {
     private Activity activity;
     private boolean checkGPS;
     private boolean checkWIFI;
+    private LocationManager locationManager;
+    private WifiManager wifiManager;
     private String providerMsg = "";
 
     public MyPermissionsManager(Activity activity){
@@ -70,7 +72,7 @@ public class MyPermissionsManager {
 
         switch (algorithmName){
             case GPS:
-                LocationManager locationManager = (LocationManager) MyApp.getContext()
+                locationManager = (LocationManager) MyApp.getContext()
                         .getSystemService(LOCATION_SERVICE);
 
                 // get GPS status
@@ -83,8 +85,8 @@ public class MyPermissionsManager {
                 break;
             case WIFI:
                 // to turn on WIFI
-                WifiManager wifi = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(MyApp.getContext().WIFI_SERVICE);
-                checkWIFI = wifi.isWifiEnabled();
+                wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(MyApp.getContext().WIFI_SERVICE);
+                checkWIFI = wifiManager.isWifiEnabled();
                 if (!checkWIFI){
                     //wifi is not enabled
                     showDialog(Settings.ACTION_WIFI_SETTINGS);
@@ -97,9 +99,12 @@ public class MyPermissionsManager {
 
         switch (providerToEnable){
             case ACTION_LOCATION_SOURCE_SETTINGS:
+                locationManager = (LocationManager) MyApp.getContext()
+                        .getSystemService(LOCATION_SERVICE);
                 providerMsg = "GPS";
                 break;
             case ACTION_WIFI_SETTINGS:
+                wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(MyApp.getContext().WIFI_SERVICE);
                 providerMsg = "WIFI";
                 break;
         }
@@ -113,8 +118,17 @@ public class MyPermissionsManager {
 
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(providerToEnable);
-                activity.startActivity(intent);
+                switch (providerToEnable){
+                    case ACTION_LOCATION_SOURCE_SETTINGS:
+                        Intent intent = new Intent(providerToEnable);
+                        activity.startActivity(intent);
+                        //locationManager.setTestProviderEnabled(LocationManager.GPS_PROVIDER,true);
+                    break;
+                    case ACTION_WIFI_SETTINGS:
+                        wifiManager.setWifiEnabled(true);
+                    break;
+                }
+
             }
         });
 

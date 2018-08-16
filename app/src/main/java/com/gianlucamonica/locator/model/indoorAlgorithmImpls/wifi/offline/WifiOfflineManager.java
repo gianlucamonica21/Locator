@@ -1,11 +1,7 @@
-package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.mapBuilder;
+package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.offline;
 
 import android.app.Activity;
 import android.arch.persistence.room.Room;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
@@ -17,12 +13,15 @@ import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 import com.gianlucamonica.locator.utils.MyApp;
+import com.gianlucamonica.locator.utils.db.AP.AP;
+import com.gianlucamonica.locator.utils.db.AP.APDAO;
+import com.gianlucamonica.locator.utils.map.Coordinate;
 import com.gianlucamonica.locator.utils.map.Grid;
 import com.gianlucamonica.locator.utils.db.examples.AppDatabase;
 
 import java.util.ArrayList;
 
-public class WIFIMapBuilder extends AppCompatActivity{
+public class WifiOfflineManager extends AppCompatActivity{
 
     private AppDatabase appDatabase;
     private WifiManager wifiManager;
@@ -30,17 +29,36 @@ public class WIFIMapBuilder extends AppCompatActivity{
     public Activity activity;
     public MapView mV;
 
+    private AP ap;
+    private ArrayList<FingerPrint> fingerPrints;
 
-
-    public WIFIMapBuilder(Activity activity){
+    public WifiOfflineManager(Activity activity){
         this.activity = activity;
         wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(WIFI_SERVICE);
+        WifiInfo info = wifiManager.getConnectionInfo();
+        ap = new AP();
+        int id = 0;
+        if( info != null){
+            id = info.getNetworkId();
+            String mac = info.getMacAddress();
+            String ssid = info.getSSID();
+            Log.i("mac addr", mac);
+            Log.i("netw id", String.valueOf(id));
+            Log.i("ssid", ssid);
+            ap.setId(id);
+            ap.setMac(mac);
+            ap.setSsid(ssid);
+        }
+        setupDB();
+
+        APDAO apdao = appDatabase.getAPDAO();
+        if(apdao.getAPWithId(id)==null)
+            apdao.insert(ap);
     }
 
     public <T extends View> T build(Class<T> type){
 
-        setupDB();
-
+        fingerPrints = new ArrayList<>();
 
         mV = new MapView(this.activity);
         mV.setOnTouchListener(new View.OnTouchListener() {
@@ -60,11 +78,11 @@ public class WIFIMapBuilder extends AppCompatActivity{
 
                         if( x >= aX && x <= bX){
                             if( y <= bY && y >= aY){
-                                Toast.makeText(MyApp.getContext(), "Scanning in  " + rects.get(i).getName(), Toast.LENGTH_SHORT).show();
                                 //todo scan wifi rss
                                 wifiInfo = wifiManager.getConnectionInfo();
                                 int rssiValue = wifiInfo.getRssi();
                                 Log.i("wifiInfo", String.valueOf(rssiValue));
+                                Toast.makeText(MyApp.getContext(), "Scanning in  " + rects.get(i).getName() + "  rss  " + rssiValue, Toast.LENGTH_SHORT).show();
 
                                 Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
@@ -74,6 +92,17 @@ public class WIFIMapBuilder extends AppCompatActivity{
                                 }, 1000);
 
                                 //todo inserisco in db
+                                fingerPrints.add(new FingerPrint(
+                                        ap,
+                                        new Grid(new Coordinate(rects.get(i).getA().getX(),
+                                                rects.get(i).getB().getX()),
+                                                new Coordinate(rects.get(i).getA().getY(),
+                                                        rects.get(i).getB().getY()),
+                                                rects.get(i).getName()),
+                                        rssiValue));
+                                for(int k = 0; k < fingerPrints.size(); k++)
+                                    Log.i("fingerPrints", fingerPrints.get(k).toString());
+
                             }
                         }
                     }
@@ -89,10 +118,11 @@ public class WIFIMapBuilder extends AppCompatActivity{
 
     public void setupDB(){
         //setting db
-        this.appDatabase = Room.databaseBuilder(this.activity, AppDatabase.class, "db-contacts")
-                .allowMainThreadQueries()   //Allows room to do operation on main thread
+        this.appDatabase = Room.databaseBuilder(this.activity, AppDatabase.class, "wifiAlg")
+                .allowMainThreadQueries()//Allows room to do operation on main thread
+                .fallbackToDestructiveMigration()
                 .build();
-        String currentDBPath = this.activity.getDatabasePath("db-contacts").getAbsolutePath();
+        String currentDBPath = this.activity.getDatabasePath("wifiAlg").getAbsolutePath();
         Log.i("dbPath:",currentDBPath);
         Stetho.initializeWithDefaults(this.activity);
     }

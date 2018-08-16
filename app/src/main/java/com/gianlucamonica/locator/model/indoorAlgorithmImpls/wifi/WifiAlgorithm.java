@@ -5,15 +5,17 @@ import android.app.Activity;
 import android.location.Location;
 import android.view.View;
 
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.mapBuilder.WIFIMapBuilder;
+import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.offline.WifiOfflineManager;
 import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
+import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.online.WifiOnlineManager;
 
 import java.io.Serializable;
 
-public class WifiAlgorithm implements Serializable, LocalizationAlgorithmInterface {
+public class WifiAlgorithm implements LocalizationAlgorithmInterface {
 
-    private transient WIFIMapBuilder wifiMapBuilder;
-    private transient Activity activity;
+    private WifiOfflineManager wifiOfflineManager;
+    private WifiOnlineManager wifiOnlineManager;
+    private Activity activity;
 
     public WifiAlgorithm(){
     }
@@ -24,13 +26,13 @@ public class WifiAlgorithm implements Serializable, LocalizationAlgorithmInterfa
 
     @Override
     public Object getBuildClass(Activity activity) {
-        return new WIFIMapBuilder(this.activity);
+        return new WifiOfflineManager(this.activity);
     }
 
     @Override
     public <T extends View> T build(Class<T> type) {
-        this.wifiMapBuilder = new WIFIMapBuilder(this.activity);
-        return wifiMapBuilder.build(type);
+        this.wifiOfflineManager = new WifiOfflineManager(this.activity);
+        return wifiOfflineManager.build(type);
     }
 
     @Override

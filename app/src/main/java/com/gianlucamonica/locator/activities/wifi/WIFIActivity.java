@@ -28,13 +28,15 @@ import java.lang.reflect.Type;
 public class WIFIActivity extends AppCompatActivity {
 
     MyLocationManager myLocationManager;
+    Button btnOffline;
+    Button btnOnline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi);
-        Button btnOffline = (Button) findViewById(R.id.button5);
-        Button btnOnline = (Button) findViewById(R.id.button4);
+        btnOffline = (Button) findViewById(R.id.button5);
+        btnOnline = (Button) findViewById(R.id.button4);
 
         myLocationManager = new MyLocationManager(AlgorithmName.WIFI, this);
         MyApp.setMyLocationManagerInstance(myLocationManager);
@@ -44,6 +46,7 @@ public class WIFIActivity extends AppCompatActivity {
             btnOnline.setEnabled(false);
         }
     }
+
 
     public void openOfflineActivity(View view){
         Intent intent = new Intent(this, OfflineActivity.class);
