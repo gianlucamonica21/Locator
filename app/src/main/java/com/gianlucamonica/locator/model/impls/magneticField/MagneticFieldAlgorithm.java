@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.location.Location;
 import android.view.View;
 
-import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
+import com.gianlucamonica.locator.model.LocAlgInterface.LocalizationAlgorithmInterface;
 
 public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
 

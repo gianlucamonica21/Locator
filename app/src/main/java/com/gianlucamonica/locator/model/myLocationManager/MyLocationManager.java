@@ -2,22 +2,16 @@ package com.gianlucamonica.locator.model.myLocationManager;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
-import android.location.LocationManager;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 
 import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.WifiAlgorithm;
-import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
-import com.gianlucamonica.locator.model.outdoorLocationManager.OutdoorLocationManager;
+import com.gianlucamonica.locator.model.LocAlgInterface.LocalizationAlgorithmInterface;
+import com.gianlucamonica.locator.model.impls.gps.OutdoorLocationManager;
 import com.gianlucamonica.locator.utils.AlgorithmName;
 import com.gianlucamonica.locator.utils.MyApp;
 import com.gianlucamonica.locator.utils.permissionsManager.MyPermissionsManager;
 
-import java.io.Serializable;
 import java.util.Arrays;
 
 public class MyLocationManager implements LocalizationAlgorithmInterface {

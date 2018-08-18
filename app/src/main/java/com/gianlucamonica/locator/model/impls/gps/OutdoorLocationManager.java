@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.model.outdoorLocationManager;
+package com.gianlucamonica.locator.model.impls.gps;
 
 import android.Manifest;
 import android.app.Activity;
@@ -19,7 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
+import com.gianlucamonica.locator.model.LocAlgInterface.LocalizationAlgorithmInterface;
 
 public class OutdoorLocationManager extends Service implements LocalizationAlgorithmInterface, LocationListener {
 

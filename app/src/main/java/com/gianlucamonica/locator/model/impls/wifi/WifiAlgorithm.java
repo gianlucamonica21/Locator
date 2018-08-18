@@ -6,11 +6,9 @@ import android.location.Location;
 import android.view.View;
 
 import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.offline.WifiOfflineManager;
-import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
+import com.gianlucamonica.locator.model.LocAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.online.WifiOnlineManager;
 import com.gianlucamonica.locator.utils.MyApp;
-
-import java.io.Serializable;
 
 public class WifiAlgorithm implements LocalizationAlgorithmInterface {
 

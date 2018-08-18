@@ -1,10 +1,8 @@
-package com.gianlucamonica.locator.model.LocalizationAlgorithmInterface;
+package com.gianlucamonica.locator.model.LocAlgInterface;
 
 import android.app.Activity;
 import android.location.Location;
 import android.view.View;
-
-import java.io.Serializable;
 
 public interface LocalizationAlgorithmInterface {
 
