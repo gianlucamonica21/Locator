@@ -8,6 +8,7 @@ import android.view.View;
 import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.offline.WifiOfflineManager;
 import com.gianlucamonica.locator.model.LocalizationAlgorithmInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.online.WifiOnlineManager;
+import com.gianlucamonica.locator.utils.MyApp;
 
 import java.io.Serializable;
 
@@ -32,11 +33,14 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
     @Override
     public <T extends View> T build(Class<T> type) {
         this.wifiOfflineManager = new WifiOfflineManager(this.activity);
+        MyApp.setWifiOfflineManagerInstance(wifiOfflineManager);
         return wifiOfflineManager.build(type);
     }
 
     @Override
     public Location locate() {
+        this.wifiOnlineManager = new WifiOnlineManager(activity);
+        wifiOnlineManager.locate();
         return null;
     }
 
@@ -63,4 +67,5 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
     public double getLatitude() {
         return 0;
     }
+
 }

@@ -48,4 +48,5 @@ public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
     public double getLatitude() {
         return 0;
     }
+
 }

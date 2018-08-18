@@ -11,9 +11,7 @@ import com.facebook.stetho.Stetho;
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.gps.GPSActivity;
 import com.gianlucamonica.locator.activities.wifi.WIFIActivity;
-import com.gianlucamonica.locator.utils.db.examples.AppDatabase;
-
-import java.util.List;
+import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.AppDatabase;
 
 public class   MainActivity extends Activity {
 

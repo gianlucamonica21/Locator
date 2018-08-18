@@ -1,10 +1,8 @@
-package com.gianlucamonica.locator.utils.db.AP;
+package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.AP;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Ignore;
 import android.support.annotation.NonNull;
-
-import com.gianlucamonica.locator.utils.map.Coordinate;
 
 @Entity(tableName = "ap",primaryKeys = {"id","mac"})
 public class AP {
@@ -16,8 +14,7 @@ public class AP {
     @NonNull
     String ssid;
 
-    //Coordinate c;
-
+    @Ignore
     public AP(){}
 
     public AP(int id, String mac, String ssid){

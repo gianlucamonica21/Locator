@@ -36,6 +36,7 @@ dependencies {
     //compile 'com.github.ralphpina:Android-Permissions-Manager:v2.0.1'
     compile 'com.anthonycr.grant:permissions:1.0'
 
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
     // dexter runtime permissions
     //implementation 'com.karumi:dexter:4.2.0'
 

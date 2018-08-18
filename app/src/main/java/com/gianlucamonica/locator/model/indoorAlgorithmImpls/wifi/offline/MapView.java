@@ -6,8 +6,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 
+import com.gianlucamonica.locator.utils.MyApp;
 import com.gianlucamonica.locator.utils.map.JSONReader;
 import com.gianlucamonica.locator.utils.map.JSONToGridConverter;
 import com.gianlucamonica.locator.utils.map.Grid;
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 public class MapView extends View {
 
     private ArrayList<Grid> rects; // rects to draw which compounds the map
+    private String estimateGridName;
     // JSON manager stuff
     JSONReader jsonReader;
     JSONObject config;
@@ -30,7 +35,7 @@ public class MapView extends View {
     /**
      * @param context
      */
-    public MapView(Context context){
+    public MapView(Context context,String estimateGridName){
         super(context);
 
         jsonReader = new JSONReader("mapConfig.json");
@@ -38,21 +43,25 @@ public class MapView extends View {
 
         config = jsonReader.getConfig();
         rects = jsonToGridConverter.convert(config);
+        estimateGridName = estimateGridName;
     }
 
     /**
      * @param rects
      * @param canvas
      */
-    public void drawMap(ArrayList<Grid> rects, Canvas canvas){
+    public void drawMap(ArrayList<Grid> rects, Canvas canvas, String estimateGridName){
         Log.i("size rects", String.valueOf(rects.size()));
 
         for(int i = 0; i < rects.size(); i++){
 
             Paint myPaint = new Paint();
             myPaint.setStyle(Paint.Style.FILL);
-            myPaint.setColor(Color.WHITE);
-            myPaint.setColor(Color.parseColor("#CD5C5C"));
+            if ( estimateGridName != null && rects.get(i).getName() == estimateGridName){
+                myPaint.setColor(Color.WHITE);
+            }else{
+                myPaint.setColor(Color.parseColor("#CD5C5C"));
+            }
             myPaint.setStrokeWidth(10);
             //rects.get(i).mult(scaleFactor,add);
             Log.i("rects",rects.get(i).toString());
@@ -83,12 +92,13 @@ public class MapView extends View {
     }
 
 
+
     @Override
     protected void onDraw(Canvas canvas) {
         // TODO Auto-generated method stub
-        //super.onDraw(canvas);
+        super.onDraw(canvas);
 
-        drawMap(rects,canvas);
+        drawMap(rects,canvas,estimateGridName);
     }
 
     /**
@@ -132,4 +142,5 @@ public class MapView extends View {
     public void setAdd(int add) {
         this.add = add;
     }
+
 }

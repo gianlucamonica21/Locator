@@ -152,7 +152,6 @@ public class OutdoorLocationManager extends Service implements LocalizationAlgor
         return latitude;
     }
 
-    @Override
     public boolean canGetLocation() {
         return this.canGetLocation;
     }
@@ -222,7 +221,7 @@ public class OutdoorLocationManager extends Service implements LocalizationAlgor
 
     @Override
     public Location locate() {
-        return getLoc();
+         return getLoc();
     }
 
     @Override
@@ -230,8 +229,6 @@ public class OutdoorLocationManager extends Service implements LocalizationAlgor
 
     }
 
-
-    @Override
     public boolean isProviderEnabled() {
         return false;
     }

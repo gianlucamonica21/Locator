@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.utils.db.AP;
+package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.AP;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
