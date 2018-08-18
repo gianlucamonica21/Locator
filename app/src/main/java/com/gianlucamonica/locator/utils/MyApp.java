@@ -3,7 +3,7 @@ package com.gianlucamonica.locator.utils;
 import android.app.Application;
 import android.content.Context;
 
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.offline.WifiOfflineManager;
+import com.gianlucamonica.locator.model.impls.wifi.offline.WifiOfflineManager;
 import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
 
 

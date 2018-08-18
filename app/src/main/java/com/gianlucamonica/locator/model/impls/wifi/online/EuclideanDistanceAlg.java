@@ -1,7 +1,6 @@
-package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.online;
+package com.gianlucamonica.locator.model.impls.wifi.online;
 
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.fingerPrint.FingerPrint;
-
+import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrint;
 import java.util.List;
 
 public class EuclideanDistanceAlg {

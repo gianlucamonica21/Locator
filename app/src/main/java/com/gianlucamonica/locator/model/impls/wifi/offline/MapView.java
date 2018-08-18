@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.offline;
+package com.gianlucamonica.locator.model.impls.wifi.offline;
 
 import android.content.Context;
 import android.graphics.Canvas;

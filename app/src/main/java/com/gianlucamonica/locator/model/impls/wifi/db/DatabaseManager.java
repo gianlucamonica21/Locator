@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db;
+package com.gianlucamonica.locator.model.impls.wifi.db;
 
 import android.app.Activity;
 import android.arch.persistence.room.Room;

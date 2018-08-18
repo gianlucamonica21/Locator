@@ -1,13 +1,13 @@
-package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi;
+package com.gianlucamonica.locator.model.impls.wifi;
 
 
 import android.app.Activity;
 import android.location.Location;
 import android.view.View;
 
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.offline.WifiOfflineManager;
+import com.gianlucamonica.locator.model.impls.wifi.offline.WifiOfflineManager;
 import com.gianlucamonica.locator.model.LocAlgInterface.LocalizationAlgorithmInterface;
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.online.WifiOnlineManager;
+import com.gianlucamonica.locator.model.impls.wifi.online.WifiOnlineManager;
 import com.gianlucamonica.locator.utils.MyApp;
 
 public class WifiAlgorithm implements LocalizationAlgorithmInterface {

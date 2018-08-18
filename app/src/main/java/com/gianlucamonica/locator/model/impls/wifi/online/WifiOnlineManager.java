@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.online;
+package com.gianlucamonica.locator.model.impls.wifi.online;
 
 import android.app.Activity;
 import android.net.wifi.WifiInfo;
@@ -6,10 +6,10 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.DatabaseManager;
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.fingerPrint.FingerPrint;
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.fingerPrint.FingerPrintDAO;
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.offline.MapView;
+import com.gianlucamonica.locator.model.impls.wifi.db.DatabaseManager;
+import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrint;
+import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrintDAO;
+import com.gianlucamonica.locator.model.impls.wifi.offline.MapView;
 import com.gianlucamonica.locator.utils.MyApp;
 
 import java.util.ArrayList;

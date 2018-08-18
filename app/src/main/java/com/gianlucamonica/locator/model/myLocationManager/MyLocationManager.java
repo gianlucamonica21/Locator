@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.location.Location;
 import android.view.View;
 
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.WifiAlgorithm;
+import com.gianlucamonica.locator.model.impls.wifi.WifiAlgorithm;
 import com.gianlucamonica.locator.model.LocAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.model.impls.gps.OutdoorLocationManager;
 import com.gianlucamonica.locator.utils.AlgorithmName;

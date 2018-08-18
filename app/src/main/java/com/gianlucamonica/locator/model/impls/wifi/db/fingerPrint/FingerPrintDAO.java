@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.fingerPrint;
+package com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;

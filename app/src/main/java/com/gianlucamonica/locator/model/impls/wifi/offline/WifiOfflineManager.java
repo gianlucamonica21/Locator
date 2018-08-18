@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.offline;
+package com.gianlucamonica.locator.model.impls.wifi.offline;
 
 import android.app.Activity;
 import android.arch.persistence.room.Room;
@@ -10,12 +10,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.gianlucamonica.locator.model.impls.wifi.db.AppDatabase;
+import com.gianlucamonica.locator.model.impls.wifi.db.DatabaseManager;
+import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrint;
+import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrintDAO;
 import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.AP.AP;
 import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.AP.APDAO;
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.AppDatabase;
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.DatabaseManager;
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.fingerPrint.FingerPrint;
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.fingerPrint.FingerPrintDAO;
 import com.gianlucamonica.locator.utils.MyApp;
 import com.gianlucamonica.locator.utils.map.Grid;
 import java.util.ArrayList;
