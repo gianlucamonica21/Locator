@@ -1,10 +1,11 @@
-package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.AP;
+package com.gianlucamonica.locator.model.impls.wifi.db.AP;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+
 
 import java.util.List;
 
@@ -24,4 +25,7 @@ public interface APDAO {
 
     @Query("SELECT * FROM ap WHERE id = :id")
     public AP getAPWithId(int id);
+
+    @Query("SELECT * FROM ap WHERE ssid = :ssid")
+    public AP getAPWithSsid(String ssid);
 }

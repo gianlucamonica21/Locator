@@ -2,9 +2,7 @@ package com.gianlucamonica.locator.model.impls.wifi.db;
 
 import android.app.Activity;
 import android.arch.persistence.room.Room;
-import android.util.Log;
 
-import com.facebook.stetho.Stetho;
 
 public class DatabaseManager {
 

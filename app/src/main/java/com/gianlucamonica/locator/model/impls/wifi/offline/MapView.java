@@ -30,7 +30,7 @@ public class MapView extends View {
     JSONToGridConverter jsonToGridConverter;
     // scale factors for drawing map
     int scaleFactor = 250;
-    int add = 40;
+    int add = 165;
 
     /**
      * @param context
@@ -44,6 +44,10 @@ public class MapView extends View {
         config = jsonReader.getConfig();
         rects = jsonToGridConverter.convert(config);
         estimateGridName = estimateGridName;
+
+        Toast.makeText(context,
+                "Tap on the grid corresponding to your position to do a scan",
+                Toast.LENGTH_LONG).show();;
     }
 
     /**

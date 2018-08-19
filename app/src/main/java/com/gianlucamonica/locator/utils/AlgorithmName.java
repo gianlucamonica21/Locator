@@ -2,5 +2,5 @@ package com.gianlucamonica.locator.utils;
 
 public enum AlgorithmName {
     GPS,
-    WIFI
+    WIFI_RSS_FP
 }

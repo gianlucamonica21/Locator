@@ -6,8 +6,8 @@ import android.location.Location;
 import android.view.View;
 
 import com.gianlucamonica.locator.model.impls.wifi.WifiAlgorithm;
-import com.gianlucamonica.locator.model.LocAlgInterface.LocalizationAlgorithmInterface;
-import com.gianlucamonica.locator.model.impls.gps.OutdoorLocationManager;
+import com.gianlucamonica.locator.model.locAlgInterface.LocalizationAlgorithmInterface;
+import com.gianlucamonica.locator.model.impls.gps.GPSLocationManager;
 import com.gianlucamonica.locator.utils.AlgorithmName;
 import com.gianlucamonica.locator.utils.MyApp;
 import com.gianlucamonica.locator.utils.permissionsManager.MyPermissionsManager;
@@ -22,6 +22,8 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
     private String[] permissions;
 
     /*
+     * constructor which build a new istance of a particular algorithm according to algoName
+     * for each algorithm permissions and enables are checked
      * @param algoName
      * @param activity
      */
@@ -36,17 +38,17 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
                         Manifest.permission.ACCESS_FINE_LOCATION};
                 checkPermissions();
 
-                if ( myPermissionsManager.isCheckGPS())
-                    localizationAlgorithmInterface = new OutdoorLocationManager(MyApp.getContext());
+                if ( myPermissionsManager.isGPSEnabled())
+                    localizationAlgorithmInterface = new GPSLocationManager(MyApp.getContext());
                 break;
-            case WIFI:
+            case WIFI_RSS_FP:
                 this.algoName = algoName;
                 permissions = new String[] {Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION};
 
                 checkPermissions();
 
-                if (myPermissionsManager.isCheckWIFI())
+                if (myPermissionsManager.isWIFIEnabled())
                     localizationAlgorithmInterface = new WifiAlgorithm(activity);
                 break;
             default:
@@ -54,43 +56,43 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
 
     }
 
+    /**
+     * @param activity
+     * @return algorithm build class
+     */
     @Override
     public Object getBuildClass(Activity activity) {
         return localizationAlgorithmInterface.getBuildClass(activity);
     }
 
+    /**
+     * @param type
+     * @param <T>
+     * @return class subtype of View which is used for the build phase
+     */
     @Override
     public  <T extends View> T build(Class<T> type) {
         return localizationAlgorithmInterface.build(type);
     }
 
+    /**
+     * @return Location computed with the specified algorithm
+     */
     public Location locate() {
         return localizationAlgorithmInterface.locate();
     }
 
+    /**
+     * check permissions and turn on the providers according to the algorithm
+     */
     @Override
     public void checkPermissions() {
         myPermissionsManager.requestPermission(permissions);
         myPermissionsManager.turnOnServiceIfOff(algoName);
     }
 
-    @Override
-    public boolean canGetLocation() {
-        return localizationAlgorithmInterface.canGetLocation();
-    }
-
-    public boolean isProviderEnabled(){
-        return localizationAlgorithmInterface.isProviderEnabled();
-    }
-
-    @Override
-    public double getLongitude() {
-        return localizationAlgorithmInterface.getLongitude();
-    }
-
-    @Override
-    public double getLatitude() {
-        return localizationAlgorithmInterface.getLatitude();
+    public MyPermissionsManager getMyPermissionsManager() {
+        return myPermissionsManager;
     }
 
     @Override
@@ -101,9 +103,5 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
                 ", myPermissionsManager=" + myPermissionsManager +
                 ", permissions=" + Arrays.toString(permissions) +
                 '}';
-    }
-
-    public MyPermissionsManager getMyPermissionsManager() {
-        return myPermissionsManager;
     }
 }

@@ -36,6 +36,7 @@ public class WifiOnlineManager {
         int rssiValue = wifiScan(); // getting live wifi rssi
 
         List<FingerPrint> fingerPrintsDB = getFingerPrintsFromDb();
+        //List<FingerPrint> fingerPrintsDB =  getFingerPrintWithAPSsid();
 
         euclideanDistanceAlg = new EuclideanDistanceAlg(fingerPrintsDB,rssiValue);
         int index = euclideanDistanceAlg.compute();

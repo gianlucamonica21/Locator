@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.AP;
+package com.gianlucamonica.locator.model.impls.wifi.db.AP;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;

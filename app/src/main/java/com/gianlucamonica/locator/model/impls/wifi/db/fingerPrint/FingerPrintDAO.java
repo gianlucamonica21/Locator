@@ -6,8 +6,6 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.AP.AP;
-
 import java.util.List;
 
 @Dao

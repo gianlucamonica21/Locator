@@ -5,9 +5,6 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.support.annotation.NonNull;
 
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.AP.AP;
-import com.gianlucamonica.locator.utils.map.Grid;
-
 @Entity(tableName = "fingerPrint",
         primaryKeys = {"apSsid","gridName"})
         /*foreignKeys = @ForeignKey(entity = AP.class,

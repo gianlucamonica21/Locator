@@ -10,12 +10,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.gianlucamonica.locator.model.impls.wifi.db.AP.AP;
+import com.gianlucamonica.locator.model.impls.wifi.db.AP.APDAO;
 import com.gianlucamonica.locator.model.impls.wifi.db.AppDatabase;
 import com.gianlucamonica.locator.model.impls.wifi.db.DatabaseManager;
 import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrint;
 import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrintDAO;
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.AP.AP;
-import com.gianlucamonica.locator.model.indoorAlgorithmImpls.wifi.db.AP.APDAO;
 import com.gianlucamonica.locator.utils.MyApp;
 import com.gianlucamonica.locator.utils.map.Grid;
 import java.util.ArrayList;
@@ -23,10 +23,12 @@ import java.util.ArrayList;
 public class WifiOfflineManager extends AppCompatActivity{
 
     private DatabaseManager databaseManager;
-    private AppDatabase appDatabase;
+
     private WifiManager wifiManager;
     private WifiInfo wifiInfo;
+
     public Activity activity;
+
     public MapView mV;
     private AP ap;
     private ArrayList<FingerPrint> fingerPrints;

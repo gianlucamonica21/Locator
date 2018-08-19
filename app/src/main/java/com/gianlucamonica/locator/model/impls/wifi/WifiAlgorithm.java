@@ -3,12 +3,18 @@ package com.gianlucamonica.locator.model.impls.wifi;
 
 import android.app.Activity;
 import android.location.Location;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.util.Log;
 import android.view.View;
 
 import com.gianlucamonica.locator.model.impls.wifi.offline.WifiOfflineManager;
-import com.gianlucamonica.locator.model.LocAlgInterface.LocalizationAlgorithmInterface;
+import com.gianlucamonica.locator.model.impls.wifi.db.AP.AP;
+import com.gianlucamonica.locator.model.locAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.model.impls.wifi.online.WifiOnlineManager;
 import com.gianlucamonica.locator.utils.MyApp;
+
+import static android.content.Context.WIFI_SERVICE;
 
 public class WifiAlgorithm implements LocalizationAlgorithmInterface {
 
@@ -46,7 +52,7 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
     public void checkPermissions() {
     }
 
-    @Override
+    /*@Override
     public boolean canGetLocation() {
         return false;
     }
@@ -64,6 +70,6 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
     @Override
     public double getLatitude() {
         return 0;
-    }
+    }*/
 
 }

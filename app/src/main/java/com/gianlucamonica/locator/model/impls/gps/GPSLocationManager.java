@@ -19,9 +19,9 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import com.gianlucamonica.locator.model.LocAlgInterface.LocalizationAlgorithmInterface;
+import com.gianlucamonica.locator.model.locAlgInterface.LocalizationAlgorithmInterface;
 
-public class OutdoorLocationManager extends Service implements LocalizationAlgorithmInterface, LocationListener {
+public class GPSLocationManager extends Service implements LocalizationAlgorithmInterface, LocationListener {
 
     private final Context mContext;
 
@@ -42,7 +42,7 @@ public class OutdoorLocationManager extends Service implements LocalizationAlgor
      *
      * @param mContext
      */
-    public OutdoorLocationManager(Context mContext) {
+    public GPSLocationManager(Context mContext) {
         this.mContext = mContext;
         getLocation();
     }
@@ -61,7 +61,7 @@ public class OutdoorLocationManager extends Service implements LocalizationAlgor
             checkNetwork = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-            if (!checkGPS && !checkNetwork) {
+            if (!isProviderEnabled()) {
                 Toast.makeText(mContext, "No Service Provider is available", Toast.LENGTH_SHORT).show();
             } else {
                 this.canGetLocation = true;
@@ -198,7 +198,7 @@ public class OutdoorLocationManager extends Service implements LocalizationAlgor
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            locationManager.removeUpdates(OutdoorLocationManager.this);
+            locationManager.removeUpdates(GPSLocationManager.this);
         }
     }
 
@@ -230,13 +230,17 @@ public class OutdoorLocationManager extends Service implements LocalizationAlgor
     }
 
     public boolean isProviderEnabled() {
-        return false;
+        if(!checkGPS && !checkNetwork){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void onLocationChanged(Location location) {
         Log.i("onLocationChanged lat", String.valueOf(location.getLatitude()));
         Log.i("onLocationChanged lng", String.valueOf(location.getLongitude()));
+        loc = location;
         latitude = location.getLatitude();
         longitude = location.getLongitude();
 

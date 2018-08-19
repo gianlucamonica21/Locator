@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.location.Location;
 import android.view.View;
 
-import com.gianlucamonica.locator.model.LocAlgInterface.LocalizationAlgorithmInterface;
+import com.gianlucamonica.locator.model.locAlgInterface.LocalizationAlgorithmInterface;
 
 public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
 
@@ -29,7 +29,7 @@ public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
 
     }
 
-    @Override
+    /*@Override
     public boolean canGetLocation() {
         return false;
     }
@@ -47,6 +47,6 @@ public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
     @Override
     public double getLatitude() {
         return 0;
-    }
+    }*/
 
 }

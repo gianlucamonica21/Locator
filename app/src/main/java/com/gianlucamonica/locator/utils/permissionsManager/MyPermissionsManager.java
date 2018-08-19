@@ -1,42 +1,28 @@
 package com.gianlucamonica.locator.utils.permissionsManager;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.anthonycr.grant.PermissionsManager;
 import com.anthonycr.grant.PermissionsResultAction;
-import com.gianlucamonica.locator.activities.wifi.WIFIActivity;
 import com.gianlucamonica.locator.utils.AlgorithmName;
 import com.gianlucamonica.locator.utils.MyApp;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import static android.content.Context.LOCATION_SERVICE;
 import static android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS;
 import static android.provider.Settings.ACTION_WIFI_SETTINGS;
-import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 public class MyPermissionsManager {
 
     private Activity activity;
-    private boolean checkGPS;
-    private boolean checkWIFI;
+    private boolean isGPSEnabled;
+    private boolean isWIFIEnabled;
     private LocationManager locationManager;
     private WifiManager wifiManager;
     private String providerMsg = "";
@@ -57,7 +43,7 @@ public class MyPermissionsManager {
                     @Override
                     public void onDenied(String permission) {
                         Toast.makeText(activity,
-                                "Sorry, we need the Storage Permission to do that",
+                                "Sorry, we need the this permission",
                                 Toast.LENGTH_SHORT).show();
                         ActivityCompat.requestPermissions(
                                 activity,
@@ -76,18 +62,18 @@ public class MyPermissionsManager {
                         .getSystemService(LOCATION_SERVICE);
 
                 // get GPS status
-                checkGPS = locationManager
+                isGPSEnabled = locationManager
                         .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-                if(!checkGPS){
+                if(!isGPSEnabled){
                     showDialog(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 }
                 break;
-            case WIFI:
+            case WIFI_RSS_FP:
                 // to turn on WIFI
                 wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(MyApp.getContext().WIFI_SERVICE);
-                checkWIFI = wifiManager.isWifiEnabled();
-                if (!checkWIFI){
+                isWIFIEnabled = wifiManager.isWifiEnabled();
+                if (!isWIFIEnabled){
                     //wifi is not enabled
                     showDialog(Settings.ACTION_WIFI_SETTINGS);
                 }
@@ -110,11 +96,8 @@ public class MyPermissionsManager {
         }
 
         android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(activity);
-
         alertDialog.setTitle(providerMsg + " is not Enabled!");
-
         alertDialog.setMessage("Do you want to turn on " + providerMsg + "?");
-
 
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -149,11 +132,11 @@ public class MyPermissionsManager {
         alertDialog.show();
     }
 
-    public boolean isCheckGPS() {
-        return checkGPS;
+    public boolean isGPSEnabled() {
+        return isGPSEnabled;
     }
 
-    public boolean isCheckWIFI() {
-        return checkWIFI;
+    public boolean isWIFIEnabled() {
+        return isWIFIEnabled;
     }
 }

@@ -2,6 +2,7 @@ package com.gianlucamonica.locator.activities.gps;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,17 +33,18 @@ public class GPSActivity extends Activity implements OnMapReadyCallback {
 
         myLocationManager = new MyLocationManager(AlgorithmName.GPS,this);
 
-        if(!myLocationManager.getMyPermissionsManager().isCheckGPS()){
+        if(!myLocationManager.getMyPermissionsManager().isGPSEnabled()){
             btn.setEnabled(false);
         }
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //getting location
-                if (myLocationManager.canGetLocation()) {
+                if (myLocationManager.getMyPermissionsManager().isGPSEnabled()) {
 
-                    double longitude = myLocationManager.getLongitude();
-                    double latitude = myLocationManager.getLatitude();
+                    Location location = myLocationManager.locate();
+                    double longitude = location.getLongitude();
+                    double latitude = location.getLatitude();
 
                     Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
 
