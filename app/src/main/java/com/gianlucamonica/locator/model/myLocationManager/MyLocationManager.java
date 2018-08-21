@@ -29,7 +29,7 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
      */
     public MyLocationManager(AlgorithmName algoName, Activity activity) {
 
-        myPermissionsManager = new MyPermissionsManager(activity);
+        myPermissionsManager = new MyPermissionsManager(activity, algoName);
 
         switch (algoName) {
             case GPS:
@@ -88,12 +88,17 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
     @Override
     public void checkPermissions() {
         myPermissionsManager.requestPermission(permissions);
-        myPermissionsManager.turnOnServiceIfOff(algoName);
+        myPermissionsManager.turnOnServiceIfOff();
     }
 
     public MyPermissionsManager getMyPermissionsManager() {
         return myPermissionsManager;
     }
+
+    public void setMyPermissionsManager(MyPermissionsManager myPermissionsManager) {
+        this.myPermissionsManager = myPermissionsManager;
+    }
+
 
     @Override
     public String toString() {

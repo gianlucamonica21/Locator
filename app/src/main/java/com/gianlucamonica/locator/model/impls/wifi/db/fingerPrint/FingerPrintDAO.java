@@ -22,6 +22,12 @@ public interface FingerPrintDAO {
     @Query("SELECT * FROM fingerPrint")
     public List<FingerPrint> getFingerPrints();
 
+    @Query("SELECT * FROM fingerPrint WHERE apSsid = :apSsid AND gridName = :gridName")
+    public FingerPrint getFingerPrintWithAPSsidAndGridName(String apSsid,String gridName);
+
     @Query("SELECT * FROM fingerPrint WHERE apSsid = :apSsid")
-    public FingerPrint getFingerPrintWithAPSsid(String apSsid);
+    public List<FingerPrint> getFingerPrintWithAPSsid(String apSsid);
+
+    @Query("DELETE FROM fingerPrint WHERE apSsid = :apSsid")
+    public void deleteByAPSsid(String apSsid);
 }

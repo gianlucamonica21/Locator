@@ -6,6 +6,7 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.gianlucamonica.locator.model.impls.wifi.db.AP.AP;
 import com.gianlucamonica.locator.model.impls.wifi.db.DatabaseManager;
 import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrint;
 import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrintDAO;
@@ -35,20 +36,30 @@ public class WifiOnlineManager {
 
         int rssiValue = wifiScan(); // getting live wifi rssi
 
-        List<FingerPrint> fingerPrintsDB = getFingerPrintsFromDb();
-        //List<FingerPrint> fingerPrintsDB =  getFingerPrintWithAPSsid();
+        WifiManager wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        if( wifiInfo != null) {
 
-        euclideanDistanceAlg = new EuclideanDistanceAlg(fingerPrintsDB,rssiValue);
-        int index = euclideanDistanceAlg.compute();
+            List<FingerPrint> fingerPrintsDB = getFingerPrintsFromDb(wifiInfo.getSSID());
+            if (fingerPrintsDB.size() > 0) {
 
-        Toast.makeText(MyApp.getContext(),
-                "Sei nel riquadro " + fingerPrintsDB.get(index).getGridName(),
-                Toast.LENGTH_SHORT ).show();
+                euclideanDistanceAlg = new EuclideanDistanceAlg(fingerPrintsDB, rssiValue);
+                int index = euclideanDistanceAlg.compute();
 
+                Toast.makeText(MyApp.getContext(),
+                        "Sei nel riquadro " + fingerPrintsDB.get(index).getGridName(),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MyApp.getContext(),
+                        "Non ci sono informazioni in db",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
         //mapView = new MapView(activity,fingerPrintsDB.get(index).getGridName());
         //activity.setContentView(mapView);
 
     }
+
 
     public int wifiScan(){
 
@@ -61,10 +72,10 @@ public class WifiOnlineManager {
         return rssiValue;
     }
 
-    public List<FingerPrint> getFingerPrintsFromDb(){
+    public List<FingerPrint> getFingerPrintsFromDb(String ssid){
 
         FingerPrintDAO fingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
-        List<FingerPrint> fingerPrints = fingerPrintDAO.getFingerPrints();
+        List<FingerPrint> fingerPrints = fingerPrintDAO.getFingerPrintWithAPSsid(ssid);
         return fingerPrints;
     }
 }

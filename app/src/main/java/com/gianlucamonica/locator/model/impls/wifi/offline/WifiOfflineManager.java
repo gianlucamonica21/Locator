@@ -75,6 +75,10 @@ public class WifiOfflineManager extends AppCompatActivity{
         APDAO apdao = databaseManager.getAppDatabase().getAPDAO();
         if(apdao.getAPWithId(id)==null)
             apdao.insert(ap);
+
+        FingerPrintDAO fingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
+        fingerPrintDAO.deleteByAPSsid(ap.getSsid());
+
     }
 
     public int wifiScan(String gridName){
@@ -87,6 +91,7 @@ public class WifiOfflineManager extends AppCompatActivity{
 
     public void buildRssiMap(int rssiValue, ArrayList<Grid> rects,int i){
 
+        String gridName = rects.get(i).getName();
         fingerPrints.add(new FingerPrint(
                 ap.getSsid(),
                 rects.get(i).getName(),
@@ -95,7 +100,7 @@ public class WifiOfflineManager extends AppCompatActivity{
             Log.i("fingerPrints", fingerPrints.get(k).toString());
 
         FingerPrintDAO fingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
-        if(fingerPrintDAO.getFingerPrintWithAPSsid(ap.getSsid())==null){
+        if(fingerPrintDAO.getFingerPrintWithAPSsidAndGridName(ap.getSsid(),gridName)==null){
             fingerPrintDAO.insert(new FingerPrint(
                 ap.getSsid(),
                 rects.get(i).getName(),
@@ -112,7 +117,7 @@ public class WifiOfflineManager extends AppCompatActivity{
             Log.i("TOUCHED ", x + " " + y);
 
             ArrayList<Grid> rects = mV.getRects();
-            Log.i("rects size", String.valueOf(rects.size()));
+
             if(rects.size() == 0){
                 Toast.makeText(MyApp.getContext(),"scan is finished",Toast.LENGTH_SHORT).show();
                 MyApp.getWifiOfflineManagerInstance().setFingerPrints(fingerPrints);

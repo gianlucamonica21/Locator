@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -12,6 +13,8 @@ import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.gps.fragments.MapsActivity;
 import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.utils.AlgorithmName;
+import com.gianlucamonica.locator.utils.MyApp;
+import com.gianlucamonica.locator.utils.permissionsManager.MyPermissionsManager;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
@@ -22,20 +25,16 @@ public class GPSActivity extends Activity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     // location's stuff
-    private MyLocationManager myLocationManager;;
+    private MyLocationManager myLocationManager;
+    private Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.i("GPSactivity","on create");
         setContentView(R.layout.activity_gps);
-        Button btn = (Button) findViewById(R.id.button3);
 
-        myLocationManager = new MyLocationManager(AlgorithmName.GPS,this);
-
-        if(!myLocationManager.getMyPermissionsManager().isGPSEnabled()){
-            btn.setEnabled(false);
-        }
+        btn = (Button) findViewById(R.id.button3);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +72,18 @@ public class GPSActivity extends Activity implements OnMapReadyCallback {
     @Override
     protected void onResume() {
         super.onResume();
+
+        Log.i("GPSactivity","on resume");
+        myLocationManager = new MyLocationManager(AlgorithmName.GPS,this);
+
+        if(!myLocationManager.getMyPermissionsManager().isGPSEnabled()){
+            btn.setEnabled(false);
+        }
+
+        if(myLocationManager.getMyPermissionsManager().isGPSEnabled()){
+            btn.setEnabled(true);
+        }
+
     }
 
     /**

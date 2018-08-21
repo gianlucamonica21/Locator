@@ -1,12 +1,14 @@
 package com.gianlucamonica.locator.utils.permissionsManager;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.anthonycr.grant.PermissionsManager;
@@ -26,10 +28,34 @@ public class MyPermissionsManager {
     private LocationManager locationManager;
     private WifiManager wifiManager;
     private String providerMsg = "";
+    private AlgorithmName algorithmName;
 
-    public MyPermissionsManager(Activity activity){
+    public MyPermissionsManager(Activity activity, AlgorithmName algorithmName){
+
         this.activity = activity;
+        this.algorithmName = algorithmName;
+
+        switch (algorithmName){
+            case GPS:
+
+                locationManager = (LocationManager) MyApp.getContext()
+                        .getSystemService(LOCATION_SERVICE);
+                isGPSEnabled = locationManager
+                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+                break;
+            case WIFI_RSS_FP:
+
+                wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(MyApp.getContext().WIFI_SERVICE);
+                isWIFIEnabled = wifiManager.isWifiEnabled();
+
+                break;
+        }
     }
+
+
+
+
 
     public void requestPermission(final String[] permissions){
         PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(activity,
@@ -54,46 +80,49 @@ public class MyPermissionsManager {
 
     }
 
-    public void turnOnServiceIfOff(AlgorithmName algorithmName){
+    public void turnOnServiceIfOff(){
 
         switch (algorithmName){
             case GPS:
-                locationManager = (LocationManager) MyApp.getContext()
-                        .getSystemService(LOCATION_SERVICE);
-
-                // get GPS status
-                isGPSEnabled = locationManager
-                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
-
                 if(!isGPSEnabled){
                     showDialog(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 }
+
                 break;
             case WIFI_RSS_FP:
-                // to turn on WIFI
-                wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(MyApp.getContext().WIFI_SERVICE);
-                isWIFIEnabled = wifiManager.isWifiEnabled();
-                if (!isWIFIEnabled){
-                    //wifi is not enabled
+
+                if (!isWIFIEnabled)
                     showDialog(Settings.ACTION_WIFI_SETTINGS);
-                }
+
                 break;
         }
     }
 
     public void showDialog(final String providerToEnable){
 
+
         switch (providerToEnable){
             case ACTION_LOCATION_SOURCE_SETTINGS:
+
                 locationManager = (LocationManager) MyApp.getContext()
                         .getSystemService(LOCATION_SERVICE);
                 providerMsg = "GPS";
                 break;
             case ACTION_WIFI_SETTINGS:
+
                 wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(MyApp.getContext().WIFI_SERVICE);
                 providerMsg = "WIFI";
                 break;
         }
+
+
+        android.support.v7.app.AlertDialog.Builder alertDialog = buildDialog(providerToEnable);
+        alertDialog.show();
+
+
+    }
+
+    public android.support.v7.app.AlertDialog.Builder buildDialog(final String providerToEnable){
 
         android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(activity);
         alertDialog.setTitle(providerMsg + " is not Enabled!");
@@ -106,10 +135,10 @@ public class MyPermissionsManager {
                         Intent intent = new Intent(providerToEnable);
                         activity.startActivity(intent);
                         //locationManager.setTestProviderEnabled(LocationManager.GPS_PROVIDER,true);
-                    break;
+                        break;
                     case ACTION_WIFI_SETTINGS:
                         wifiManager.setWifiEnabled(true);
-                    break;
+                        break;
                 }
 
             }
@@ -128,8 +157,7 @@ public class MyPermissionsManager {
             }
         });
 
-
-        alertDialog.show();
+        return alertDialog;
     }
 
     public boolean isGPSEnabled() {

@@ -25,8 +25,8 @@ public class EuclideanDistanceAlg {
         int index = 0;
         for (int i = 0; i < radioMap.size() - 1; i++) {
             int maxRssi = radioMap.get(i).getRssi();
-            if(radioMap.get(i+1).getRssi() > maxRssi){
-                maxRssi = radioMap.get(i+1).getRssi();
+            if(radioMap.get(i+1).getRssi() < maxRssi){
+                //maxRssi = radioMap.get(i+1).getRssi();
                 index = i+1;
             }
         }
