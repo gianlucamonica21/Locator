@@ -5,11 +5,8 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "fingerPrint",
+@Entity(tableName = "wifiFingerPrint",
         primaryKeys = {"apSsid","gridName"})
-        /*foreignKeys = @ForeignKey(entity = AP.class,
-        parentColumns = "mac",
-        childColumns = "apSsid"))*/
 public class FingerPrint {
 
     @NonNull

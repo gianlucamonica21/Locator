@@ -10,7 +10,7 @@ public interface LocalizationAlgorithmInterface {
 
     <T extends View> T build(Class<T> type);
 
-    Location locate();
+    <T> T locate();
 
     void checkPermissions();
 

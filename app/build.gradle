@@ -42,7 +42,7 @@ dependencies {
 
     // ButterKnife view binding
     //implementation 'com.jakewharton:butterknife:8.8.1'
-   // annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    // annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     //room dependencies
     implementation "android.arch.persistence.room:runtime:1.0.0"

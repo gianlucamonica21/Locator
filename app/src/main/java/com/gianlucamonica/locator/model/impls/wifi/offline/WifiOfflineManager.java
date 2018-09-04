@@ -1,7 +1,6 @@
 package com.gianlucamonica.locator.model.impls.wifi.offline;
 
 import android.app.Activity;
-import android.arch.persistence.room.Room;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +11,7 @@ import android.widget.Toast;
 
 import com.gianlucamonica.locator.model.impls.wifi.db.AP.AP;
 import com.gianlucamonica.locator.model.impls.wifi.db.AP.APDAO;
-import com.gianlucamonica.locator.model.impls.wifi.db.AppDatabase;
-import com.gianlucamonica.locator.model.impls.wifi.db.DatabaseManager;
+import com.gianlucamonica.locator.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrint;
 import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrintDAO;
 import com.gianlucamonica.locator.utils.MyApp;
@@ -59,6 +57,7 @@ public class WifiOfflineManager extends AppCompatActivity{
         wifiInfo = wifiManager.getConnectionInfo();
         ap = new AP();
         int id = 0;
+        //todo impl multiple aps managing
         if( wifiInfo != null){
             id = wifiInfo.getNetworkId();
             String mac = wifiInfo.getMacAddress();
@@ -140,6 +139,7 @@ public class WifiOfflineManager extends AppCompatActivity{
                     }
                 }
             }
+            mV.invalidate();
         }
     }
 

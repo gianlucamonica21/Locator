@@ -6,11 +6,11 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.gianlucamonica.locator.model.impls.wifi.db.AP.AP;
-import com.gianlucamonica.locator.model.impls.wifi.db.DatabaseManager;
+import com.gianlucamonica.locator.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrint;
 import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrintDAO;
 import com.gianlucamonica.locator.model.impls.wifi.offline.MapView;
+import com.gianlucamonica.locator.utils.AlgorithmName;
 import com.gianlucamonica.locator.utils.MyApp;
 
 import java.util.ArrayList;
@@ -36,6 +36,7 @@ public class WifiOnlineManager {
 
         int rssiValue = wifiScan(); // getting live wifi rssi
 
+        //todo impl multiple aps managing
         WifiManager wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         if( wifiInfo != null) {
@@ -44,7 +45,7 @@ public class WifiOnlineManager {
             if (fingerPrintsDB.size() > 0) {
 
                 euclideanDistanceAlg = new EuclideanDistanceAlg(fingerPrintsDB, rssiValue);
-                int index = euclideanDistanceAlg.compute();
+                int index = euclideanDistanceAlg.compute(AlgorithmName.WIFI_RSS_FP);
 
                 Toast.makeText(MyApp.getContext(),
                         "Sei nel riquadro " + fingerPrintsDB.get(index).getGridName(),

@@ -7,48 +7,85 @@
     android:id="@+id/mainActivity"
     tools:context=".activities.main.MainActivity">
 
-    <Button
+    <!--<Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="@android:dimen/thumbnail_width"
         android:layout_height="wrap_content"
         android:layout_marginBottom="47dp"
         android:layout_marginEnd="148dp"
         android:layout_marginStart="148dp"
+        android:layout_marginTop="20dp"
         android:background="#88e1bf"
         android:onClick="openGPSActivity"
         android:text="GPS"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
+        android:layout_width="@android:dimen/thumbnail_width"
         android:layout_height="wrap_content"
         android:layout_marginBottom="186dp"
         android:layout_marginEnd="148dp"
         android:layout_marginStart="148dp"
         android:background="#88e1bf"
         android:onClick="openWIFIActivity"
-        android:text="Wifi"
+        android:text="Wifi RSS FP"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="@android:dimen/thumbnail_width"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="96dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="42dp"
+        android:background="#88e1bf"
+        android:onClick="openWIFIActivity"
+        android:text="Magnetic FP"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintVertical_bias="0.0" />-->
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="109dp"
-        android:layout_marginEnd="90dp"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="54dp"
+        android:layout_marginBottom="123dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="68dp"
         android:text="Choose your localization method"
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="24sp"
         android:typeface="sans"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/_algsList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+        <!--app:layout_constraintBottom_toTopOf="@+id/button"-->
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.51" />
+
+    <ListView
+        android:id="@+id/_algsList"
+        style="@android:style/Widget.DeviceDefault.ExpandableListView"
+        android:layout_width="368dp"
+        android:layout_height="200dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 </android.support.constraint.ConstraintLayout>

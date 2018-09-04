@@ -1,23 +1,22 @@
-package com.gianlucamonica.locator.activities.wifi.onlineActivity;
+package com.gianlucamonica.locator.activities.magnetic.online;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.utils.MyApp;
 
-public class OnlineActivity extends AppCompatActivity {
+public class OnlineMagneticActivity extends AppCompatActivity {
 
     private MyLocationManager myLocationManager;
-    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_online);
+        setContentView(R.layout.activity_online_magnetic);
         myLocationManager = MyApp.getMyLocationManagerInstance();
     }
 

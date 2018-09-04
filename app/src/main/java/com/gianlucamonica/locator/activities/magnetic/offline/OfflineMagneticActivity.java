@@ -1,7 +1,5 @@
-package com.gianlucamonica.locator.activities.wifi.offlineActivity;
+package com.gianlucamonica.locator.activities.magnetic.offline;
 
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,13 +9,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.model.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrintDAO;
 import com.gianlucamonica.locator.utils.db.DatabaseManager;
-import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrintDAO;
 import com.gianlucamonica.locator.model.impls.wifi.offline.MapView;
 import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.utils.MyApp;
 
-public class OfflineActivity extends AppCompatActivity {
+public class OfflineMagneticActivity extends AppCompatActivity {
 
     private MyLocationManager myLocationManager;
     private DatabaseManager databaseManager;
@@ -25,17 +23,17 @@ public class OfflineActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myLocationManager = MyApp.getMyLocationManagerInstance();
         databaseManager = new DatabaseManager(this);
+        myLocationManager = MyApp.getMyLocationManagerInstance();
 
-        setContentView(R.layout.activity_offline);
-        final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.infoText);
+        setContentView(R.layout.activity_offline_magnetic);
+        final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
 
         // setting the map view
         MapView v = (MapView) myLocationManager.build(MapView.class);
         mLinearLayout.addView(v);
 
-        Button button = (Button) findViewById(R.id.button7);
+        Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -50,17 +48,10 @@ public class OfflineActivity extends AppCompatActivity {
                 mLinearLayout.addView(mapView);
             }
         });
-
     }
 
     public void deleteFP(){
-        WifiManager wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(WIFI_SERVICE);
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-
-        if(wifiInfo != null){
-            FingerPrintDAO fingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
-            fingerPrintDAO.deleteByAPSsid(wifiInfo.getSSID());
-        }
+        MagneticFingerPrintDAO magneticFingerPrintDAO = databaseManager.getAppDatabase().getMagneticFingerPrintDAO();
+        magneticFingerPrintDAO.deleteAll();
     }
-
 }

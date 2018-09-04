@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.model.impls.wifi.db;
+package com.gianlucamonica.locator.utils.db;
 
 import android.app.Activity;
 import android.arch.persistence.room.Room;
@@ -10,7 +10,7 @@ public class DatabaseManager {
 
     public DatabaseManager(Activity activity){
         //setting db
-        this.appDatabase = Room.databaseBuilder(activity, AppDatabase.class, "wifiAlg")
+        this.appDatabase = Room.databaseBuilder(activity, AppDatabase.class, "algsDB")
                 .allowMainThreadQueries()//Allows room to do operation on main thread
                 .fallbackToDestructiveMigration()
                 .build();

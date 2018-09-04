@@ -18,7 +18,7 @@ import com.gianlucamonica.locator.activities.wifi.offlineActivity.OfflineActivit
 import com.gianlucamonica.locator.activities.wifi.onlineActivity.OnlineActivity;
 import com.gianlucamonica.locator.model.impls.wifi.db.AP.AP;
 import com.gianlucamonica.locator.model.impls.wifi.db.AP.APDAO;
-import com.gianlucamonica.locator.model.impls.wifi.db.DatabaseManager;
+import com.gianlucamonica.locator.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.utils.AlgorithmName;
 import com.gianlucamonica.locator.utils.MyApp;
@@ -67,7 +67,7 @@ public class WIFIActivity extends AppCompatActivity {
                     APDAO apdao = databaseManager.getAppDatabase().getAPDAO();
 
                     AP ap = apdao.getAPWithSsid(wifiInfoSSID);
-                    if (ap.getSsid() == null) {
+                    if (ap == null) {
                         Toast.makeText(this,
                                 "For this connection you don't have an offline scan. Please do it before do online scan",
                                 Toast.LENGTH_LONG).show();

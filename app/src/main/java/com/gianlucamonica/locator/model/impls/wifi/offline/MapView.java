@@ -46,8 +46,8 @@ public class MapView extends View {
         estimateGridName = estimateGridName;
 
         Toast.makeText(context,
-                "Tap on the grid corresponding to your position to do a scan",
-                Toast.LENGTH_LONG).show();;
+                "Tap on the grid corresponding to your position to do a scan, if you want to redo it click 'Redo Scan'",
+                Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -56,6 +56,16 @@ public class MapView extends View {
      */
     public void drawMap(ArrayList<Grid> rects, Canvas canvas, String estimateGridName){
         Log.i("size rects", String.valueOf(rects.size()));
+
+        Paint underlineText = new Paint();
+        underlineText.setColor(Color.BLACK);
+        underlineText.setTextAlign(Paint.Align.CENTER);
+        underlineText.setTextSize(40);
+
+        canvas.drawText("At the end", 500,  500, underlineText);
+        canvas.drawText("tap one more time", 500,  540, underlineText);
+        canvas.drawText("in order to", 500,  580, underlineText);
+        canvas.drawText("finish the scan", 500,  620, underlineText);
 
         for(int i = 0; i < rects.size(); i++){
 

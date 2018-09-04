@@ -19,15 +19,16 @@ public interface FingerPrintDAO {
     @Delete
     public void delete(FingerPrint ... fingerPrints);
 
-    @Query("SELECT * FROM fingerPrint")
+    @Query("SELECT * FROM wifiFingerPrint")
     public List<FingerPrint> getFingerPrints();
 
-    @Query("SELECT * FROM fingerPrint WHERE apSsid = :apSsid AND gridName = :gridName")
+    @Query("SELECT * FROM wifiFingerPrint WHERE apSsid = :apSsid AND gridName = :gridName")
     public FingerPrint getFingerPrintWithAPSsidAndGridName(String apSsid,String gridName);
 
-    @Query("SELECT * FROM fingerPrint WHERE apSsid = :apSsid")
+    @Query("SELECT * FROM wifiFingerPrint WHERE apSsid = :apSsid")
     public List<FingerPrint> getFingerPrintWithAPSsid(String apSsid);
 
-    @Query("DELETE FROM fingerPrint WHERE apSsid = :apSsid")
+    @Query("DELETE FROM wifiFingerPrint WHERE apSsid = :apSsid")
     public void deleteByAPSsid(String apSsid);
+
 }

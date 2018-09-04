@@ -20,12 +20,12 @@ public interface APDAO {
     @Delete
     public void delete(AP ap);
 
-    @Query("SELECT * FROM ap")
+    @Query("SELECT * FROM wifiAP")
     public List<AP> getAP();
 
-    @Query("SELECT * FROM ap WHERE id = :id")
+    @Query("SELECT * FROM wifiAP WHERE id = :id")
     public AP getAPWithId(int id);
 
-    @Query("SELECT * FROM ap WHERE ssid = :ssid")
+    @Query("SELECT * FROM wifiAP WHERE ssid = :ssid")
     public AP getAPWithSsid(String ssid);
 }

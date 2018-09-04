@@ -4,7 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "ap",primaryKeys = {"id","mac"})
+@Entity(tableName = "wifiAP",primaryKeys = {"id","mac"})
 public class AP {
     //todo rendere id autoincrement
     @NonNull
