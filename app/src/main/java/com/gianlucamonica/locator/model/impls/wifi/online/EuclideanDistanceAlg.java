@@ -1,19 +1,19 @@
 package com.gianlucamonica.locator.model.impls.wifi.online;
 
 import com.gianlucamonica.locator.model.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
-import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrint;
+import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.WifiFingerPrint;
 import com.gianlucamonica.locator.utils.AlgorithmName;
 
 import java.util.List;
 
 public class EuclideanDistanceAlg {
 
-    private List<FingerPrint> wifiRadioMap;
+    private List<WifiFingerPrint> wifiRadioMap;
     private List<MagneticFingerPrint> magneticRadioMap;
     private int scannedRssi;
     private double magnitude;
 
-    public EuclideanDistanceAlg(List<FingerPrint> wifiRadioMap, int scannedRssi){
+    public EuclideanDistanceAlg(List<WifiFingerPrint> wifiRadioMap, int scannedRssi){
         this.wifiRadioMap = wifiRadioMap;
         this.scannedRssi = scannedRssi;
     }

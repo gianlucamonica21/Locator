@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.model.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrintDAO;
 import com.gianlucamonica.locator.utils.db.DatabaseManager;
-import com.gianlucamonica.locator.model.impls.wifi.offline.MapView;
+import com.gianlucamonica.locator.utils.map.MapView;
 import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.utils.MyApp;
 

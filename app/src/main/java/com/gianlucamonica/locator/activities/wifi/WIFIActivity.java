@@ -14,8 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.activities.wifi.offlineActivity.OfflineActivity;
-import com.gianlucamonica.locator.activities.wifi.onlineActivity.OnlineActivity;
+import com.gianlucamonica.locator.activities.wifi.offlineActivity.OfflineWIFIActivity;
+import com.gianlucamonica.locator.activities.wifi.onlineActivity.OnlineWIFIActivity;
 import com.gianlucamonica.locator.model.impls.wifi.db.AP.AP;
 import com.gianlucamonica.locator.model.impls.wifi.db.AP.APDAO;
 import com.gianlucamonica.locator.utils.db.DatabaseManager;
@@ -86,12 +86,12 @@ public class WIFIActivity extends AppCompatActivity {
 
 
     public void openOfflineActivity(View view){
-        Intent intent = new Intent(this, OfflineActivity.class);
+        Intent intent = new Intent(this, OfflineWIFIActivity.class);
         startActivity(intent);
     }
 
     public void openOnlineActivity(View view){
-        Intent intent = new Intent(this, OnlineActivity.class);
+        Intent intent = new Intent(this, OnlineWIFIActivity.class);
         startActivity(intent);
     }
 

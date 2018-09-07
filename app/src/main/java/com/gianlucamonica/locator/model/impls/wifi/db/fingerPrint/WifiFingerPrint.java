@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 @Entity(tableName = "wifiFingerPrint",
         primaryKeys = {"apSsid","gridName"})
-public class FingerPrint {
+public class WifiFingerPrint {
 
     @NonNull
     private String apSsid;
@@ -17,9 +17,9 @@ public class FingerPrint {
     private int rssi;
 
     @Ignore
-    public FingerPrint(){}
+    public WifiFingerPrint(){}
 
-    public FingerPrint(String apSsid, String gridName, int rssi){
+    public WifiFingerPrint(String apSsid, String gridName, int rssi){
         this.apSsid = apSsid;
         this.gridName = gridName;
         this.rssi = rssi;
@@ -54,7 +54,7 @@ public class FingerPrint {
 
     @Override
     public String toString() {
-        return "FingerPrint{" +
+        return "WifiFingerPrint{" +
                 "apSsid='" + apSsid + '\'' +
                 ", gridName='" + gridName + '\'' +
                 ", rssi=" + rssi +

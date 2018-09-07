@@ -89,7 +89,7 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
     /**
      * @return Location computed with the specified algorithm
      */
-    public Location locate() {
+    public <T> T locate() {
         return localizationAlgorithmInterface.locate();
     }
 
@@ -109,7 +109,6 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
     public void setMyPermissionsManager(MyPermissionsManager myPermissionsManager) {
         this.myPermissionsManager = myPermissionsManager;
     }
-
 
     @Override
     public String toString() {

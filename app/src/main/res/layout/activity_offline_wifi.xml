@@ -2,24 +2,20 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/infoText"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.wifi.onlineActivity.OnlineActivity">
+    tools:context=".activities.wifi.offlineActivity.OfflineWIFIActivity">
 
     <Button
-        android:id="@+id/button6"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginBottom="230dp"
-        android:layout_marginEnd="148dp"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="230dp"
+        android:id="@+id/button7"
+        android:layout_width="229dp"
+        android:layout_height="47dp"
         android:background="#88e1bf"
-        android:onClick="locate"
-        android:text="Locate me"
+        android:text="Redo Scan"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.87" />
 </android.support.constraint.ConstraintLayout>

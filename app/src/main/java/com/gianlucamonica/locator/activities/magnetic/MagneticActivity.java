@@ -8,8 +8,6 @@ import android.view.View;
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.magnetic.offline.OfflineMagneticActivity;
 import com.gianlucamonica.locator.activities.magnetic.online.OnlineMagneticActivity;
-import com.gianlucamonica.locator.activities.wifi.offlineActivity.OfflineActivity;
-import com.gianlucamonica.locator.activities.wifi.onlineActivity.OnlineActivity;
 import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.utils.AlgorithmName;
 import com.gianlucamonica.locator.utils.MyApp;

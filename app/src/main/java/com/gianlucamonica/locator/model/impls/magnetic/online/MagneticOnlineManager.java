@@ -5,14 +5,17 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.model.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
 import com.gianlucamonica.locator.model.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrintDAO;
 import com.gianlucamonica.locator.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.model.impls.wifi.online.EuclideanDistanceAlg;
 import com.gianlucamonica.locator.utils.AlgorithmName;
 import com.gianlucamonica.locator.utils.MyApp;
+import com.gianlucamonica.locator.utils.map.MapView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,7 @@ public class MagneticOnlineManager implements SensorEventListener {
         sensorManager = (SensorManager) MyApp.getContext().getSystemService(SENSOR_SERVICE);
     }
 
-    public void locate(){
+    public MagneticFingerPrint locate(){
 
         //getting m.f. value
         sensorManager.registerListener(this,
@@ -52,16 +55,15 @@ public class MagneticOnlineManager implements SensorEventListener {
             euclideanDistanceAlg = new EuclideanDistanceAlg(magneticFingerPrintsDB, magnitudeValue);
             int index = euclideanDistanceAlg.compute(AlgorithmName.MAGNETIC_FP);
 
-            Toast.makeText(MyApp.getContext(),
-                    "You are in the grid " + magneticFingerPrintsDB.get(index).getGridName(),
-                    Toast.LENGTH_SHORT).show();
+            return magneticFingerPrintsDB.get(index);
+
         } else {
             Toast.makeText(MyApp.getContext(),
                     "Non info in db",
                     Toast.LENGTH_SHORT).show();
         }
 
-        return;
+        return null;
     }
 
     public List<MagneticFingerPrint> getMagneticFingerPrintsFromDb(){

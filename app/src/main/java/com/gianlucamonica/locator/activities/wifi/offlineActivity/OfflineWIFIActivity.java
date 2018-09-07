@@ -11,13 +11,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.WifiFingerPrintDAO;
 import com.gianlucamonica.locator.utils.db.DatabaseManager;
-import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrintDAO;
-import com.gianlucamonica.locator.model.impls.wifi.offline.MapView;
+import com.gianlucamonica.locator.utils.map.MapView;
 import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.utils.MyApp;
 
-public class OfflineActivity extends AppCompatActivity {
+public class OfflineWIFIActivity extends AppCompatActivity {
 
     private MyLocationManager myLocationManager;
     private DatabaseManager databaseManager;
@@ -28,7 +28,7 @@ public class OfflineActivity extends AppCompatActivity {
         myLocationManager = MyApp.getMyLocationManagerInstance();
         databaseManager = new DatabaseManager(this);
 
-        setContentView(R.layout.activity_offline);
+        setContentView(R.layout.activity_offline_wifi);
         final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.infoText);
 
         // setting the map view
@@ -58,8 +58,8 @@ public class OfflineActivity extends AppCompatActivity {
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 
         if(wifiInfo != null){
-            FingerPrintDAO fingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
-            fingerPrintDAO.deleteByAPSsid(wifiInfo.getSSID());
+            WifiFingerPrintDAO wifiFingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
+            wifiFingerPrintDAO.deleteByAPSsid(wifiInfo.getSSID());
         }
     }
 

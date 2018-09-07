@@ -11,11 +11,13 @@ import android.widget.Toast;
 
 import com.gianlucamonica.locator.model.impls.wifi.db.AP.AP;
 import com.gianlucamonica.locator.model.impls.wifi.db.AP.APDAO;
+import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.WifiFingerPrint;
+import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.WifiFingerPrintDAO;
 import com.gianlucamonica.locator.utils.db.DatabaseManager;
-import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrint;
-import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.FingerPrintDAO;
 import com.gianlucamonica.locator.utils.MyApp;
 import com.gianlucamonica.locator.utils.map.Grid;
+import com.gianlucamonica.locator.utils.map.MapView;
+
 import java.util.ArrayList;
 
 public class WifiOfflineManager extends AppCompatActivity{
@@ -29,11 +31,11 @@ public class WifiOfflineManager extends AppCompatActivity{
 
     public MapView mV;
     private AP ap;
-    private ArrayList<FingerPrint> fingerPrints;
+    private ArrayList<WifiFingerPrint> wifiFingerPrints;
 
     public WifiOfflineManager(Activity activity){
         this.activity = activity;
-        this.fingerPrints = new ArrayList<>();
+        this.wifiFingerPrints = new ArrayList<>();
         scanAPs();
     }
 
@@ -75,8 +77,8 @@ public class WifiOfflineManager extends AppCompatActivity{
         if(apdao.getAPWithId(id)==null)
             apdao.insert(ap);
 
-        FingerPrintDAO fingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
-        fingerPrintDAO.deleteByAPSsid(ap.getSsid());
+        WifiFingerPrintDAO wifiFingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
+        wifiFingerPrintDAO.deleteByAPSsid(ap.getSsid());
 
     }
 
@@ -91,16 +93,16 @@ public class WifiOfflineManager extends AppCompatActivity{
     public void buildRssiMap(int rssiValue, ArrayList<Grid> rects,int i){
 
         String gridName = rects.get(i).getName();
-        fingerPrints.add(new FingerPrint(
+        wifiFingerPrints.add(new WifiFingerPrint(
                 ap.getSsid(),
                 rects.get(i).getName(),
                 rssiValue));
-        for(int k = 0; k < fingerPrints.size(); k++)
-            Log.i("fingerPrints", fingerPrints.get(k).toString());
+        for(int k = 0; k < wifiFingerPrints.size(); k++)
+            Log.i("wifiFingerPrints", wifiFingerPrints.get(k).toString());
 
-        FingerPrintDAO fingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
-        if(fingerPrintDAO.getFingerPrintWithAPSsidAndGridName(ap.getSsid(),gridName)==null){
-            fingerPrintDAO.insert(new FingerPrint(
+        WifiFingerPrintDAO wifiFingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
+        if(wifiFingerPrintDAO.getFingerPrintWithAPSsidAndGridName(ap.getSsid(),gridName)==null){
+            wifiFingerPrintDAO.insert(new WifiFingerPrint(
                 ap.getSsid(),
                 rects.get(i).getName(),
                 rssiValue));
@@ -119,7 +121,7 @@ public class WifiOfflineManager extends AppCompatActivity{
 
             if(rects.size() == 0){
                 Toast.makeText(MyApp.getContext(),"scan is finished",Toast.LENGTH_SHORT).show();
-                MyApp.getWifiOfflineManagerInstance().setFingerPrints(fingerPrints);
+                MyApp.getWifiOfflineManagerInstance().setWifiFingerPrints(wifiFingerPrints);
             }else{
                 for(int i = 0; i < rects.size(); i = i + 1){
                     float aX = ((rects.get(i).getA().getX()*mV.getScaleFactor())+ mV.getAdd());
@@ -143,11 +145,11 @@ public class WifiOfflineManager extends AppCompatActivity{
         }
     }
 
-    public ArrayList<FingerPrint> getFingerPrints() {
-        return fingerPrints;
+    public ArrayList<WifiFingerPrint> getWifiFingerPrints() {
+        return wifiFingerPrints;
     }
 
-    public void setFingerPrints(ArrayList<FingerPrint> fingerPrints) {
-        this.fingerPrints = fingerPrints;
+    public void setWifiFingerPrints(ArrayList<WifiFingerPrint> wifiFingerPrints) {
+        this.wifiFingerPrints = wifiFingerPrints;
     }
 }

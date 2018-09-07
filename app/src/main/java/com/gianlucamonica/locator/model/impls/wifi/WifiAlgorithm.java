@@ -8,6 +8,7 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.view.View;
 
+import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.WifiFingerPrint;
 import com.gianlucamonica.locator.model.impls.wifi.offline.WifiOfflineManager;
 import com.gianlucamonica.locator.model.impls.wifi.db.AP.AP;
 import com.gianlucamonica.locator.model.locAlgInterface.LocalizationAlgorithmInterface;
@@ -42,10 +43,9 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
     }
 
     @Override
-    public Location locate() {
+    public WifiFingerPrint locate() {
         this.wifiOnlineManager = new WifiOnlineManager(activity);
-        wifiOnlineManager.locate();
-        return null;
+        return  wifiOnlineManager.locate();
     }
 
     @Override

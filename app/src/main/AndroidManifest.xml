@@ -47,8 +47,8 @@
         <activity
             android:name=".activities.gps.fragments.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".activities.wifi.offlineActivity.OfflineActivity" />
-        <activity android:name=".activities.wifi.onlineActivity.OnlineActivity" />
+        <activity android:name=".activities.wifi.offlineActivity.OfflineWIFIActivity" />
+        <activity android:name=".activities.wifi.onlineActivity.OnlineWIFIActivity" />
         <activity android:name=".activities.magnetic.MagneticActivity" />
         <activity android:name=".activities.magnetic.offline.OfflineMagneticActivity" />
         <activity android:name=".activities.magnetic.online.OnlineMagneticActivity"></activity>

@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.model.impls.wifi.offline;
+package com.gianlucamonica.locator.utils.map;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -43,7 +43,7 @@ public class MapView extends View {
 
         config = jsonReader.getConfig();
         rects = jsonToGridConverter.convert(config);
-        estimateGridName = estimateGridName;
+        this.estimateGridName = estimateGridName;
 
         Toast.makeText(context,
                 "Tap on the grid corresponding to your position to do a scan, if you want to redo it click 'Redo Scan'",
@@ -71,8 +71,9 @@ public class MapView extends View {
 
             Paint myPaint = new Paint();
             myPaint.setStyle(Paint.Style.FILL);
-            if ( estimateGridName != null && rects.get(i).getName() == estimateGridName){
-                myPaint.setColor(Color.WHITE);
+
+            if ( estimateGridName != null && rects.get(i).getName().equals(estimateGridName)){
+                myPaint.setColor(Color.YELLOW);
             }else{
                 myPaint.setColor(Color.parseColor("#CD5C5C"));
             }
@@ -91,7 +92,11 @@ public class MapView extends View {
             canvas.drawRect(r, myPaint);
 
             Paint textPaint = new Paint();
-            textPaint.setColor(Color.WHITE);
+            if ( estimateGridName != null && rects.get(i).getName().equals(estimateGridName)){
+                textPaint.setColor(Color.BLACK);
+            }else{
+                textPaint.setColor(Color.WHITE);
+            }
             textPaint.setTextAlign(Paint.Align.CENTER);
             textPaint.setTextSize(65);
 

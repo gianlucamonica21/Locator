@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.location.Location;
 import android.view.View;
 
+import com.gianlucamonica.locator.model.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
 import com.gianlucamonica.locator.model.impls.magnetic.offline.MagneticOfflineManager;
 import com.gianlucamonica.locator.model.impls.magnetic.online.MagneticOnlineManager;
 import com.gianlucamonica.locator.model.impls.wifi.offline.WifiOfflineManager;
@@ -31,10 +32,9 @@ public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
     }
 
     @Override
-    public Location locate() {
+    public MagneticFingerPrint locate() {
         magneticOnlineManager = new MagneticOnlineManager(activity);
-        magneticOnlineManager.locate();
-        return null;
+        return magneticOnlineManager.locate();
     }
 
     @Override
