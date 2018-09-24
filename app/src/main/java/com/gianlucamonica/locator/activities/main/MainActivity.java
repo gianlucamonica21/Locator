@@ -2,7 +2,10 @@ package com.gianlucamonica.locator.activities.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,13 +15,14 @@ import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.gps.GPSActivity;
 import com.gianlucamonica.locator.activities.magnetic.MagneticActivity;
 import com.gianlucamonica.locator.activities.wifi.WIFIActivity;
+import com.gianlucamonica.locator.fragments.AlgChooseFragment;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 
 import java.util.ArrayList;
 
-public class   MainActivity extends Activity {
+public class   MainActivity extends AppCompatActivity implements AlgChooseFragment.OnFragmentInteractionListener {
 
     private ListView algsListView;
     private ArrayList<String> algsList;
@@ -53,6 +57,16 @@ public class   MainActivity extends Activity {
             }
 
         });*/
+
+        // adding alg choose fragment
+
+        // Begin the transaction
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        // Replace the contents of the container with the new fragment
+        ft.replace(R.id.your_placeholder, new AlgChooseFragment());
+        // or ft.add(R.id.your_placeholder, new FooFragment());
+        // Complete the changes added above
+        ft.commit();
     }
 
     public void init(View view){
@@ -79,5 +93,8 @@ public class   MainActivity extends Activity {
     }
 
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
+    }
 }
