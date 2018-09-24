@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.model.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
-import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
-import com.gianlucamonica.locator.utils.MyApp;
-import com.gianlucamonica.locator.utils.map.MapView;
+import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
+import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
 
 public class OnlineMagneticActivity extends AppCompatActivity {
 

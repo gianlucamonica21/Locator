@@ -11,11 +11,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.model.impls.wifi.db.fingerPrint.WifiFingerPrintDAO;
-import com.gianlucamonica.locator.utils.db.DatabaseManager;
-import com.gianlucamonica.locator.utils.map.MapView;
-import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
-import com.gianlucamonica.locator.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.fingerPrint.WifiFingerPrintDAO;
+import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
+import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 
 public class OfflineWIFIActivity extends AppCompatActivity {
 

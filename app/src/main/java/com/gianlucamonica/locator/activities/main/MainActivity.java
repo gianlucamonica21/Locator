@@ -7,14 +7,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.gps.GPSActivity;
 import com.gianlucamonica.locator.activities.magnetic.MagneticActivity;
 import com.gianlucamonica.locator.activities.wifi.WIFIActivity;
-import com.gianlucamonica.locator.utils.AlgorithmName;
-import com.gianlucamonica.locator.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
+import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 
 import java.util.ArrayList;
 
@@ -22,6 +22,8 @@ public class   MainActivity extends Activity {
 
     private ListView algsListView;
     private ArrayList<String> algsList;
+    private LocationMiddleware locationMiddleware;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,8 @@ public class   MainActivity extends Activity {
                 android.R.layout.simple_list_item_1,
                 algsList );
 
-        algsListView.setAdapter(arrayAdapter);
+        // commentato per prova di utilizzo location middleware
+        /*algsListView.setAdapter(arrayAdapter);
         algsListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -49,7 +52,11 @@ public class   MainActivity extends Activity {
                 openActivity(view,clicked);
             }
 
-        });
+        });*/
+    }
+
+    public void init(View view){
+        locationMiddleware = new LocationMiddleware(this);
     }
 
     public void openActivity(View view, String algoName){

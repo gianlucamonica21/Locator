@@ -16,12 +16,12 @@ import android.widget.Toast;
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.wifi.offlineActivity.OfflineWIFIActivity;
 import com.gianlucamonica.locator.activities.wifi.onlineActivity.OnlineWIFIActivity;
-import com.gianlucamonica.locator.model.impls.wifi.db.AP.AP;
-import com.gianlucamonica.locator.model.impls.wifi.db.AP.APDAO;
-import com.gianlucamonica.locator.utils.db.DatabaseManager;
-import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
-import com.gianlucamonica.locator.utils.AlgorithmName;
-import com.gianlucamonica.locator.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.AP.AP;
+import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.AP.APDAO;
+import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
+import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 
 public class WIFIActivity extends AppCompatActivity {
 

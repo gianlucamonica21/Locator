@@ -11,10 +11,8 @@ import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.gps.fragments.MapsActivity;
-import com.gianlucamonica.locator.model.myLocationManager.MyLocationManager;
-import com.gianlucamonica.locator.utils.AlgorithmName;
-import com.gianlucamonica.locator.utils.MyApp;
-import com.gianlucamonica.locator.utils.permissionsManager.MyPermissionsManager;
+import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
+import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
