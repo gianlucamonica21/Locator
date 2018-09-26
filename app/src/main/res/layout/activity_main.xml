@@ -11,8 +11,8 @@
     <FrameLayout
         android:id="@+id/your_placeholder"
         android:layout_width="match_parent"
-        android:layout_height="144dp"
-        android:layout_marginBottom="388dp"
+        android:layout_height="125dp"
+        android:layout_marginBottom="404dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"></FrameLayout>
 

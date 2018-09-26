@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
@@ -30,7 +31,7 @@ public class AlgChooseFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ListView algsListView;
-    private ArrayList<String> algsList;
+    private String[] algsList;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -74,30 +75,21 @@ public class AlgChooseFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_alg_choose, container, false);
 
-        algsListView = (ListView) v.findViewById(R.id._algsList);
-        algsList = new ArrayList<String>();
-        algsList.add(String.valueOf(AlgorithmName.GPS));
-        algsList.add(String.valueOf(AlgorithmName.WIFI_RSS_FP));
-        algsList.add(String.valueOf(AlgorithmName.MAGNETIC_FP));
+        algsList = new String[]{
+                String.valueOf(AlgorithmName.GPS),
+                String.valueOf(AlgorithmName.WIFI_RSS_FP),
+                String.valueOf(AlgorithmName.MAGNETIC_FP),
+                String.valueOf(AlgorithmName.MAGNETIC_FP)
+        };
 
-        // This is the array adapter, it takes the context of the activity as a
-        // first parameter, the type of list view as a second parameter and your
-        // array as a third parameter.
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                algsList );
 
-        // commentato per prova di utilizzo location middleware
-        algsListView.setAdapter(arrayAdapter);
-        algsListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String clicked = arrayAdapter.getItem(position);
-                //openActivity(view,clicked);
-            }
+        // spinner
+        Spinner s = (Spinner) v.findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, algsList);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+        s.setAdapter(adapter);
 
-        });
 
         return v;
 
