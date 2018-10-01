@@ -7,31 +7,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AlgChooseFragment.OnFragmentInteractionListener} interface
+ * {@link ButtonsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AlgChooseFragment#newInstance} factory method to
+ * Use the {@link ButtonsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AlgChooseFragment extends Fragment {
+public class ButtonsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private ListView algsListView;
-    private String[] algsList;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -39,7 +30,7 @@ public class AlgChooseFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public AlgChooseFragment() {
+    public ButtonsFragment() {
         // Required empty public constructor
     }
 
@@ -49,11 +40,11 @@ public class AlgChooseFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AlgChooseFragment.
+     * @return A new instance of fragment ButtonsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AlgChooseFragment newInstance(String param1, String param2) {
-        AlgChooseFragment fragment = new AlgChooseFragment();
+    public static ButtonsFragment newInstance(String param1, String param2) {
+        ButtonsFragment fragment = new ButtonsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,35 +55,17 @@ public class AlgChooseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_alg_choose, container, false);
-
-        algsList = new String[]{
-                String.valueOf(AlgorithmName.GPS),
-                String.valueOf(AlgorithmName.WIFI_RSS_FP),
-                String.valueOf(AlgorithmName.MAGNETIC_FP),
-                String.valueOf(AlgorithmName.MAGNETIC_FP)
-        };
-
-
-        // spinner
-        Spinner s = (Spinner) v.findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, algsList);
-        adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
-        s.setAdapter(adapter);
-
-
-        return v;
-
+        return inflater.inflate(R.layout.fragment_buttons, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

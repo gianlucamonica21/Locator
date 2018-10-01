@@ -2,32 +2,43 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mainActivity"
     tools:context=".activities.main.MainActivity">
 
 
     <FrameLayout
-        android:id="@+id/your_placeholder"
+        android:id="@+id/buildingLayout"
         android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:layout_marginBottom="404dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"></FrameLayout>
-
-    <Button
-        android:id="@+id/button8"
-        android:layout_width="202dp"
-        android:layout_height="92dp"
-        android:layout_marginBottom="84dp"
-        android:layout_marginEnd="148dp"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="54dp"
-        android:onClick="init"
-        android:text="Init middleware"
+        android:layout_height="100dp"
+        android:layout_marginBottom="436dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"></FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/algorithmLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="245dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/_algsList" />
+        app:layout_constraintTop_toBottomOf="@+id/buildingLayout"
+        app:layout_constraintVertical_bias="0.098"></FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/buttonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="211dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/algorithmLayout"></FrameLayout>
 </android.support.constraint.ConstraintLayout>
