@@ -46,7 +46,7 @@ public class MagneticOnlineManager implements SensorEventListener {
                 SensorManager.SENSOR_DELAY_NORMAL);
 
         //getting map from db and do alg
-        List<MagneticFingerPrint> magneticFingerPrintsDB = getMagneticFingerPrintsFromDb();
+        /*List<MagneticFingerPrint> magneticFingerPrintsDB = getMagneticFingerPrintsFromDb();
         if (magneticFingerPrintsDB.size() > 0) {
 
             euclideanDistanceAlg = new EuclideanDistanceAlg(magneticFingerPrintsDB, magnitudeValue);
@@ -58,15 +58,16 @@ public class MagneticOnlineManager implements SensorEventListener {
             Toast.makeText(MyApp.getContext(),
                     "Non info in db",
                     Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
         return null;
     }
 
     public List<MagneticFingerPrint> getMagneticFingerPrintsFromDb(){
-        MagneticFingerPrintDAO magneticFingerPrintDAO = databaseManager.getAppDatabase().getMagneticFingerPrintDAO();
+        /*MagneticFingerPrintDAO magneticFingerPrintDAO = databaseManager.getAppDatabase().getMagneticFingerPrintDAO();
         List<MagneticFingerPrint> magneticFingerPrints = magneticFingerPrintDAO.getMagneticFingerPrints();
-        return magneticFingerPrints;
+        return magneticFingerPrints;*/
+        return  null;
     }
 
     @Override

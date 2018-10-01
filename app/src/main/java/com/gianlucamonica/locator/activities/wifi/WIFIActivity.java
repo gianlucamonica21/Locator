@@ -64,7 +64,7 @@ public class WIFIActivity extends AppCompatActivity {
                     textView.setText("You are connected to " + wifiInfoSSID);
 
                     databaseManager = new DatabaseManager(this);
-                    APDAO apdao = databaseManager.getAppDatabase().getAPDAO();
+                    /*APDAO apdao = databaseManager.getAppDatabase().getAPDAO();
 
                     AP ap = apdao.getAPWithSsid(wifiInfoSSID);
                     if (ap == null) {
@@ -73,7 +73,7 @@ public class WIFIActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
 
                         btnOnline.setEnabled(false);
-                    }
+                    }*/
                 }else{
                     textView.setText("No connection");
                     btnOffline.setEnabled(false);

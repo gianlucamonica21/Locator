@@ -58,8 +58,8 @@ public class OfflineWIFIActivity extends AppCompatActivity {
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 
         if(wifiInfo != null){
-            WifiFingerPrintDAO wifiFingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
-            wifiFingerPrintDAO.deleteByAPSsid(wifiInfo.getSSID());
+            /*WifiFingerPrintDAO wifiFingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
+            wifiFingerPrintDAO.deleteByAPSsid(wifiInfo.getSSID());*/
         }
     }
 

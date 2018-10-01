@@ -76,12 +76,12 @@ public class WifiOfflineManager extends AppCompatActivity{
         }
 
         databaseManager = new DatabaseManager(activity);
-        APDAO apdao = databaseManager.getAppDatabase().getAPDAO();
+        /*APDAO apdao = databaseManager.getAppDatabase().getAPDAO();
         if(apdao.getAPWithId(id)==null)
             apdao.insert(ap);
 
         WifiFingerPrintDAO wifiFingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
-        wifiFingerPrintDAO.deleteByAPSsid(ap.getSsid());
+        wifiFingerPrintDAO.deleteByAPSsid(ap.getSsid());*/
 
     }
 
@@ -103,14 +103,14 @@ public class WifiOfflineManager extends AppCompatActivity{
         for(int k = 0; k < wifiFingerPrints.size(); k++)
             Log.i("wifiFingerPrints", wifiFingerPrints.get(k).toString());
 
-        WifiFingerPrintDAO wifiFingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
+        /*WifiFingerPrintDAO wifiFingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
         if(wifiFingerPrintDAO.getFingerPrintWithAPSsidAndGridName(ap.getSsid(),gridName)==null){
             wifiFingerPrintDAO.insert(new WifiFingerPrint(
                 ap.getSsid(),
                 rects.get(i).getName(),
                 rssiValue));
 
-        }
+        }*/
 
     }
 

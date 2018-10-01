@@ -63,7 +63,7 @@ public class MagneticOfflineManager implements SensorEventListener {
     }
 
     public void collectMagneticFieldValueByUI(MotionEvent event){
-        MagneticFingerPrintDAO magneticFingerPrintDAO = databaseManager.getAppDatabase().getMagneticFingerPrintDAO();
+        /*MagneticFingerPrintDAO magneticFingerPrintDAO = databaseManager.getAppDatabase().getMagneticFingerPrintDAO();
 
         if (event.getAction() == MotionEvent.ACTION_DOWN){
             float x = event.getX();
@@ -116,7 +116,7 @@ public class MagneticOfflineManager implements SensorEventListener {
                 }
                 mV.invalidate(); // redrawing during the scan, in order to set invisible the grid already scanned
             }
-        }
+        }*/
     }
 
     @Override

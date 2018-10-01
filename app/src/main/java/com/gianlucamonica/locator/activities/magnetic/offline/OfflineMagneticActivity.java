@@ -51,7 +51,7 @@ public class OfflineMagneticActivity extends AppCompatActivity {
     }
 
     public void deleteFP(){
-        MagneticFingerPrintDAO magneticFingerPrintDAO = databaseManager.getAppDatabase().getMagneticFingerPrintDAO();
-        magneticFingerPrintDAO.deleteAll();
+        /*MagneticFingerPrintDAO magneticFingerPrintDAO = databaseManager.getAppDatabase().getMagneticFingerPrintDAO();
+        magneticFingerPrintDAO.deleteAll();*/
     }
 }

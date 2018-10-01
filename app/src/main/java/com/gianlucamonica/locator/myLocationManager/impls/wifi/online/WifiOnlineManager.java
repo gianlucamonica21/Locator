@@ -75,8 +75,9 @@ public class WifiOnlineManager {
     }
 
     public List<WifiFingerPrint> getFingerPrintsFromDb(String ssid){
-        WifiFingerPrintDAO wifiFingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
+        /*WifiFingerPrintDAO wifiFingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
         List<WifiFingerPrint> wifiFingerPrints = wifiFingerPrintDAO.getFingerPrintWithAPSsid(ssid);
-        return wifiFingerPrints;
+        return wifiFingerPrints;*/
+        return null;
     }
 }

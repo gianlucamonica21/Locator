@@ -1,6 +1,7 @@
 package com.gianlucamonica.locator.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.activities.main.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -83,6 +86,13 @@ public class BuildingFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
         s.setAdapter(adapter);
 
+        Button newButton = (Button) v.findViewById(R.id.newBuildingButton);
+        newButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),PopUpActivity.class));
+            }
+        });
 
         return v;
 

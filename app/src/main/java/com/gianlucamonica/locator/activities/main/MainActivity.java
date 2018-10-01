@@ -16,6 +16,9 @@ import com.gianlucamonica.locator.fragments.AlgorithmFragment;
 import com.gianlucamonica.locator.fragments.BuildingFragment;
 import com.gianlucamonica.locator.fragments.ButtonsFragment;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
+import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.BuildingDAO;
 
 import java.util.ArrayList;
 
@@ -43,7 +46,10 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         // Complete the changes added above
         ft.commit();
 
+        DatabaseManager databaseManager= new DatabaseManager(this);
+        BuildingDAO buildingDAO = databaseManager.getAppDatabase().getBuildingDAO();
 
+        buildingDAO.insert(new Building(1,"Prova",4,4,1,1));
     }
 
     public void init(View view){

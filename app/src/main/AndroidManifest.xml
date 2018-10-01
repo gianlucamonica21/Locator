@@ -51,7 +51,8 @@
         <activity android:name=".activities.wifi.onlineActivity.OnlineWIFIActivity" />
         <activity android:name=".activities.magnetic.MagneticActivity" />
         <activity android:name=".activities.magnetic.offline.OfflineMagneticActivity" />
-        <activity android:name=".activities.magnetic.online.OnlineMagneticActivity"></activity>
+        <activity android:name=".activities.magnetic.online.OnlineMagneticActivity" />
+        <activity android:name=".fragments.PopUpActivity"></activity>
     </application>
 
 </manifest>
