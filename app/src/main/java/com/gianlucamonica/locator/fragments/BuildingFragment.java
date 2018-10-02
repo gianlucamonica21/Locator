@@ -2,9 +2,11 @@ package com.gianlucamonica.locator.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.activities.main.MainActivity;
+import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
+import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.BuildingDAO;
 
@@ -69,7 +75,6 @@ public class BuildingFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
 
-
     }
 
     @Override
@@ -114,6 +119,12 @@ public class BuildingFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        buildings = getBuildingsFromDb();
     }
 
     @Override

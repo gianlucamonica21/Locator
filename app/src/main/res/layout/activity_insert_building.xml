@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="301dp"
-        android:layout_height="424dp"
+        android:layout_height="500dp"
         android:layout_marginEnd="41dp"
         android:layout_marginStart="41dp"
         android:orientation="vertical"
@@ -76,42 +76,63 @@
 
         </LinearLayout>
 
+        <!-- building SO coord -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="50dp">
 
-            <!-- building height -->
+
             <TextView
                 android:id="@+id/SOCoo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SO"
+                android:text="SO Coo"
                 android:textSize="10pt"></TextView>
 
             <EditText
-                android:id="@+id/SOCooEdiText"
+                android:id="@+id/SOLatEditText"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:hint="Coo"
+                android:hint="Lat"
                 android:inputType="number"></EditText>
 
-            <!-- building width -->
+
+            <EditText
+                android:id="@+id/SOLngEditText"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:hint="Lng"
+                android:inputType="number"></EditText>
+
+        </LinearLayout>
+
+        <!-- building NE coord -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+
 
             <TextView
                 android:id="@+id/NECoo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="NE"
-                android:textAlignment="textStart"
+                android:text="NE Coo"
                 android:textSize="10pt"></TextView>
 
             <EditText
-                android:id="@+id/NECooEditText"
+                android:id="@+id/NELatEditText"
                 android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:hint="Coo"
+                android:layout_height="wrap_content"
+                android:hint="Lat"
                 android:inputType="number"></EditText>
 
+
+            <EditText
+                android:id="@+id/NELngEditText"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:hint="Lng"
+                android:inputType="number"></EditText>
 
         </LinearLayout>
 

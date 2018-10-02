@@ -12,7 +12,7 @@ import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.AP.APDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.BuildingDAO;
 
-@Database(entities = {Building.class}, version = 8)
+@Database(entities = {Building.class}, version = 9)
 public abstract class AppDatabase extends RoomDatabase {
 
     /*public abstract APDAO getAPDAO();

@@ -17,17 +17,25 @@ public class Building {
     int height;
     @NonNull
     int widht;
+    @NonNull
+    double SOLat;
+    @NonNull
+    double SOLng;
+    @NonNull
+    double NELat;
+    @NonNull
+    double NELng;
 
-    double SOCoo;
-    double NECoo;
 
-    public Building(String name, int height, int widht, double SOCoo, double NECoo){
+    public Building(String name, int height, int widht, double SOLat, double SOLng, double NELat, double NELng){
         this.id = id;
         this.name = name;
         this.height = height;
         this.widht = widht;
-        this.SOCoo = SOCoo;
-        this.NECoo = NECoo;
+        this.SOLat = SOLat;
+        this.SOLng = SOLng;
+        this.NELat = NELat;
+        this.NELng = NELng;
     }
 
     @NonNull
@@ -66,32 +74,53 @@ public class Building {
         this.widht = widht;
     }
 
-    public double getSOCoo() {
-        return SOCoo;
+    @NonNull
+    public double getSOLat() {
+        return SOLat;
     }
 
-    public void setSOCoo(double SOCoo) {
-        this.SOCoo = SOCoo;
+    public void setSOLat(@NonNull double SOLat) {
+        this.SOLat = SOLat;
     }
 
-    public double getNECoo() {
-        return NECoo;
+    @NonNull
+    public double getSOLng() {
+        return SOLng;
     }
 
-    public void setNECoo(double NECoo) {
-        this.NECoo = NECoo;
+    public void setSOLng(@NonNull double SOLng) {
+        this.SOLng = SOLng;
+    }
+
+    @NonNull
+    public double getNELat() {
+        return NELat;
+    }
+
+    public void setNELat(@NonNull double NELat) {
+        this.NELat = NELat;
+    }
+
+    @NonNull
+    public double getNELng() {
+        return NELng;
+    }
+
+    public void setNELng(@NonNull double NELng) {
+        this.NELng = NELng;
     }
 
     @Override
-    public String
-    toString() {
+    public String toString() {
         return "Building{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", height=" + height +
                 ", widht=" + widht +
-                ", SOCoo=" + SOCoo +
-                ", NECoo=" + NECoo +
+                ", SOLat=" + SOLat +
+                ", SOLng=" + SOLng +
+                ", NELat=" + NELat +
+                ", NELng=" + NELng +
                 '}';
     }
 }
