@@ -28,6 +28,9 @@ public abstract class BuildingDAO {
     @Query("SELECT * FROM building")
     public abstract List<Building> getBuildings();
 
+    @Query("SELECT name FROM building")
+    public abstract List<String> getBuildingsName();
+
     @Query("SELECT * FROM building WHERE name = :name")
     public abstract List<Building> getBuildingWithName(String name);
 }

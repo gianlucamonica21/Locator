@@ -10,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.activities.main.MainActivity;
+import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.BuildingDAO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +32,9 @@ public class BuildingFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private String[] buildingList;
+    private List<String> buildings;
+
+    private DatabaseManager databaseManager;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -70,32 +75,38 @@ public class BuildingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        databaseManager = new DatabaseManager(getActivity());
+        buildings = new ArrayList<>();
+        buildings = getBuildingsFromDb();
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.building_fragment, container, false);
 
-        buildingList = new String[]{
-                "Casa",
-                "Università",
-                "Negozio"
-        };
-
         // spinner
         Spinner s = (Spinner) v.findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, buildingList);
-        adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
-        s.setAdapter(adapter);
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, buildings);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
+        s.setAdapter(arrayAdapter);
 
         Button newButton = (Button) v.findViewById(R.id.newBuildingButton);
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(),PopUpActivity.class));
+                startActivity(new Intent(getActivity(),InsertBuildingActivity.class));
             }
         });
 
         return v;
 
+    }
+
+    public List<String> getBuildingsFromDb(){
+
+        BuildingDAO buildingDAO = databaseManager.getAppDatabase().getBuildingDAO();
+        return buildingDAO.getBuildingsName();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

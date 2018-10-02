@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         DatabaseManager databaseManager= new DatabaseManager(this);
         BuildingDAO buildingDAO = databaseManager.getAppDatabase().getBuildingDAO();
 
-        buildingDAO.insert(new Building(1,"Prova",4,4,1,1));
+        //buildingDAO.insert(new Building(2,"Prova2",4,4,1,1));
     }
 
     public void init(View view){

@@ -1,11 +1,15 @@
 package com.gianlucamonica.locator.myLocationManager.utils.db.building;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "building",primaryKeys = {"id"})
+@Entity(tableName = "building",indices = {@Index(value =
+        {"name"}, unique = true)})
 public class Building {
-    @NonNull
+
+    @PrimaryKey(autoGenerate = true)
     int id;
     @NonNull
     String name;
@@ -17,7 +21,7 @@ public class Building {
     double SOCoo;
     double NECoo;
 
-    public Building(int id, String name, int height, int widht, double SOCoo, double NECoo){
+    public Building(String name, int height, int widht, double SOCoo, double NECoo){
         this.id = id;
         this.name = name;
         this.height = height;

@@ -52,7 +52,7 @@
         <activity android:name=".activities.magnetic.MagneticActivity" />
         <activity android:name=".activities.magnetic.offline.OfflineMagneticActivity" />
         <activity android:name=".activities.magnetic.online.OnlineMagneticActivity" />
-        <activity android:name=".fragments.PopUpActivity"></activity>
+        <activity android:name=".fragments.InsertBuildingActivity"></activity>
     </application>
 
 </manifest>
