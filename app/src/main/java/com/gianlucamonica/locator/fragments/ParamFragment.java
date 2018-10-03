@@ -7,39 +7,30 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
-import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
-import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
-
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AlgorithmFragment.OnFragmentInteractionListener} interface
+ * {@link ParamFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AlgorithmFragment#newInstance} factory method to
+ * Use the {@link ParamFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AlgorithmFragment extends Fragment {
+public class ParamFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private List<String> algorithmList;
-    private DatabaseManager databaseManager;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    public AlgorithmFragment() {
+    public ParamFragment() {
         // Required empty public constructor
     }
 
@@ -49,11 +40,11 @@ public class AlgorithmFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AlgorithmFragment.
+     * @return A new instance of fragment ParamFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AlgorithmFragment newInstance(String param1, String param2) {
-        AlgorithmFragment fragment = new AlgorithmFragment();
+    public static ParamFragment newInstance(String param1, String param2) {
+        ParamFragment fragment = new ParamFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,29 +55,17 @@ public class AlgorithmFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_algorithm, container, false);
-
-        databaseManager = new DatabaseManager(getActivity());
-
-        algorithmList = databaseManager.getAppDatabase().getAlgorithmDAO().getAlgorithmsName();
-
-        // spinner
-        Spinner s = (Spinner) v.findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, algorithmList);
-        adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
-        s.setAdapter(adapter);
-
-
-        return v;
+        return inflater.inflate(R.layout.fragment_param, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

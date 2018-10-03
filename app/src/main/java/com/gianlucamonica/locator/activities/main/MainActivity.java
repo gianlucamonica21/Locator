@@ -15,16 +15,22 @@ import com.gianlucamonica.locator.activities.wifi.WIFIActivity;
 import com.gianlucamonica.locator.fragments.AlgorithmFragment;
 import com.gianlucamonica.locator.fragments.BuildingFragment;
 import com.gianlucamonica.locator.fragments.ButtonsFragment;
+import com.gianlucamonica.locator.fragments.ParamFragment;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
+import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.AlgorithmDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.BuildingDAO;
+import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements BuildingFragment.OnFragmentInteractionListener,
         AlgorithmFragment.OnFragmentInteractionListener,
-        ButtonsFragment.OnFragmentInteractionListener {
+        ButtonsFragment.OnFragmentInteractionListener,
+        ParamFragment.OnFragmentInteractionListener{
 
     private ListView algsListView;
     private ArrayList<String> algsList;
@@ -41,15 +47,13 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         ft.replace(R.id.algorithmLayout, new AlgorithmFragment(), new AlgorithmFragment().getTag());
         ft.replace(R.id.buildingLayout, new BuildingFragment(), new BuildingFragment().getTag());
         ft.replace(R.id.buttonsLayout, new ButtonsFragment(), new ButtonsFragment().getTag());
+        ft.replace(R.id.paramLayout, new ParamFragment(), new ParamFragment().getTag());
         ft.addToBackStack(null);
         // or ft.add(R.id.your_placeholder, new FooFragment());
         // Complete the changes added above
         ft.commit();
 
         DatabaseManager databaseManager= new DatabaseManager(this);
-        BuildingDAO buildingDAO = databaseManager.getAppDatabase().getBuildingDAO();
-
-        //buildingDAO.insert(new Building(2,"Prova2",4,4,1,1));
     }
 
     public void init(View view){
