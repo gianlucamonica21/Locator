@@ -7,9 +7,11 @@ import android.support.annotation.NonNull;
 
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 
+import java.io.Serializable;
+
 @Entity(tableName = "algorithm",indices = {@Index(value =
         {"name"}, unique = true)})
-public class Algorithm {
+public class Algorithm implements Serializable{
 
     @PrimaryKey(autoGenerate = true)
     int id;
@@ -38,6 +40,15 @@ public class Algorithm {
 
     public void setName(@NonNull String name) {
         this.name = name;
+    }
+
+    @NonNull
+    public Boolean getPhases() {
+        return phases;
+    }
+
+    public void setPhases(@NonNull Boolean phases) {
+        this.phases = phases;
     }
 
     @Override

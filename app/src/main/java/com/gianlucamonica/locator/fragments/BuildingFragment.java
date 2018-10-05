@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -20,8 +23,10 @@ import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.BuildingDAO;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +43,9 @@ public class BuildingFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private List<String> buildings;
+
+    private List<Building> buildings;
+    Spinner  s;
 
     private DatabaseManager databaseManager;
 
@@ -74,7 +81,6 @@ public class BuildingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
     }
 
     @Override
@@ -84,18 +90,33 @@ public class BuildingFragment extends Fragment {
         databaseManager = new DatabaseManager(getActivity());
         buildings = new ArrayList<>();
         buildings = getBuildingsFromDb();
-
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.building_fragment, container, false);
 
-        // spinner
-        Spinner s = (Spinner) v.findViewById(R.id.spinner);
+        populateSpinner(v);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item, buildings);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
-        s.setAdapter(arrayAdapter);
+        // getting selected item from spinner
+        s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Building chosenBuilding = getSelectedBuilding();
+                // sending building to scanFragment
+                if(chosenBuilding != null){
+                    sendBuildingToFragment(chosenBuilding,new ScanFragment());
+                }
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+
+        // start activity insert building
         Button newButton = (Button) v.findViewById(R.id.newBuildingButton);
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,10 +129,9 @@ public class BuildingFragment extends Fragment {
 
     }
 
-    public List<String> getBuildingsFromDb(){
-
+    public List<Building> getBuildingsFromDb(){
         BuildingDAO buildingDAO = databaseManager.getAppDatabase().getBuildingDAO();
-        return buildingDAO.getBuildingsName();
+        return buildingDAO.getBuildings();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -158,4 +178,37 @@ public class BuildingFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void populateSpinner(View v){
+        List<String> buildingsName= new ArrayList<>();
+        for (int i=0; i < buildings.size(); i++){
+            buildingsName.add(buildings.get(i).getName());
+        }
+        // spinner
+        s = (Spinner) v.findViewById(R.id.spinner);
+        // populate spinner
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, buildingsName);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
+        s.setAdapter(arrayAdapter);
+    }
+
+    public Building getSelectedBuilding(){
+        String building =  s.getSelectedItem().toString();
+        for(int i=0; i<buildings.size(); i++){
+            if(buildings.get(i).getName().equals(building)){
+                return buildings.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void sendBuildingToFragment(final Building chosenBuilding,final  Fragment fragment){
+        Bundle args = new Bundle();
+        args.putSerializable("building", (Serializable) chosenBuilding);
+        fragment.setArguments(args);
+        Log.i("sending ", chosenBuilding.toString());
+        getFragmentManager().beginTransaction().replace(R.id.scanLayout, fragment).commitAllowingStateLoss();
+    }
+
 }

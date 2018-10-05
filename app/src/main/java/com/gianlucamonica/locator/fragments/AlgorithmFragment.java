@@ -3,18 +3,23 @@ package com.gianlucamonica.locator.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,8 +36,10 @@ public class AlgorithmFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private List<String> algorithmList;
+    private List<Algorithm> algorithms;
     private DatabaseManager databaseManager;
+    private Spinner s;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -76,14 +83,26 @@ public class AlgorithmFragment extends Fragment {
 
         databaseManager = new DatabaseManager(getActivity());
 
-        algorithmList = databaseManager.getAppDatabase().getAlgorithmDAO().getAlgorithmsName();
+        algorithms = databaseManager.getAppDatabase().getAlgorithmDAO().getAlgorithms();
 
-        // spinner
-        Spinner s = (Spinner) v.findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, algorithmList);
-        adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
-        s.setAdapter(adapter);
+        populateSpinner(v);
+
+        // getting selected item from spinner
+        s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Algorithm chosenAlgorithm = getSelectedAlgorithm();
+                // sending building to scanFragment
+                if(chosenAlgorithm != null){
+                    sendAlgorithmToFragment(chosenAlgorithm,new ScanFragment());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         return v;
@@ -126,5 +145,37 @@ public class AlgorithmFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void populateSpinner(View v){
+        List<String> algorithmsName = new ArrayList<>();
+        for (int i=0; i < algorithms.size(); i++){
+            algorithmsName.add(algorithms.get(i).getName());
+        }
+        // spinner
+        s = (Spinner) v.findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, algorithmsName);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+        s.setAdapter(adapter);
+    }
+
+    public Algorithm getSelectedAlgorithm(){
+        String algorithm =  s.getSelectedItem().toString();
+        for(int i=0; i<algorithms.size(); i++){
+            if(algorithms.get(i).getName().equals(algorithm)){
+                return algorithms.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void sendAlgorithmToFragment(Algorithm chosenAlgorithm, Fragment fragment){
+        Bundle args = new Bundle();
+        args.putSerializable("algorithm", (Serializable) chosenAlgorithm);
+        fragment.setArguments(args);
+        Log.i("sending ", chosenAlgorithm.toString());
+        getFragmentManager().beginTransaction().replace(R.id.scanLayout, fragment).commitAllowingStateLoss();
+
     }
 }

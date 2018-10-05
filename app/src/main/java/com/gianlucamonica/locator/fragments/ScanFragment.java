@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 
 import java.util.ArrayList;
@@ -75,9 +78,18 @@ public class ScanFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         databaseManager = new DatabaseManager(getActivity());
         List<OfflineScan> x = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansByBuildingAlgorithm(1,1);
 
+        // getting building info from buildingFragment and algorithmFragment
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            Algorithm algorithm = (Algorithm) bundle.getSerializable("algorithm");
+            Building building = (Building) bundle.getSerializable("building");
+            Log.i("receveid building", String.valueOf(building));
+            Log.i("receveid algorithm", String.valueOf(algorithm));
+        }
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_scan, container, false);
