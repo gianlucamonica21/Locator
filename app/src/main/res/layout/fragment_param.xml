@@ -17,7 +17,7 @@
             android:layout_width="200dp"
             android:layout_height="25dp"
             android:text="Params"
-            android:textSize="10pt"/>
+            android:textSize="8pt"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

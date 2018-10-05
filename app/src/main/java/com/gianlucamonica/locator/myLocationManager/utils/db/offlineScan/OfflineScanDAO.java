@@ -28,4 +28,7 @@ public abstract class OfflineScanDAO {
     @Query("SELECT * FROM offlineScan")
     public abstract List<OfflineScan> getOfflineScans();
 
+    @Query("SELECT count(*) FROM offlineScan WHERE idBuilding = :idBuilding AND idAlgorithm = :idAlgorithm")
+    public abstract int getOfflineScansByBuildingAlgorithm(int idBuilding, int idAlgorithm);
+
 }
