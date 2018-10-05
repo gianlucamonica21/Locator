@@ -15,8 +15,10 @@ import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,7 +76,8 @@ public class ScanFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         databaseManager = new DatabaseManager(getActivity());
-        String[] x = {"ciao","ciao","ciao","ciao"};
+        List<OfflineScan> x = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansByBuildingAlgorithm(1,1);
+
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_scan, container, false);
@@ -82,7 +85,7 @@ public class ScanFragment extends Fragment {
         // spinner
         ListView listView = (ListView) v.findViewById(R.id.scansListView);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+        ArrayAdapter<OfflineScan> arrayAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, x);
         listView.setAdapter(arrayAdapter);
 
