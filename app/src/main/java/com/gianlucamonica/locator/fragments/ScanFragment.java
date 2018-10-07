@@ -15,12 +15,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,6 +40,10 @@ public class ScanFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     DatabaseManager databaseManager;
+    Algorithm algorithm;
+    Building building;
+    ListView listView;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -80,26 +86,39 @@ public class ScanFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         databaseManager = new DatabaseManager(getActivity());
-        List<OfflineScan> x = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansByBuildingAlgorithm(1,1);
 
         // getting building info from buildingFragment and algorithmFragment
-        Bundle bundle = this.getArguments();
+        /*Bundle bundle = this.getArguments();
         if (bundle != null) {
-            Algorithm algorithm = (Algorithm) bundle.getSerializable("algorithm");
-            Building building = (Building) bundle.getSerializable("building");
+            if(algorithm == null)
+                algorithm = (Algorithm) bundle.getSerializable("algorithm");
+            if(building == null)
+                building = (Building) bundle.getSerializable("building");
             Log.i("receveid building", String.valueOf(building));
             Log.i("receveid algorithm", String.valueOf(algorithm));
-        }
+        }*/
 
+        // getting offline scan already done for this building and alg
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_scan, container, false);
 
         // spinner
-        ListView listView = (ListView) v.findViewById(R.id.scansListView);
+        listView = (ListView) v.findViewById(R.id.scansListView);
 
-        ArrayAdapter<OfflineScan> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, x);
-        listView.setAdapter(arrayAdapter);
+        if( algorithm != null && building != null){
+            List<OfflineScan> x = databaseManager.getAppDatabase().getOfflineScanDAO().
+                    getOfflineScansByBuildingAlgorithm(building.getId(), algorithm.getId());
+            if( x.size() >= 0){
+                List<String> s = new ArrayList<>();
+                s.add(String.valueOf(x.size() + " offline scan"));
+                if(x.size() == 0){
+                    s = Collections.emptyList();
+                }
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                        android.R.layout.simple_list_item_1, s);
+                listView.setAdapter(arrayAdapter);
+            }
+        }
 
         return v;
     }
@@ -126,6 +145,28 @@ public class ScanFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void updateScansList(Building building,Algorithm algorithm){
+        if(building != null)
+            Log.i("scanFragm b",building.toString());
+        if(algorithm != null)
+            Log.i("scanFragm a",algorithm.toString());
+
+        if(algorithm != null && building != null){
+            List<OfflineScan> x = databaseManager.getAppDatabase().getOfflineScanDAO().
+                    getOfflineScansByBuildingAlgorithm(building.getId(), algorithm.getId());
+            if( x.size() >= 0){
+                List<String> s = new ArrayList<>();
+                s.add(String.valueOf(x.size() + " offline scan"));
+                if(x.size() == 0){
+                    s = Collections.emptyList();
+                }
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                        android.R.layout.simple_list_item_1, s);
+                listView.setAdapter(arrayAdapter);
+            }
+        }
     }
 
     /**

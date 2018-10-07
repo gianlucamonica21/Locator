@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 
@@ -92,10 +93,7 @@ public class AlgorithmFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Algorithm chosenAlgorithm = getSelectedAlgorithm();
-                // sending building to scanFragment
-                if(chosenAlgorithm != null){
-                    sendAlgorithmToFragment(chosenAlgorithm,new ScanFragment());
-                }
+                mListener.onFragmentInteraction(chosenAlgorithm, "algorithm");
             }
 
             @Override
@@ -111,7 +109,7 @@ public class AlgorithmFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction(uri,"");
         }
     }
 
@@ -144,7 +142,7 @@ public class AlgorithmFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Object object,String tag);
     }
 
     public void populateSpinner(View v){

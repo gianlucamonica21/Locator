@@ -100,15 +100,12 @@ public class BuildingFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Building chosenBuilding = getSelectedBuilding();
-                // sending building to scanFragment
-                if(chosenBuilding != null){
-                    sendBuildingToFragment(chosenBuilding,new ScanFragment());
-                }
+                mListener.onFragmentInteraction(chosenBuilding,"building");
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                Building chosenBuilding = getSelectedBuilding();
             }
         });
 
@@ -137,7 +134,7 @@ public class BuildingFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction(uri,"");
         }
     }
 
@@ -176,7 +173,7 @@ public class BuildingFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Object object,String tag);
     }
 
     public void populateSpinner(View v){

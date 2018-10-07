@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
     private ListView algsListView;
     private ArrayList<String> algsList;
     private LocationMiddleware locationMiddleware;
+    private Algorithm chosenAlgorithm;
+    private Building chosenBuilding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,23 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+        Log.i("onFragmentInt",uri.toString());
+    }
+
+    @Override
+    public void onFragmentInteraction(Object object, String tag) {
+        Log.i("onFragmentInt",object.toString());
+        if(tag == "building"){
+            chosenBuilding = (Building) object;
+        }
+        if(tag == "algorithm"){
+            chosenAlgorithm = (Algorithm) object;
+        }
+
+        // Get Fragment B
+        ScanFragment scanFragment = (ScanFragment)
+                getSupportFragmentManager().findFragmentById(R.id.scanLayout);
+        scanFragment.updateScansList(chosenBuilding,chosenAlgorithm);
 
     }
 }

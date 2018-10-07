@@ -2,9 +2,12 @@ package com.gianlucamonica.locator.myLocationManager.utils;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.offline.WifiOfflineManager;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 
 
 public class MyApp extends Application {
@@ -43,4 +46,5 @@ public class MyApp extends Application {
     public static void setWifiOfflineManagerInstance(WifiOfflineManager wifiOfflineManagerInstance) {
         MyApp.wifiOfflineManagerInstance = wifiOfflineManagerInstance;
     }
+
 }
