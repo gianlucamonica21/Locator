@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan;
+package com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
@@ -9,27 +9,26 @@ import android.support.annotation.NonNull;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 
-@Entity(tableName = "offlineScan",
+@Entity(tableName = "onlineScan",
         foreignKeys = {@ForeignKey(
-        entity = Building.class,
-        childColumns = "idBuilding",
-        parentColumns = "id",
-        onUpdate = ForeignKey.CASCADE,
-        onDelete = ForeignKey.CASCADE
+                entity = Building.class,
+                childColumns = "idBuilding",
+                parentColumns = "id",
+                onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.CASCADE
         ),
-        @ForeignKey(
-        entity = Algorithm.class,
-        childColumns = "idAlgorithm",
-        parentColumns = "id",
-        onUpdate = ForeignKey.CASCADE,
-        onDelete = ForeignKey.CASCADE)},
+                @ForeignKey(
+                        entity = Algorithm.class,
+                        childColumns = "idAlgorithm",
+                        parentColumns = "id",
+                        onUpdate = ForeignKey.CASCADE,
+                        onDelete = ForeignKey.CASCADE)},
         indices = {@Index(value =
-        {"idBuilding","idAlgorithm","idGrid","gridSize"}, unique = true)}
-        )
-public class OfflineScan {
+                {"idBuilding","idAlgorithm","gridSize"}, unique = true)}
+)
+public class OnlineScan {
 
     @PrimaryKey(autoGenerate = true)
-
     int id;
 
     @NonNull
@@ -39,28 +38,23 @@ public class OfflineScan {
     int idAlgorithm;
 
     @NonNull
-    int idGrid;
+    int idEstimateGrid;
 
     @NonNull
     int gridSize;
 
-    @NonNull
-    double value;
-
-    public OfflineScan(int idBuilding, int idAlgorithm, int idGrid, int gridSize,double value){
+    public OnlineScan(int idBuilding, int idAlgorithm, int idEstimateGrid, int gridSize){
         this.idBuilding = idBuilding;
         this.idAlgorithm = idAlgorithm;
-        this.idGrid = idGrid;
+        this.idEstimateGrid = idEstimateGrid;
         this.gridSize = gridSize;
-        this.value = value;
     }
 
-    @NonNull
     public int getId() {
         return id;
     }
 
-    public void setId(@NonNull int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -83,12 +77,12 @@ public class OfflineScan {
     }
 
     @NonNull
-    public int getIdGrid() {
-        return idGrid;
+    public int getIdEstimateGrid() {
+        return idEstimateGrid;
     }
 
-    public void setIdGrid(@NonNull int idGrid) {
-        this.idGrid = idGrid;
+    public void setIdEstimateGrid(@NonNull int idEstimateGrid) {
+        this.idEstimateGrid = idEstimateGrid;
     }
 
     @NonNull
@@ -100,24 +94,14 @@ public class OfflineScan {
         this.gridSize = gridSize;
     }
 
-    @NonNull
-    public double getValue() {
-        return value;
-    }
-
-    public void setValue(@NonNull double value) {
-        this.value = value;
-    }
-
     @Override
     public String toString() {
-        return "OfflineScan{" +
+        return "OnlineScan{" +
                 "id=" + id +
                 ", idBuilding=" + idBuilding +
                 ", idAlgorithm=" + idAlgorithm +
-                ", idGrid=" + idGrid +
+                ", idEstimateGrid=" + idEstimateGrid +
                 ", gridSize=" + gridSize +
-                ", value=" + value +
                 '}';
     }
 }

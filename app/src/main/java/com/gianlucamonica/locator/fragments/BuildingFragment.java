@@ -95,7 +95,7 @@ public class BuildingFragment extends Fragment {
 
         populateSpinner(v);
 
-        // getting selected item from spinner
+        // getting selected item from offlineSpinner
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -181,9 +181,9 @@ public class BuildingFragment extends Fragment {
         for (int i=0; i < buildings.size(); i++){
             buildingsName.add(buildings.get(i).getName());
         }
-        // spinner
+        // offlineSpinner
         s = (Spinner) v.findViewById(R.id.spinner);
-        // populate spinner
+        // populate offlineSpinner
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, buildingsName);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);

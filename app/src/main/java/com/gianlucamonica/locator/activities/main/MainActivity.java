@@ -22,10 +22,10 @@ import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
-import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.AlgorithmDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
-import com.gianlucamonica.locator.myLocationManager.utils.db.building.BuildingDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 
 import java.util.ArrayList;
 
@@ -60,6 +60,18 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         ft.commit();
 
         DatabaseManager databaseManager= new DatabaseManager(this);
+        // inserting algorithms
+        //databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.MAGNETIC_FP),true));
+        //databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.WIFI_RSS_FP),true));
+        // inserting onlineScan
+        //databaseManager.getAppDatabase().getOnlineScanDAO().insert(new OnlineScan(1,1,1,3));
+        // inserting offlineScan
+        //databaseManager.getAppDatabase().getOfflineScanDAO().insert(new OfflineScan(1,1,1,4,2));
+        //databaseManager.getAppDatabase().getOfflineScanDAO().insert(new OfflineScan(1,1,1,3,2));
+        // inserting Scan Summary
+        databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(1,1,1,4,"offline"));
+//        databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(2,1,1,3,"offline"));
+        databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(1,1,1,3,"online"));
     }
 
     public void init(View view){

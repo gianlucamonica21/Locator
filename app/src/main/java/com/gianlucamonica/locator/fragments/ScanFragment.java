@@ -1,25 +1,22 @@
 package com.gianlucamonica.locator.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +39,8 @@ public class ScanFragment extends Fragment {
     DatabaseManager databaseManager;
     Algorithm algorithm;
     Building building;
-    ListView listView;
+    Spinner offlineSpinner;
+    Spinner onlineSpinner;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -102,8 +100,9 @@ public class ScanFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_scan, container, false);
 
-        // spinner
-        listView = (ListView) v.findViewById(R.id.scansListView);
+        // offlineSpinner
+        offlineSpinner = (Spinner) v.findViewById(R.id.offlineSpinner);
+        onlineSpinner = (Spinner) v.findViewById(R.id.onlineSpinner);
 
         if( algorithm != null && building != null){
             List<OfflineScan> x = databaseManager.getAppDatabase().getOfflineScanDAO().
@@ -116,7 +115,7 @@ public class ScanFragment extends Fragment {
                 }
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
                         android.R.layout.simple_list_item_1, s);
-                listView.setAdapter(arrayAdapter);
+                offlineSpinner.setAdapter(arrayAdapter);
             }
         }
 
@@ -148,24 +147,50 @@ public class ScanFragment extends Fragment {
     }
 
     public void updateScansList(Building building,Algorithm algorithm){
-        if(building != null)
-            Log.i("scanFragm b",building.toString());
-        if(algorithm != null)
-            Log.i("scanFragm a",algorithm.toString());
 
         if(algorithm != null && building != null){
-            List<OfflineScan> x = databaseManager.getAppDatabase().getOfflineScanDAO().
+            // getting offline and online scans
+            List<OfflineScan> offScansResult = databaseManager.getAppDatabase().getOfflineScanDAO().
                     getOfflineScansByBuildingAlgorithm(building.getId(), algorithm.getId());
-            if( x.size() >= 0){
-                List<String> s = new ArrayList<>();
-                s.add(String.valueOf(x.size() + " offline scan"));
-                if(x.size() == 0){
-                    s = Collections.emptyList();
+            List<OnlineScan> onScansResult = databaseManager.getAppDatabase().getOnlineScanDAO().
+                    getOnlineScansByBuildingAlgorithm(building.getId(), algorithm.getId());
+            List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),
+                    algorithm.getId());
+            List<String> offlineString = new ArrayList<>();
+            List<String> onlineString = new ArrayList<>();
+
+            for (int i = 0; i < scanSummaries.size(); i++){
+                if(scanSummaries.get(i).getType().equals("offline")){
+                    offlineString.add(String.valueOf("Offline scan with size " + scanSummaries.get(i).getGridSize()));
+                }else if(scanSummaries.get(i).getType().equals("online")){
+                    onlineString.add(String.valueOf("Online scan with size " + scanSummaries.get(i).getGridSize()));
                 }
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                        android.R.layout.simple_list_item_1, s);
-                listView.setAdapter(arrayAdapter);
             }
+
+            /*if( offScansResult.size() >= 0){
+                if(offScansResult.size() == 0){
+                    offlineString = Collections.emptyList();
+                }else{
+                    offlineString.add(String.valueOf(offScansResult.size() + " offline scan with size " + offScansResult.get(0).getGridSize() + " for this setting"));
+                }
+            }
+            if( onScansResult.size() >= 0){
+                if(onScansResult.size() == 0){
+                    onlineString = Collections.emptyList();
+                }
+                else{
+                    onlineString.add(String.valueOf(onScansResult.size() + " online scan with size " + onScansResult.get(0).getGridSize() + " for this setting"));
+                }
+            }*/
+
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_list_item_1, offlineString);
+            ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_list_item_1, onlineString);
+
+            offlineSpinner.setAdapter(arrayAdapter);
+            onlineSpinner.setAdapter(arrayAdapter2);
+
         }
     }
 
