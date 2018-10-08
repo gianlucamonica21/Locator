@@ -64,14 +64,13 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         //databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.MAGNETIC_FP),true));
         //databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.WIFI_RSS_FP),true));
         // inserting onlineScan
-        //databaseManager.getAppDatabase().getOnlineScanDAO().insert(new OnlineScan(1,1,1,3));
+        //databaseManager.getAppDatabase().getOnlineScanDAO().insert(new OnlineScan(2,0));
+        //databaseManager.getAppDatabase().getOnlineScanDAO().insert(new OnlineScan(3,0));
         // inserting offlineScan
-        //databaseManager.getAppDatabase().getOfflineScanDAO().insert(new OfflineScan(1,1,1,4,2));
-        //databaseManager.getAppDatabase().getOfflineScanDAO().insert(new OfflineScan(1,1,1,3,2));
+        //databaseManager.getAppDatabase().getOfflineScanDAO().insert(new OfflineScan(3,1,2.0));
         // inserting Scan Summary
-        databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(1,1,1,4,"offline"));
-//        databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(2,1,1,3,"offline"));
-        databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(1,1,1,3,"online"));
+        //databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(1,1,1,"offline"));
+        //databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(1,1,1,"online"));
     }
 
     public void init(View view){

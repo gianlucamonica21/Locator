@@ -88,7 +88,7 @@ public class AlgorithmFragment extends Fragment {
 
         populateSpinner(v);
 
-        // getting selected item from offlineSpinner
+        // getting selected item from scansSpinner
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -150,7 +150,7 @@ public class AlgorithmFragment extends Fragment {
         for (int i=0; i < algorithms.size(); i++){
             algorithmsName.add(algorithms.get(i).getName());
         }
-        // offlineSpinner
+        // scansSpinner
         s = (Spinner) v.findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, algorithmsName);

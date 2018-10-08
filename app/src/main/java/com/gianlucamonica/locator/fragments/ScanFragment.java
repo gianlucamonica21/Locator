@@ -14,12 +14,9 @@ import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
-import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
-import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,8 +36,7 @@ public class ScanFragment extends Fragment {
     DatabaseManager databaseManager;
     Algorithm algorithm;
     Building building;
-    Spinner offlineSpinner;
-    Spinner onlineSpinner;
+    Spinner scansSpinner;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -85,28 +81,15 @@ public class ScanFragment extends Fragment {
 
         databaseManager = new DatabaseManager(getActivity());
 
-        // getting building info from buildingFragment and algorithmFragment
-        /*Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            if(algorithm == null)
-                algorithm = (Algorithm) bundle.getSerializable("algorithm");
-            if(building == null)
-                building = (Building) bundle.getSerializable("building");
-            Log.i("receveid building", String.valueOf(building));
-            Log.i("receveid algorithm", String.valueOf(algorithm));
-        }*/
-
         // getting offline scan already done for this building and alg
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_scan, container, false);
 
-        // offlineSpinner
-        offlineSpinner = (Spinner) v.findViewById(R.id.offlineSpinner);
-        onlineSpinner = (Spinner) v.findViewById(R.id.onlineSpinner);
+        // scansSpinner
+        scansSpinner = (Spinner) v.findViewById(R.id.scansSpinner);
 
         if( algorithm != null && building != null){
-            List<OfflineScan> x = databaseManager.getAppDatabase().getOfflineScanDAO().
-                    getOfflineScansByBuildingAlgorithm(building.getId(), algorithm.getId());
+            /*List<OfflineScan> x = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansByBuildingAlgorithm(building.getId(), algorithm.getId());
             if( x.size() >= 0){
                 List<String> s = new ArrayList<>();
                 s.add(String.valueOf(x.size() + " offline scan"));
@@ -115,8 +98,8 @@ public class ScanFragment extends Fragment {
                 }
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
                         android.R.layout.simple_list_item_1, s);
-                offlineSpinner.setAdapter(arrayAdapter);
-            }
+                scansSpinner.setAdapter(arrayAdapter);
+            }*/
         }
 
         return v;
@@ -150,47 +133,22 @@ public class ScanFragment extends Fragment {
 
         if(algorithm != null && building != null){
             // getting offline and online scans
-            List<OfflineScan> offScansResult = databaseManager.getAppDatabase().getOfflineScanDAO().
-                    getOfflineScansByBuildingAlgorithm(building.getId(), algorithm.getId());
-            List<OnlineScan> onScansResult = databaseManager.getAppDatabase().getOnlineScanDAO().
-                    getOnlineScansByBuildingAlgorithm(building.getId(), algorithm.getId());
             List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),
                     algorithm.getId());
-            List<String> offlineString = new ArrayList<>();
-            List<String> onlineString = new ArrayList<>();
+            List<String> scanString = new ArrayList<>();
 
             for (int i = 0; i < scanSummaries.size(); i++){
                 if(scanSummaries.get(i).getType().equals("offline")){
-                    offlineString.add(String.valueOf("Offline scan with size " + scanSummaries.get(i).getGridSize()));
+                    scanString.add(String.valueOf("Offline scan with size " + scanSummaries.get(i).getGridSize()));
                 }else if(scanSummaries.get(i).getType().equals("online")){
-                    onlineString.add(String.valueOf("Online scan with size " + scanSummaries.get(i).getGridSize()));
+                    scanString.add(String.valueOf("Online scan with size " + scanSummaries.get(i).getGridSize()));
                 }
             }
-
-            /*if( offScansResult.size() >= 0){
-                if(offScansResult.size() == 0){
-                    offlineString = Collections.emptyList();
-                }else{
-                    offlineString.add(String.valueOf(offScansResult.size() + " offline scan with size " + offScansResult.get(0).getGridSize() + " for this setting"));
-                }
-            }
-            if( onScansResult.size() >= 0){
-                if(onScansResult.size() == 0){
-                    onlineString = Collections.emptyList();
-                }
-                else{
-                    onlineString.add(String.valueOf(onScansResult.size() + " online scan with size " + onScansResult.get(0).getGridSize() + " for this setting"));
-                }
-            }*/
 
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                    android.R.layout.simple_list_item_1, offlineString);
-            ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<>(getActivity(),
-                    android.R.layout.simple_list_item_1, onlineString);
+                    android.R.layout.simple_list_item_1, scanString);
 
-            offlineSpinner.setAdapter(arrayAdapter);
-            onlineSpinner.setAdapter(arrayAdapter2);
-
+            scansSpinner.setAdapter(arrayAdapter);
         }
     }
 

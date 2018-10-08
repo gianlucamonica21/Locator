@@ -2,6 +2,7 @@ package com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -24,27 +25,14 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineSc
                 childColumns = "idAlgorithm",
                 parentColumns = "id",
                 onUpdate = ForeignKey.CASCADE,
-                onDelete = ForeignKey.CASCADE),
-        @ForeignKey(
-                entity = OnlineScan.class,
-                childColumns = "idScan",
-                parentColumns = "id",
-                onUpdate = ForeignKey.CASCADE,
-                onDelete = ForeignKey.CASCADE),
-        @ForeignKey(
-                entity = OfflineScan.class,
-                childColumns = "idScan",
-                parentColumns = "id",
-                onUpdate = ForeignKey.CASCADE,
-                onDelete = ForeignKey.CASCADE)}
+                onDelete = ForeignKey.CASCADE)},
+        indices = {@Index(value =
+                {"idBuilding","idAlgorithm","gridSize","type"}, unique = true)} // non posso comparire due righe aventi stesso building,algorithm,gridSize e type
 )
 public class ScanSummary {
 
     @PrimaryKey(autoGenerate = true)
     int id;
-
-    @NonNull
-    int idScan;
 
     @NonNull
     int idBuilding;
@@ -58,8 +46,7 @@ public class ScanSummary {
     @NonNull
     String type;
 
-    public ScanSummary(int idScan,int idBuilding, int idAlgorithm, int gridSize,String type){
-        this.idScan = idScan;
+    public ScanSummary(int idBuilding, int idAlgorithm, int gridSize,String type){
         this.idBuilding = idBuilding;
         this.idAlgorithm = idAlgorithm;
         this.gridSize = gridSize;
@@ -102,15 +89,6 @@ public class ScanSummary {
     }
 
     @NonNull
-    public int getIdScan() {
-        return idScan;
-    }
-
-    public void setIdScan(@NonNull int idScan) {
-        this.idScan = idScan;
-    }
-
-    @NonNull
     public String getType() {
         return type;
     }
@@ -123,7 +101,6 @@ public class ScanSummary {
     public String toString() {
         return "OnlineScan{" +
                 "id=" + id +
-                ", idscan=" + idScan +
                 ", idBuilding=" + idBuilding +
                 ", idAlgorithm=" + idAlgorithm +
                 ", gridSize=" + gridSize +
