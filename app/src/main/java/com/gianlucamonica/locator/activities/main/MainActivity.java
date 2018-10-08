@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
     private LocationMiddleware locationMiddleware;
     private Algorithm chosenAlgorithm;
     private Building chosenBuilding;
+    private int chosenSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,11 +111,14 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
             chosenAlgorithm = (Algorithm) object;
         }
         //todo add size managment
+        if(tag == "size"){
+            chosenSize = (int) object;
+        }
 
         // Get ScanFragment
         ScanFragment scanFragment = (ScanFragment)
                 getSupportFragmentManager().findFragmentById(R.id.scanLayout);
-        scanFragment.updateScansList(chosenBuilding,chosenAlgorithm);
+        scanFragment.updateScansList(chosenBuilding,chosenAlgorithm,chosenSize);
 
     }
 
@@ -124,4 +128,5 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
                 getSupportFragmentManager().findFragmentById(R.id.buttonsLayout);
         buttonsFragment.manageButtons(isOfflineScan);
     }
+
 }

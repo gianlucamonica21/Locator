@@ -117,12 +117,12 @@ public class ScanFragment extends Fragment {
      * @param building
      * @param algorithm
      */
-    public void updateScansList(Building building,Algorithm algorithm){
+    public void updateScansList(Building building,Algorithm algorithm, int gridSize){
 
         if(algorithm != null && building != null){
             // getting offline and online scans
             List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),
-                    algorithm.getId());
+                    algorithm.getId(), gridSize);
             List<String> scanString = new ArrayList<>();
             boolean isOfflineScan = false;
 
