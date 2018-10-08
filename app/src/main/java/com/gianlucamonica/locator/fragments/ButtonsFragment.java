@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.gianlucamonica.locator.R;
 
@@ -28,6 +29,8 @@ public class ButtonsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private Button scanButton;
+    private Button locateButton;
     private OnFragmentInteractionListener mListener;
 
     public ButtonsFragment() {
@@ -64,8 +67,14 @@ public class ButtonsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_buttons, container, false);
+        View v = inflater.inflate(R.layout.fragment_buttons, container, false);
+
+        scanButton = (Button) v.findViewById(R.id.scanButton);
+        locateButton = (Button) v.findViewById(R.id.locateButton);
+        // Inflate the layout for this fragment
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,6 +99,10 @@ public class ButtonsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void manageButtons(Boolean isOfflineScan){
+        locateButton.setEnabled(isOfflineScan);
     }
 
     /**

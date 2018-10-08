@@ -90,12 +90,13 @@ public class BuildingFragment extends Fragment {
         databaseManager = new DatabaseManager(getActivity());
         buildings = new ArrayList<>();
         buildings = getBuildingsFromDb();
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.building_fragment, container, false);
 
         populateSpinner(v);
 
-        // getting selected item from scansSpinner
+        // getting selected item from building spinner
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -108,10 +109,6 @@ public class BuildingFragment extends Fragment {
                 Building chosenBuilding = getSelectedBuilding();
             }
         });
-
-
-
-
 
         // start activity insert building
         Button newButton = (Button) v.findViewById(R.id.newBuildingButton);
@@ -181,7 +178,7 @@ public class BuildingFragment extends Fragment {
         for (int i=0; i < buildings.size(); i++){
             buildingsName.add(buildings.get(i).getName());
         }
-        // scansSpinner
+        // getting building spinner
         s = (Spinner) v.findViewById(R.id.spinner);
         // populate scansSpinner
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
@@ -198,14 +195,6 @@ public class BuildingFragment extends Fragment {
             }
         }
         return null;
-    }
-
-    public void sendBuildingToFragment(final Building chosenBuilding,final  Fragment fragment){
-        Bundle args = new Bundle();
-        args.putSerializable("building", (Serializable) chosenBuilding);
-        fragment.setArguments(args);
-        Log.i("sending ", chosenBuilding.toString());
-        getFragmentManager().beginTransaction().replace(R.id.scanLayout, fragment).commitAllowingStateLoss();
     }
 
 }

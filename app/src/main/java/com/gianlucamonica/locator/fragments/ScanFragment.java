@@ -34,8 +34,6 @@ public class ScanFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     DatabaseManager databaseManager;
-    Algorithm algorithm;
-    Building building;
     Spinner scansSpinner;
 
     // TODO: Rename and change types of parameters
@@ -81,26 +79,11 @@ public class ScanFragment extends Fragment {
 
         databaseManager = new DatabaseManager(getActivity());
 
-        // getting offline scan already done for this building and alg
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_scan, container, false);
 
         // scansSpinner
         scansSpinner = (Spinner) v.findViewById(R.id.scansSpinner);
-
-        if( algorithm != null && building != null){
-            /*List<OfflineScan> x = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansByBuildingAlgorithm(building.getId(), algorithm.getId());
-            if( x.size() >= 0){
-                List<String> s = new ArrayList<>();
-                s.add(String.valueOf(x.size() + " offline scan"));
-                if(x.size() == 0){
-                    s = Collections.emptyList();
-                }
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                        android.R.layout.simple_list_item_1, s);
-                scansSpinner.setAdapter(arrayAdapter);
-            }*/
-        }
 
         return v;
     }
@@ -108,7 +91,7 @@ public class ScanFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+           // mListener.onFragmentInteraction(uri);
         }
     }
 
@@ -129,6 +112,11 @@ public class ScanFragment extends Fragment {
         mListener = null;
     }
 
+    /***
+     * called by main activity to refresh alg and building choosen
+     * @param building
+     * @param algorithm
+     */
     public void updateScansList(Building building,Algorithm algorithm){
 
         if(algorithm != null && building != null){
@@ -136,18 +124,21 @@ public class ScanFragment extends Fragment {
             List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),
                     algorithm.getId());
             List<String> scanString = new ArrayList<>();
+            boolean isOfflineScan = false;
 
             for (int i = 0; i < scanSummaries.size(); i++){
                 if(scanSummaries.get(i).getType().equals("offline")){
                     scanString.add(String.valueOf("Offline scan with size " + scanSummaries.get(i).getGridSize()));
+                    isOfflineScan = true;
                 }else if(scanSummaries.get(i).getType().equals("online")){
                     scanString.add(String.valueOf("Online scan with size " + scanSummaries.get(i).getGridSize()));
                 }
             }
 
+            mListener.onFragmentInteraction(isOfflineScan);
+
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
                     android.R.layout.simple_list_item_1, scanString);
-
             scansSpinner.setAdapter(arrayAdapter);
         }
     }
@@ -164,6 +155,6 @@ public class ScanFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Boolean isOfflineScan);
     }
 }

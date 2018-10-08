@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         ParamFragment.OnFragmentInteractionListener,
         ScanFragment.OnFragmentInteractionListener{
 
-    private ListView algsListView;
-    private ArrayList<String> algsList;
     private LocationMiddleware locationMiddleware;
     private Algorithm chosenAlgorithm;
     private Building chosenBuilding;
@@ -111,11 +109,19 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         if(tag == "algorithm"){
             chosenAlgorithm = (Algorithm) object;
         }
+        //todo add size managment
 
-        // Get Fragment B
+        // Get ScanFragment
         ScanFragment scanFragment = (ScanFragment)
                 getSupportFragmentManager().findFragmentById(R.id.scanLayout);
         scanFragment.updateScansList(chosenBuilding,chosenAlgorithm);
 
+    }
+
+    @Override
+    public void onFragmentInteraction(Boolean isOfflineScan) {
+        ButtonsFragment buttonsFragment = (ButtonsFragment)
+                getSupportFragmentManager().findFragmentById(R.id.buttonsLayout);
+        buttonsFragment.manageButtons(isOfflineScan);
     }
 }

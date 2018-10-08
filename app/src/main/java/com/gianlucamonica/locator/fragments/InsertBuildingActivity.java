@@ -64,6 +64,7 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
         if (myLocationManager.getMyPermissionsManager().isGPSEnabled()) {
             currentLocation = myLocationManager.locate();
         }
+        // todo fare in modo di non dover ricaricare l'activity per visualizzare la propria posizione sulla mappa (dopo aver attivato il gps)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

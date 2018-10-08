@@ -88,7 +88,7 @@ public class AlgorithmFragment extends Fragment {
 
         populateSpinner(v);
 
-        // getting selected item from scansSpinner
+        // getting selected item from algorithm spinner
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -150,7 +150,7 @@ public class AlgorithmFragment extends Fragment {
         for (int i=0; i < algorithms.size(); i++){
             algorithmsName.add(algorithms.get(i).getName());
         }
-        // scansSpinner
+        // getting algorithm spinner
         s = (Spinner) v.findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, algorithmsName);
@@ -168,12 +168,4 @@ public class AlgorithmFragment extends Fragment {
         return null;
     }
 
-    public void sendAlgorithmToFragment(Algorithm chosenAlgorithm, Fragment fragment){
-        Bundle args = new Bundle();
-        args.putSerializable("algorithm", (Serializable) chosenAlgorithm);
-        fragment.setArguments(args);
-        Log.i("sending ", chosenAlgorithm.toString());
-        getFragmentManager().beginTransaction().replace(R.id.scanLayout, fragment).commitAllowingStateLoss();
-
-    }
 }
