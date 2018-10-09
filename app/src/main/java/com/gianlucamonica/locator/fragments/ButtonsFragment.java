@@ -1,6 +1,7 @@
 package com.gianlucamonica.locator.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +35,10 @@ public class ButtonsFragment extends Fragment {
     private Button scanButton;
     private Button locateButton;
     private OnFragmentInteractionListener mListener;
+
+    private Algorithm algorithm;
+    private Building building;
+    private int gridSize;
 
     public ButtonsFragment() {
         // Required empty public constructor
@@ -73,6 +80,20 @@ public class ButtonsFragment extends Fragment {
 
         scanButton = (Button) v.findViewById(R.id.scanButton);
         locateButton = (Button) v.findViewById(R.id.locateButton);
+
+        scanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),ScanActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("building",building);
+                bundle.putSerializable("algorithm",algorithm);
+                bundle.putSerializable("gridSize",gridSize);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
         // Inflate the layout for this fragment
         return v;
     }
@@ -103,6 +124,12 @@ public class ButtonsFragment extends Fragment {
 
     public void manageButtons(Boolean isOfflineScan){
         locateButton.setEnabled(isOfflineScan);
+    }
+
+    public void loadScanInfo(Building building, Algorithm algorithm, int gridSize){
+        this.building = building;
+        this.algorithm = algorithm;
+        this.gridSize = gridSize;
     }
 
     /**

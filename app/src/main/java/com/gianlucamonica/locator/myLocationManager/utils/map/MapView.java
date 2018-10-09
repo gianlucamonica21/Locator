@@ -8,8 +8,6 @@ import android.graphics.Rect;
 import android.util.Log;
 import android.view.View;
 
-import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
-
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -23,8 +21,13 @@ public class MapView extends View {
     JSONObject config;
     JSONToGridConverter jsonToGridConverter;
     // scale factors for drawing map
-    int scaleFactor = 250;
+    int scaleFactor = 100;
     int add = 165;
+
+    // 2a versione
+    private int height;
+    private int width;
+    private int gridSize;
 
     /**
      * @param context
@@ -39,7 +42,47 @@ public class MapView extends View {
         rects = jsonToGridConverter.convert(config);
         this.estimateGridName = estimateGridName;
 
+        this.height = 12;
+        this.width = 6;
+        this.gridSize = 3;
 
+        ArrayList<Grid> grids = new ArrayList<>();
+
+        for(int i = 0; i < width/gridSize; i++){
+            for(int j = 0; j < height/gridSize; j++){
+                grids.add(new Grid(
+                        new Coordinate(i*gridSize,j*gridSize),
+                        new Coordinate((i+1)*gridSize,(j+1)*gridSize),
+                        String.valueOf((j*(width/gridSize))+i)
+                ));
+            }
+        }
+
+        Log.i("grids",grids.toString());
+
+        rects = grids;
+
+    }
+
+    public MapView(Context context,int height,int width,int gridSize){
+        super(context);
+        this.height = height;
+        this.width = width;
+        this.gridSize = gridSize;
+
+        ArrayList<Grid> grids = new ArrayList<>();
+
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
+                grids.add(new Grid(
+                        new Coordinate(i,j),
+                        new Coordinate(i+1,j+1),
+                        String.valueOf(j*i)
+                ));
+            }
+        }
+
+        Log.i("grids",grids.toString());
     }
 
     /**

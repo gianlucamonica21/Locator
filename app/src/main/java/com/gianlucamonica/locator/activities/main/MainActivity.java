@@ -120,6 +120,11 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
                 getSupportFragmentManager().findFragmentById(R.id.scanLayout);
         scanFragment.updateScansList(chosenBuilding,chosenAlgorithm,chosenSize);
 
+        // get buttons fragment
+        ButtonsFragment buttonsFragment = (ButtonsFragment)
+                getSupportFragmentManager().findFragmentById(R.id.buttonsLayout);
+        buttonsFragment.loadScanInfo(chosenBuilding,chosenAlgorithm,chosenSize);
+
     }
 
     @Override
