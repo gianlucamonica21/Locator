@@ -2,12 +2,12 @@ package com.gianlucamonica.locator.activities.main;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.gps.GPSActivity;
@@ -19,17 +19,11 @@ import com.gianlucamonica.locator.fragments.ButtonsFragment;
 import com.gianlucamonica.locator.fragments.ParamFragment;
 import com.gianlucamonica.locator.fragments.ScanFragment;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
-import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
-import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
-import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
-import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 
-import java.util.ArrayList;
-
-public class MainActivity extends AppCompatActivity implements BuildingFragment.OnFragmentInteractionListener,
+public class MainActivity extends AppCompatActivity implements BuildingFragment.BuildingListener,
         AlgorithmFragment.OnFragmentInteractionListener,
         ButtonsFragment.OnFragmentInteractionListener,
         ParamFragment.OnFragmentInteractionListener,
@@ -39,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
     private Algorithm chosenAlgorithm;
     private Building chosenBuilding;
     private int chosenSize;
+
+    private BuildingFragment.BuildingListener buildingListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         // Replace the contents of the container with the new fragment
         ft.replace(R.id.algorithmLayout, new AlgorithmFragment(), new AlgorithmFragment().getTag());
         ft.replace(R.id.buildingLayout, new BuildingFragment(), new BuildingFragment().getTag());
+        setListener((BuildingFragment.BuildingListener) new BuildingFragment());
         ft.replace(R.id.buttonsLayout, new ButtonsFragment(), new ButtonsFragment().getTag());
         ft.replace(R.id.paramLayout, new ParamFragment(), new ParamFragment().getTag());
         ft.replace(R.id.scanLayout, new ScanFragment(), new ScanFragment().getTag());
@@ -70,31 +67,30 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         // inserting Scan Summary
         //databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(1,1,1,"offline"));
         //databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(1,1,1,"online"));
+        init();
     }
 
-    public void init(View view){
+    public void setListener(BuildingFragment.BuildingListener listener)
+    {
+        this.buildingListener = listener ;
+    }
+
+    public void init(){
         locationMiddleware = new LocationMiddleware(this);
     }
 
-    public void openActivity(View view, String algoName){
-
-        switch (algoName){
-            case "GPS":
-                Intent intentGPS = new Intent(MainActivity.this, GPSActivity.class);
-                startActivity(intentGPS);
-            break;
-            case "WIFI_RSS_FP":
-                Intent intentWIFI = new Intent(MainActivity.this, WIFIActivity.class);
-                startActivity(intentWIFI);
-            break;
-            case "MAGNETIC_FP":
-                Intent intentMagnetic = new Intent(MainActivity.this, MagneticActivity.class);
-                startActivity(intentMagnetic);
-            break;
+    public void updateUI(String localization){
+        if(localization.equals("gps")){
+            // disattivo building
+            buildingListener.manageSpinner(false);
+            // disattivo algorithm
+            // disattivo size
+            // disattivo scans
+            // disattivo locate button
+        }else{
 
         }
     }
-
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -125,13 +121,27 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
                 getSupportFragmentManager().findFragmentById(R.id.buttonsLayout);
         buttonsFragment.loadScanInfo(chosenBuilding,chosenAlgorithm,chosenSize);
 
+        Log.i("chosenSize", String.valueOf(chosenSize));
+        if ( chosenSize <= 0){
+            buttonsFragment.manageScanButton(false);
+        }else{
+            buttonsFragment.manageScanButton(true);
+        }
+
+    }
+
+    @Override
+    public void manageSpinner(boolean enable) {
+        BuildingFragment buildingFragment = (BuildingFragment)
+                getSupportFragmentManager().findFragmentById(R.id.buildingLayout);
+        buildingFragment.manageSpinner(enable);
     }
 
     @Override
     public void onFragmentInteraction(Boolean isOfflineScan) {
         ButtonsFragment buttonsFragment = (ButtonsFragment)
                 getSupportFragmentManager().findFragmentById(R.id.buttonsLayout);
-        buttonsFragment.manageButtons(isOfflineScan);
+        buttonsFragment.manageLocateButton(isOfflineScan);
     }
 
 }

@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BuildingFragment.OnFragmentInteractionListener} interface
+ * {@link BuildingFragment.BuildingListener} interface
  * to handle interaction events.
  * Use the {@link BuildingFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -53,7 +53,7 @@ public class BuildingFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private BuildingListener mListener;
 
     public BuildingFragment() {
         // Required empty public constructor
@@ -144,8 +144,8 @@ public class BuildingFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof BuildingListener) {
+            mListener = (BuildingListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -168,9 +168,11 @@ public class BuildingFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface BuildingListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Object object,String tag);
+
+        void manageSpinner(boolean enable);
     }
 
     public void populateSpinner(View v){
@@ -195,6 +197,10 @@ public class BuildingFragment extends Fragment {
             }
         }
         return null;
+    }
+
+    public void manageSpinner(boolean enable){
+        s.setEnabled(enable);
     }
 
 }

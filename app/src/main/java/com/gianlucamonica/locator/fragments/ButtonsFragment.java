@@ -78,8 +78,8 @@ public class ButtonsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_buttons, container, false);
 
-        scanButton = (Button) v.findViewById(R.id.scanButton);
-        locateButton = (Button) v.findViewById(R.id.locateButton);
+        scanButton =  v.findViewById(R.id.scanButton);
+        locateButton = v.findViewById(R.id.locateButton);
 
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,8 +122,12 @@ public class ButtonsFragment extends Fragment {
         mListener = null;
     }
 
-    public void manageButtons(Boolean isOfflineScan){
+    public void manageLocateButton(boolean isOfflineScan){
         locateButton.setEnabled(isOfflineScan);
+    }
+
+    public void manageScanButton(boolean visibility){
+        scanButton.setEnabled(visibility);
     }
 
     public void loadScanInfo(Building building, Algorithm algorithm, int gridSize){

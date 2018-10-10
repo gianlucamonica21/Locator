@@ -9,7 +9,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.gianlucamonica.locator.activities.main.MainActivity;
 import com.gianlucamonica.locator.myLocationManager.impls.gps.GPSLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
@@ -39,7 +41,6 @@ public class LocationMiddleware implements LocationListener {
     private float liveGPSAcc = 0; // gps acc just registered
     private AlgorithmName chosenIndoorAlg = AlgorithmName.MAGNETIC_FP; // default indoor alg
 
-
     private Activity activity; // ?
 
     // info sul building scelto
@@ -63,14 +64,19 @@ public class LocationMiddleware implements LocationListener {
     }
 
     public void init(){
+        MainActivity mainActivity = new MainActivity();
         if(liveGPSAcc > GPS_ACC_THRESHOLD){
             // istantiate outdoor alg
             myLocationManager = new MyLocationManager(AlgorithmName.GPS,activity);
             Log.i("instantiate","GPS location");
+            Toast.makeText(MyApp.getContext(),"istantiate GPS",Toast.LENGTH_SHORT).show();
+            mainActivity.updateUI("gps");
         }else {
             // istantiate indoor alg
             myLocationManager = new MyLocationManager(chosenIndoorAlg, activity);
             Log.i("instantiate", "Indoor location");
+            Toast.makeText(MyApp.getContext(),"istantiate indoor",Toast.LENGTH_SHORT).show();
+            mainActivity.updateUI("indoor");
         }
 
         // cancel location updates
