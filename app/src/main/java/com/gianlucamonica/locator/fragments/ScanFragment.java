@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
@@ -35,6 +36,10 @@ public class ScanFragment extends Fragment {
 
     DatabaseManager databaseManager;
     Spinner scansSpinner;
+
+    Algorithm algorithm;
+    Building building;
+    int gridSize;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -114,10 +119,22 @@ public class ScanFragment extends Fragment {
 
     /***
      * called by main activity to refresh alg and building choosen
-     * @param building
-     * @param algorithm
      */
-    public void updateScansList(Building building,Algorithm algorithm, int gridSize){
+    public void updateScansList(ArrayList<IndoorParams> indoorParams){
+
+        for (int i = 0; i < indoorParams.size(); i++){
+            switch (indoorParams.get(i).getName()){
+                case "algorithm":
+                    algorithm = (Algorithm) indoorParams.get(i).getParamObject();
+                    break;
+                case "building":
+                    building = (Building) indoorParams.get(i).getParamObject();
+                    break;
+                case "size":
+                    gridSize = (int) indoorParams.get(i).getParamObject();
+                    break;
+            }
+        }
 
         if(algorithm != null && building != null){
             // getting offline and online scans

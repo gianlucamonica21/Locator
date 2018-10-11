@@ -8,6 +8,9 @@ import android.graphics.Rect;
 import android.util.Log;
 import android.view.View;
 
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -29,12 +32,15 @@ public class MapView extends View {
     private int width;
     private int gridSize;
 
+    private ArrayList<IndoorParams> indoorParams;
+
     /**
      * @param context
      */
-    public MapView(Context context,String estimateGridName){  // todo passing algorithm, building, params info
+    public MapView(Context context,String estimateGridName,ArrayList<IndoorParams> indoorParams){  // todo passing algorithm, building, params info
         super(context);
 
+        this.indoorParams = indoorParams;
         jsonReader = new JSONReader("mapConfig.json");
         jsonToGridConverter = new JSONToGridConverter();
 
@@ -42,9 +48,19 @@ public class MapView extends View {
         rects = jsonToGridConverter.convert(config);
         this.estimateGridName = estimateGridName;
 
-        this.height = 12;
-        this.width = 6;
-        this.gridSize = 3;
+        for (int i = 0; i < this.indoorParams.size(); i++){
+            switch (indoorParams.get(i).getName()){
+                case "building":
+                    Building building = (Building) indoorParams.get(i).getParamObject();
+                    this.height = building.getHeight();
+                    this.width = building.getWidht();
+                    break;
+                case "size":
+                    int size = (int) indoorParams.get(i).getParamObject();
+                    this.gridSize = size;
+                    break;
+            }
+        }
 
         ArrayList<Grid> grids = new ArrayList<>();
 

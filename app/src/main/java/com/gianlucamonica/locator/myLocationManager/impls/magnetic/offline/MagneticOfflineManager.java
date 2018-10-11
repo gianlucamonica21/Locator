@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrintDAO;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
@@ -34,8 +35,11 @@ public class MagneticOfflineManager implements SensorEventListener {
     private ArrayList<String> zones;
     private ArrayList<MagneticFingerPrint> magneticFingerPrints;
 
-    public MagneticOfflineManager(Activity activity){
+    private ArrayList<IndoorParams> indoorParams;
+
+    public MagneticOfflineManager(Activity activity,ArrayList<IndoorParams> indoorParams){
         this.activity = activity;
+        this.indoorParams = indoorParams;
         sensorManager = (SensorManager) MyApp.getContext().getSystemService(SENSOR_SERVICE);
         magnitudes = new ArrayList<>();
         zones = new ArrayList<>();
@@ -45,7 +49,7 @@ public class MagneticOfflineManager implements SensorEventListener {
 
     public <T extends View> T build(Class<T> type){ // todo passing algorithm, building, params info
 
-        mV = new MapView(this.activity,null);  // todo passing algorithm, building, params info
+        mV = new MapView(this.activity,null,indoorParams);  // todo passing algorithm, building, params info
         mV.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

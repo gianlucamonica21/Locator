@@ -21,7 +21,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
 
         databaseManager = new DatabaseManager(this);
 
-        myLocationManager = new MyLocationManager(AlgorithmName.GPS,this);
+        myLocationManager = new MyLocationManager(AlgorithmName.GPS,this,null);
         if (myLocationManager.getMyPermissionsManager().isGPSEnabled()) {
             currentLocation = myLocationManager.locate();
         }
@@ -118,7 +117,7 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
         super.onResume();
 
         Log.i("GPSactivity","on resume");
-        myLocationManager = new MyLocationManager(AlgorithmName.GPS,this);
+        myLocationManager = new MyLocationManager(AlgorithmName.GPS,this, null);
 
     }
     @Override

@@ -21,7 +21,7 @@ public class MagneticActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_magnetic);
 
-        myLocationManager = new MyLocationManager(AlgorithmName.MAGNETIC_FP, this);
+        //myLocationManager = new MyLocationManager(AlgorithmName.MAGNETIC_FP, this, );
         MyApp.setMyLocationManagerInstance(myLocationManager);
 
     }

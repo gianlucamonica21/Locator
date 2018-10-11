@@ -72,7 +72,7 @@ public class GPSActivity extends Activity implements OnMapReadyCallback {
         super.onResume();
 
         Log.i("GPSactivity","on resume");
-        myLocationManager = new MyLocationManager(AlgorithmName.GPS,this);
+        //myLocationManager = new MyLocationManager(AlgorithmName.GPS,this, );
 
         if(!myLocationManager.getMyPermissionsManager().isGPSEnabled()){
             btn.setEnabled(false);

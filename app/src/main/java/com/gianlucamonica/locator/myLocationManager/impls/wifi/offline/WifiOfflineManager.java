@@ -41,7 +41,7 @@ public class WifiOfflineManager extends AppCompatActivity{
 
     public <T extends View> T build(Class<T> type){
 
-        mV = new MapView(this.activity,null);
+        //mV = new MapView(this.activity,null);
         mV.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

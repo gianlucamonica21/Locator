@@ -5,14 +5,20 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +45,7 @@ public class ButtonsFragment extends Fragment {
     private Algorithm algorithm;
     private Building building;
     private int gridSize;
+    private ArrayList<IndoorParams> indoorParams;
 
     public ButtonsFragment() {
         // Required empty public constructor
@@ -72,7 +79,7 @@ public class ButtonsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
@@ -84,11 +91,11 @@ public class ButtonsFragment extends Fragment {
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // istanziare il middleware
                 Intent intent = new Intent(getActivity(),ScanActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("building",building);
-                bundle.putSerializable("algorithm",algorithm);
-                bundle.putSerializable("gridSize",gridSize);
+                bundle.putSerializable("indoorParams", indoorParams);
+                Log.i("buttonsFrag",indoorParams.toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -130,10 +137,21 @@ public class ButtonsFragment extends Fragment {
         scanButton.setEnabled(visibility);
     }
 
-    public void loadScanInfo(Building building, Algorithm algorithm, int gridSize){
-        this.building = building;
-        this.algorithm = algorithm;
-        this.gridSize = gridSize;
+    public void loadIndoorParams(ArrayList<IndoorParams> indoorParams){
+        this.indoorParams = indoorParams;
+        for (int i = 0; i < indoorParams.size(); i++){
+            switch (indoorParams.get(i).getName()){
+                case "building":
+                    this.building = (Building) indoorParams.get(i).getParamObject();
+                    break;
+                case "algorithm":
+                    this.algorithm = (Algorithm) indoorParams.get(i).getParamObject();
+                    break;
+                case "size":
+                    this.gridSize = (int) indoorParams.get(i).getParamObject();
+                    break;
+            }
+        }
     }
 
     /**

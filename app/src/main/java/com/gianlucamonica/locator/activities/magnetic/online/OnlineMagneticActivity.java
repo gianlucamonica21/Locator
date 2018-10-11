@@ -30,8 +30,8 @@ public class OnlineMagneticActivity extends AppCompatActivity {
             final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
 
             // setting the map view
-            MapView mapView = new MapView(this,computedLocation.getGridName());
-            mLinearLayout.addView(mapView);
+            //MapView mapView = new MapView(this,computedLocation.getGridName());
+            //mLinearLayout.addView(mapView);
         }
 
     }

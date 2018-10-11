@@ -11,13 +11,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.wifi.offlineActivity.OfflineWIFIActivity;
 import com.gianlucamonica.locator.activities.wifi.onlineActivity.OnlineWIFIActivity;
-import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.AP.AP;
-import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.AP.APDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
@@ -39,7 +36,7 @@ public class WIFIActivity extends AppCompatActivity {
         btnOnline = (Button) findViewById(R.id.button4);
         TextView textView = (TextView) findViewById(R.id.textView2);
 
-        myLocationManager = new MyLocationManager(AlgorithmName.WIFI_RSS_FP, this);
+        //myLocationManager = new MyLocationManager(AlgorithmName.WIFI_RSS_FP, this, );
         MyApp.setMyLocationManagerInstance(myLocationManager);
 
         if(!myLocationManager.getMyPermissionsManager().isWIFIEnabled()){

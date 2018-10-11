@@ -1,27 +1,24 @@
 package com.gianlucamonica.locator.activities.main;
 
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.activities.gps.GPSActivity;
-import com.gianlucamonica.locator.activities.magnetic.MagneticActivity;
-import com.gianlucamonica.locator.activities.wifi.WIFIActivity;
 import com.gianlucamonica.locator.fragments.AlgorithmFragment;
 import com.gianlucamonica.locator.fragments.BuildingFragment;
 import com.gianlucamonica.locator.fragments.ButtonsFragment;
 import com.gianlucamonica.locator.fragments.ParamFragment;
 import com.gianlucamonica.locator.fragments.ScanFragment;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements BuildingFragment.BuildingListener,
         AlgorithmFragment.OnFragmentInteractionListener,
@@ -29,19 +26,18 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         ParamFragment.OnFragmentInteractionListener,
         ScanFragment.OnFragmentInteractionListener{
 
-    private LocationMiddleware locationMiddleware;
+    private ArrayList<IndoorParams> indoorParams; // contenitore indoor algorithm infos
     private Algorithm chosenAlgorithm;
     private Building chosenBuilding;
     private int chosenSize;
-
-    private String localization = "gps";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // adding building and algorithm fragments
+        indoorParams = new ArrayList<>();
+        // adding fragments
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment
         ft.replace(R.id.algorithmLayout, new AlgorithmFragment(), new AlgorithmFragment().getTag());
@@ -66,14 +62,8 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         // inserting Scan Summary
         //databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(1,1,1,"offline"));
         //databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(1,1,1,"online"));
-        init();
+
     }
-
-
-    public void init(){
-        locationMiddleware = new LocationMiddleware(this);
-    }
-
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -85,32 +75,45 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         Log.i("onFragmentInt",object.toString());
         if(tag == "building"){
             chosenBuilding = (Building) object;
+            updateIndoorParams(tag, chosenBuilding); // populate indoor params
         }
         if(tag == "algorithm"){
             chosenAlgorithm = (Algorithm) object;
+            updateIndoorParams(tag, chosenAlgorithm); // populate indoor params
         }
-        //todo add size managment
         if(tag == "size"){
             chosenSize = (int) object;
+            updateIndoorParams(tag, chosenSize); // populate indoor params
         }
 
-        // Get ScanFragment
+        Log.i("indoorParams",indoorParams.toString());
+
+        // Get ScanFragment, to get the scans already present in DB
         ScanFragment scanFragment = (ScanFragment)
                 getSupportFragmentManager().findFragmentById(R.id.scanLayout);
-        scanFragment.updateScansList(chosenBuilding,chosenAlgorithm,chosenSize);
+        scanFragment.updateScansList(indoorParams);
 
-        // get buttons fragment
+        // get buttons fragment, passing indoor params to buttons frag
         ButtonsFragment buttonsFragment = (ButtonsFragment)
                 getSupportFragmentManager().findFragmentById(R.id.buttonsLayout);
-        buttonsFragment.loadScanInfo(chosenBuilding,chosenAlgorithm,chosenSize);
+        buttonsFragment.loadIndoorParams(indoorParams);
 
-        Log.i("chosenSize", String.valueOf(chosenSize));
         if ( chosenSize <= 0){
             buttonsFragment.manageScanButton(false);
         }else{
             buttonsFragment.manageScanButton(true);
         }
 
+    }
+
+    public void updateIndoorParams(String tag, Object object){
+        for (int i = 0; i < indoorParams.size(); i++){
+            if(indoorParams.get(i).getName().equals(tag)){
+                indoorParams.set(i,new IndoorParams(tag,object));
+                return;
+            }
+        }
+        indoorParams.add(new IndoorParams(tag,object));
     }
 
     @Override

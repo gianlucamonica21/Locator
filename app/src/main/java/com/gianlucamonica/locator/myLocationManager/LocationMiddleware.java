@@ -11,12 +11,12 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.gianlucamonica.locator.activities.main.MainActivity;
-import com.gianlucamonica.locator.myLocationManager.impls.gps.GPSLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
-import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
 import com.gianlucamonica.locator.myLocationManager.utils.permissionsManager.MyPermissionsManager;
+
+import java.util.ArrayList;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -42,12 +42,13 @@ public class LocationMiddleware implements LocationListener {
     private AlgorithmName chosenIndoorAlg = AlgorithmName.MAGNETIC_FP; // default indoor alg
 
     private Activity activity; // ?
-
     // info sul building scelto
+    private ArrayList<IndoorParams> indoorParams;
 
-    public LocationMiddleware(Activity activity){
-        activity = activity;
-
+    public LocationMiddleware(Activity activity, ArrayList<IndoorParams> indoorParams){
+        this.activity = activity;
+        this.indoorParams = indoorParams;
+        Log.i("receveid indoor params",indoorParams.toString());
         // asking gps permissions
         myPermissionsManager = new MyPermissionsManager(activity, AlgorithmName.GPS);
         permissions = new String[] {
@@ -64,15 +65,15 @@ public class LocationMiddleware implements LocationListener {
     }
 
     public void init(){
-        MainActivity mainActivity = new MainActivity();
+
         if(liveGPSAcc > GPS_ACC_THRESHOLD){
             // istantiate outdoor alg
-            myLocationManager = new MyLocationManager(AlgorithmName.GPS,activity);
+            //myLocationManager = new MyLocationManager(AlgorithmName.GPS,activity, );
             Log.i("instantiate","GPS location");
             Toast.makeText(MyApp.getContext(),"istantiate GPS",Toast.LENGTH_SHORT).show();
          }else {
             // istantiate indoor alg
-            myLocationManager = new MyLocationManager(chosenIndoorAlg, activity); //todo passing info about algorithm,building,parameter
+            //myLocationManager = new MyLocationManager(chosenIndoorAlg, activity, ); //todo passing info about algorithm,building,parameter
             Log.i("instantiate", "Indoor location");
             Toast.makeText(MyApp.getContext(),"istantiate indoor",Toast.LENGTH_SHORT).show();
          }

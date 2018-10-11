@@ -9,11 +9,13 @@ import com.gianlucamonica.locator.myLocationManager.impls.wifi.WifiAlgorithm;
 import com.gianlucamonica.locator.myLocationManager.locAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.myLocationManager.impls.gps.GPSLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.permissionsManager.MyPermissionsManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MyLocationManager implements LocalizationAlgorithmInterface {
@@ -27,6 +29,7 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
     private Algorithm algorithm;
     private Building building;
     private int gridSize;
+    private ArrayList<IndoorParams> indoorParams;
 
     /*
      * constructor which build a new istance of a particular algorithm according to algoName
@@ -34,9 +37,11 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
      * @param algoName
      * @param activity
      */
-    public MyLocationManager(AlgorithmName algoName, Activity activity) { // todo add algorithm,building,parameters infos
+    public MyLocationManager(AlgorithmName algoName, Activity activity, ArrayList<IndoorParams> indoorParams) { // todo add algorithm,building,parameters infos
 
         myPermissionsManager = new MyPermissionsManager(activity, algoName);
+        if( indoorParams != null )
+            this.indoorParams = indoorParams;
 
         switch (algoName) {
             case GPS:
@@ -65,7 +70,7 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
 
                 checkPermissions();
 
-                localizationAlgorithmInterface = new MagneticFieldAlgorithm(activity);
+                localizationAlgorithmInterface = new MagneticFieldAlgorithm(activity, indoorParams);
 
                 break;
             default:
