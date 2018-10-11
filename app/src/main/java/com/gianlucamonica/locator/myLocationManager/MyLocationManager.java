@@ -24,20 +24,19 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
     private LocalizationAlgorithmInterface localizationAlgorithmInterface;
     private MyPermissionsManager myPermissionsManager;
     private String[] permissions;
-
     // infos
     private Algorithm algorithm;
     private Building building;
     private int gridSize;
     private ArrayList<IndoorParams> indoorParams;
 
-    /*
-     * constructor which build a new istance of a particular algorithm according to algoName
-     * for each algorithm permissions and enables are checked
+    /**
+     * istantiate this class according to algoName
      * @param algoName
      * @param activity
+     * @param indoorParams
      */
-    public MyLocationManager(AlgorithmName algoName, Activity activity, ArrayList<IndoorParams> indoorParams) { // todo add algorithm,building,parameters infos
+    public MyLocationManager(AlgorithmName algoName, Activity activity, ArrayList<IndoorParams> indoorParams) {
 
         myPermissionsManager = new MyPermissionsManager(activity, algoName);
         if( indoorParams != null )

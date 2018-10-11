@@ -42,55 +42,55 @@ public class LocationMiddleware implements LocationListener {
     private AlgorithmName chosenIndoorAlg = AlgorithmName.MAGNETIC_FP; // default indoor alg
 
     private Activity activity; // ?
-    // info sul building scelto
     private ArrayList<IndoorParams> indoorParams;
 
+    /**
+     * @param activity
+     * @param indoorParams
+     */
     public LocationMiddleware(Activity activity, ArrayList<IndoorParams> indoorParams){
         this.activity = activity;
         this.indoorParams = indoorParams;
         Log.i("receveid indoor params",indoorParams.toString());
-        // asking gps permissions
+
         myPermissionsManager = new MyPermissionsManager(activity, AlgorithmName.GPS);
         permissions = new String[] {
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION};
 
-        checkPermissions();
+        checkPermissions();  // asking gps permissions
         initLocManager();
 
         if(checkGPS || checkNetwork){
-            // request location updates
-            requestUpdates();
+            requestUpdates(); // request location updates
         }
     }
 
+    /**
+     * checks if the user is outside or inside a building and instatiate relative myLocMan
+     */
     public void init(){
-
         if(liveGPSAcc > GPS_ACC_THRESHOLD){
             // istantiate outdoor alg
-            //myLocationManager = new MyLocationManager(AlgorithmName.GPS,activity, );
             Log.i("instantiate","GPS location");
             Toast.makeText(MyApp.getContext(),"istantiate GPS",Toast.LENGTH_SHORT).show();
          }else {
             // istantiate indoor alg
-            //myLocationManager = new MyLocationManager(chosenIndoorAlg, activity, ); //todo passing info about algorithm,building,parameter
             Log.i("instantiate", "Indoor location");
             Toast.makeText(MyApp.getContext(),"istantiate indoor",Toast.LENGTH_SHORT).show();
          }
 
         // cancel location updates
         stopListener();
-        Location currLocation = myLocationManager.locate();
-    }
-
-    public void build(){
-
     }
 
     public void locate(){
         myLocationManager.locate();
     }
 
+    /**
+     * instatiate locationManager
+     */
     public void initLocManager(){
         locationManager = (LocationManager) MyApp.getContext()
                 .getSystemService(LOCATION_SERVICE);
@@ -137,6 +137,9 @@ public class LocationMiddleware implements LocationListener {
         }
     }
 
+    /**
+     * check permissions for the gps algorithm
+     */
     public void checkPermissions() {
         myPermissionsManager.requestPermission(permissions);
         myPermissionsManager.turnOnServiceIfOff();

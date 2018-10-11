@@ -19,10 +19,7 @@ public class MapView extends View {
 
     private ArrayList<Grid> rects; // rects to draw which compounds the map
     private String estimateGridName;
-    // JSON manager stuff
-    JSONReader jsonReader;
-    JSONObject config;
-    JSONToGridConverter jsonToGridConverter;
+
     // scale factors for drawing map
     int scaleFactor = 100;
     int add = 165;
@@ -41,11 +38,6 @@ public class MapView extends View {
         super(context);
 
         this.indoorParams = indoorParams;
-        jsonReader = new JSONReader("mapConfig.json");
-        jsonToGridConverter = new JSONToGridConverter();
-
-        config = jsonReader.getConfig();
-        rects = jsonToGridConverter.convert(config);
         this.estimateGridName = estimateGridName;
 
         for (int i = 0; i < this.indoorParams.size(); i++){
@@ -80,26 +72,6 @@ public class MapView extends View {
 
     }
 
-    public MapView(Context context,int height,int width,int gridSize){
-        super(context);
-        this.height = height;
-        this.width = width;
-        this.gridSize = gridSize;
-
-        ArrayList<Grid> grids = new ArrayList<>();
-
-        for(int i = 0; i < height; i++){
-            for(int j = 0; j < width; j++){
-                grids.add(new Grid(
-                        new Coordinate(i,j),
-                        new Coordinate(i+1,j+1),
-                        String.valueOf(j*i)
-                ));
-            }
-        }
-
-        Log.i("grids",grids.toString());
-    }
 
     /**
      * @param rects
