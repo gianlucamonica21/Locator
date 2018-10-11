@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
     private Building chosenBuilding;
     private int chosenSize;
 
-    private BuildingFragment.BuildingListener buildingListener;
+    private String localization = "gps";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         // Replace the contents of the container with the new fragment
         ft.replace(R.id.algorithmLayout, new AlgorithmFragment(), new AlgorithmFragment().getTag());
         ft.replace(R.id.buildingLayout, new BuildingFragment(), new BuildingFragment().getTag());
-        setListener((BuildingFragment.BuildingListener) new BuildingFragment());
         ft.replace(R.id.buttonsLayout, new ButtonsFragment(), new ButtonsFragment().getTag());
         ft.replace(R.id.paramLayout, new ParamFragment(), new ParamFragment().getTag());
         ft.replace(R.id.scanLayout, new ScanFragment(), new ScanFragment().getTag());
@@ -70,27 +69,11 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         init();
     }
 
-    public void setListener(BuildingFragment.BuildingListener listener)
-    {
-        this.buildingListener = listener ;
-    }
 
     public void init(){
         locationMiddleware = new LocationMiddleware(this);
     }
 
-    public void updateUI(String localization){
-        if(localization.equals("gps")){
-            // disattivo building
-            buildingListener.manageSpinner(false);
-            // disattivo algorithm
-            // disattivo size
-            // disattivo scans
-            // disattivo locate button
-        }else{
-
-        }
-    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {

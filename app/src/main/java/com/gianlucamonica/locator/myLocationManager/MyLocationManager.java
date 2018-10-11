@@ -10,6 +10,8 @@ import com.gianlucamonica.locator.myLocationManager.locAlgInterface.Localization
 import com.gianlucamonica.locator.myLocationManager.impls.gps.GPSLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.permissionsManager.MyPermissionsManager;
 
 import java.util.Arrays;
@@ -21,13 +23,18 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
     private MyPermissionsManager myPermissionsManager;
     private String[] permissions;
 
+    // infos
+    private Algorithm algorithm;
+    private Building building;
+    private int gridSize;
+
     /*
      * constructor which build a new istance of a particular algorithm according to algoName
      * for each algorithm permissions and enables are checked
      * @param algoName
      * @param activity
      */
-    public MyLocationManager(AlgorithmName algoName, Activity activity) {
+    public MyLocationManager(AlgorithmName algoName, Activity activity) { // todo add algorithm,building,parameters infos
 
         myPermissionsManager = new MyPermissionsManager(activity, algoName);
 

@@ -32,7 +32,7 @@ public class MapView extends View {
     /**
      * @param context
      */
-    public MapView(Context context,String estimateGridName){
+    public MapView(Context context,String estimateGridName){  // todo passing algorithm, building, params info
         super(context);
 
         jsonReader = new JSONReader("mapConfig.json");

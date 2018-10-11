@@ -43,9 +43,9 @@ public class MagneticOfflineManager implements SensorEventListener {
         databaseManager = new DatabaseManager(activity);
     }
 
-    public <T extends View> T build(Class<T> type){
+    public <T extends View> T build(Class<T> type){ // todo passing algorithm, building, params info
 
-        mV = new MapView(this.activity,null);
+        mV = new MapView(this.activity,null);  // todo passing algorithm, building, params info
         mV.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

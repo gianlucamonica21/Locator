@@ -70,14 +70,12 @@ public class LocationMiddleware implements LocationListener {
             myLocationManager = new MyLocationManager(AlgorithmName.GPS,activity);
             Log.i("instantiate","GPS location");
             Toast.makeText(MyApp.getContext(),"istantiate GPS",Toast.LENGTH_SHORT).show();
-            mainActivity.updateUI("gps");
-        }else {
+         }else {
             // istantiate indoor alg
-            myLocationManager = new MyLocationManager(chosenIndoorAlg, activity);
+            myLocationManager = new MyLocationManager(chosenIndoorAlg, activity); //todo passing info about algorithm,building,parameter
             Log.i("instantiate", "Indoor location");
             Toast.makeText(MyApp.getContext(),"istantiate indoor",Toast.LENGTH_SHORT).show();
-            mainActivity.updateUI("indoor");
-        }
+         }
 
         // cancel location updates
         stopListener();
