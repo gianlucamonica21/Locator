@@ -3,10 +3,7 @@ package com.gianlucamonica.locator.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,7 +89,7 @@ public class AlgorithmFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Algorithm chosenAlgorithm = getSelectedAlgorithm();
-                mListener.onFragmentInteraction(chosenAlgorithm, "algorithm");
+                mListener.onFragmentInteraction(chosenAlgorithm, IndoorParamName.ALGORITHM);
             }
 
             @Override
@@ -109,7 +105,7 @@ public class AlgorithmFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri,"");
+            //mListener.onFragmentInteraction(uri,"");
         }
     }
 
@@ -142,7 +138,7 @@ public class AlgorithmFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Object object,String tag);
+        void onFragmentInteraction(Object object, IndoorParamName tag);
     }
 
     public void populateSpinner(View v){

@@ -34,7 +34,7 @@ public class MapView extends View {
     /**
      * @param context
      */
-    public MapView(Context context,String estimateGridName,ArrayList<IndoorParams> indoorParams){  // todo passing algorithm, building, params info
+    public MapView(Context context,String estimateGridName,ArrayList<IndoorParams> indoorParams){
         super(context);
 
         this.indoorParams = indoorParams;
@@ -42,12 +42,12 @@ public class MapView extends View {
 
         for (int i = 0; i < this.indoorParams.size(); i++){
             switch (indoorParams.get(i).getName()){
-                case "building":
+                case BUILDING:
                     Building building = (Building) indoorParams.get(i).getParamObject();
                     this.height = building.getHeight();
                     this.width = building.getWidht();
                     break;
-                case "size":
+                case SIZE:
                     int size = (int) indoorParams.get(i).getParamObject();
                     this.gridSize = size;
                     break;
@@ -85,10 +85,10 @@ public class MapView extends View {
         underlineText.setTextAlign(Paint.Align.CENTER);
         underlineText.setTextSize(40);
 
-        canvas.drawText("At the end", 500,  500, underlineText);
+        /*canvas.drawText("At the end", 500,  500, underlineText);
         canvas.drawText("tap one more time", 500,  540, underlineText);
         canvas.drawText("in order to", 500,  580, underlineText);
-        canvas.drawText("finish the scan", 500,  620, underlineText);
+        canvas.drawText("finish the scan", 500,  620, underlineText);*/
 
         for(int i = 0; i < rects.size(); i++){
 

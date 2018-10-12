@@ -2,13 +2,9 @@ package com.gianlucamonica.locator.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +14,11 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.activities.main.MainActivity;
-import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
-import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
-import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.BuildingDAO;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,7 +93,7 @@ public class BuildingFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Building chosenBuilding = getSelectedBuilding();
-                mListener.onFragmentInteraction(chosenBuilding,"building");
+                mListener.onFragmentInteraction(chosenBuilding, IndoorParamName.BUILDING);
             }
 
             @Override
@@ -131,7 +123,7 @@ public class BuildingFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri,"");
+            //mListener.onFragmentInteraction(uri,"");
         }
     }
 
@@ -170,7 +162,7 @@ public class BuildingFragment extends Fragment {
      */
     public interface BuildingListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Object object,String tag);
+        void onFragmentInteraction(Object object, IndoorParamName tag);
 
         void manageSpinner(boolean enable);
     }

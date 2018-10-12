@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -94,7 +95,7 @@ public class ParamFragment extends Fragment {
                 }else{
                     sizeValue = Integer.parseInt( sizeEditText.getText().toString() ); // getting value
                 }
-                mListener.onFragmentInteraction(sizeValue, "size");
+                mListener.onFragmentInteraction(sizeValue, IndoorParamName.SIZE);
             }
         });
         // Inflate the layout for this fragment
@@ -137,6 +138,6 @@ public class ParamFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Object object, String tag);
+        void onFragmentInteraction(Object object, IndoorParamName tag);
     }
 }

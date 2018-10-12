@@ -12,7 +12,7 @@ import com.gianlucamonica.locator.fragments.BuildingFragment;
 import com.gianlucamonica.locator.fragments.ButtonsFragment;
 import com.gianlucamonica.locator.fragments.ParamFragment;
 import com.gianlucamonica.locator.fragments.ScanFragment;
-import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
@@ -71,17 +71,17 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
     }
 
     @Override
-    public void onFragmentInteraction(Object object, String tag) {
+    public void onFragmentInteraction(Object object, IndoorParamName tag) {
         Log.i("onFragmentInt",object.toString());
-        if(tag == "building"){
+        if(tag == IndoorParamName.BUILDING){
             chosenBuilding = (Building) object;
             updateIndoorParams(tag, chosenBuilding); // populate indoor params
         }
-        if(tag == "algorithm"){
+        if(tag == IndoorParamName.ALGORITHM){
             chosenAlgorithm = (Algorithm) object;
             updateIndoorParams(tag, chosenAlgorithm); // populate indoor params
         }
-        if(tag == "size"){
+        if(tag == IndoorParamName.SIZE){
             chosenSize = (int) object;
             updateIndoorParams(tag, chosenSize); // populate indoor params
         }
@@ -106,9 +106,9 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
 
     }
 
-    public void updateIndoorParams(String tag, Object object){
+    public void updateIndoorParams(IndoorParamName tag, Object object){
         for (int i = 0; i < indoorParams.size(); i++){
-            if(indoorParams.get(i).getName().equals(tag)){
+            if(indoorParams.get(i).getName() == tag){
                 indoorParams.set(i,new IndoorParams(tag,object));
                 return;
             }

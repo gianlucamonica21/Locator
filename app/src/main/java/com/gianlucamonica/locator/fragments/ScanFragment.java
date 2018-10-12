@@ -124,13 +124,13 @@ public class ScanFragment extends Fragment {
 
         for (int i = 0; i < indoorParams.size(); i++){
             switch (indoorParams.get(i).getName()){
-                case "algorithm":
+                case ALGORITHM:
                     algorithm = (Algorithm) indoorParams.get(i).getParamObject();
                     break;
-                case "building":
+                case BUILDING:
                     building = (Building) indoorParams.get(i).getParamObject();
                     break;
-                case "size":
+                case SIZE:
                     gridSize = (int) indoorParams.get(i).getParamObject();
                     break;
             }

@@ -4,19 +4,19 @@ import java.io.Serializable;
 
 public class IndoorParams implements Serializable {
 
-    private String name;
+    private IndoorParamName name;
     private Object paramObject;
 
-    public IndoorParams(String name, Object paramObject) {
+    public IndoorParams(IndoorParamName name, Object paramObject) {
         this.name = name;
         this.paramObject = paramObject;
     }
 
-    public String getName() {
+    public IndoorParamName getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(IndoorParamName name) {
         this.name = name;
     }
 

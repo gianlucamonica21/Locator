@@ -141,13 +141,13 @@ public class ButtonsFragment extends Fragment {
         this.indoorParams = indoorParams;
         for (int i = 0; i < indoorParams.size(); i++){
             switch (indoorParams.get(i).getName()){
-                case "building":
+                case BUILDING:
                     this.building = (Building) indoorParams.get(i).getParamObject();
                     break;
-                case "algorithm":
+                case ALGORITHM:
                     this.algorithm = (Algorithm) indoorParams.get(i).getParamObject();
                     break;
-                case "size":
+                case SIZE:
                     this.gridSize = (int) indoorParams.get(i).getParamObject();
                     break;
             }

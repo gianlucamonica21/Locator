@@ -47,25 +47,6 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
     @Override
     public void checkPermissions() {
     }
-
-    /*@Override
-    public boolean canGetLocation() {
-        return false;
-    }
-
-    @Override
-    public boolean isProviderEnabled() {
-        return false;
-    }
-
-    @Override
-    public double getLongitude() {
-        return 0;
-    }
-
-    @Override
-    public double getLatitude() {
-        return 0;
-    }*/
+    
 
 }
