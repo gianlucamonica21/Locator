@@ -10,9 +10,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.AP.AP;
-import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.AP.APDAO;
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.fingerPrint.WifiFingerPrint;
-import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.fingerPrint.WifiFingerPrintDAO;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.map.Grid;
@@ -33,15 +32,19 @@ public class WifiOfflineManager extends AppCompatActivity{
     private AP ap;
     private ArrayList<WifiFingerPrint> wifiFingerPrints;
 
-    public WifiOfflineManager(Activity activity){
+    private ArrayList<IndoorParams> indoorParams;
+
+
+    public WifiOfflineManager(Activity activity, ArrayList<IndoorParams> indoorParams){
         this.activity = activity;
         this.wifiFingerPrints = new ArrayList<>();
+        this.indoorParams = indoorParams;
         scanAPs();
     }
 
     public <T extends View> T build(Class<T> type){
 
-        //mV = new MapView(this.activity,null);
+        mV = new MapView(this.activity,null,indoorParams);
         mV.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

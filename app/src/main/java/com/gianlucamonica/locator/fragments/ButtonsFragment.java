@@ -90,7 +90,7 @@ public class ButtonsFragment extends Fragment {
 
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { // quando clicco su scan button
                 // istanziare il middleware
                 Intent intent = new Intent(getActivity(),ScanActivity.class);
                 Bundle bundle = new Bundle();

@@ -26,23 +26,23 @@ import static android.content.Context.LOCATION_SERVICE;
  */
 public class LocationMiddleware implements LocationListener {
 
-    // listener's and location params
+    /**
+     * location listener's and location params
+     */
     private static final float GPS_ACC_THRESHOLD = 15;
+    protected LocationManager locationManager; // in order to retrieve the gps loc
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;
     private static final long MIN_TIME_BW_UPDATES = 0;
     private Boolean checkGPS;
     private Boolean checkNetwork;
 
-    // my loc manager's stuff
-    private MyLocationManager  myLocationManager;
-    protected LocationManager locationManager; // in order to retrieve the gps loc
     private MyPermissionsManager myPermissionsManager; // in order to get the necessary perm
     private String[] permissions;
     private float liveGPSAcc = 0; // gps acc just registered
     private AlgorithmName chosenIndoorAlg = AlgorithmName.MAGNETIC_FP; // default indoor alg
 
     private Activity activity; // ?
-    private ArrayList<IndoorParams> indoorParams;
+    private ArrayList<IndoorParams> indoorParams; // indoor algorithm's params such as building, algorithm and grid size
 
     /**
      * @param activity
@@ -51,9 +51,7 @@ public class LocationMiddleware implements LocationListener {
     public LocationMiddleware(Activity activity, ArrayList<IndoorParams> indoorParams){
         this.activity = activity;
         this.indoorParams = indoorParams;
-        Log.i("receveid indoor params",indoorParams.toString());
-
-        myPermissionsManager = new MyPermissionsManager(activity, AlgorithmName.GPS);
+        this.myPermissionsManager = new MyPermissionsManager(activity, AlgorithmName.GPS);
         permissions = new String[] {
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION};
@@ -82,10 +80,6 @@ public class LocationMiddleware implements LocationListener {
 
         // cancel location updates
         stopListener();
-    }
-
-    public void locate(){
-        myLocationManager.locate();
     }
 
     /**
@@ -145,6 +139,10 @@ public class LocationMiddleware implements LocationListener {
         myPermissionsManager.turnOnServiceIfOff();
     }
 
+    /**
+     * wait for location's change and call init to instantiate indoor or outdoor algorithm
+     * @param location
+     */
     @Override
     public void onLocationChanged(Location location) {
         liveGPSAcc = location.getAccuracy();

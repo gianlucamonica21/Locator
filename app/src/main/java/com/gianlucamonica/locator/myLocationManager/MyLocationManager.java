@@ -60,7 +60,7 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
                 checkPermissions();
 
                 if (myPermissionsManager.isWIFIEnabled())
-                    localizationAlgorithmInterface = new WifiAlgorithm(activity);
+                    localizationAlgorithmInterface = new WifiAlgorithm(activity, indoorParams);
                 break;
             case MAGNETIC_FP:
                 this.algoName = algoName;

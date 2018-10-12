@@ -16,13 +16,8 @@ import java.util.ArrayList;
 
 public class ScanActivity extends AppCompatActivity {
 
-    private Algorithm algorithm;
-    private Building building;
-    private int gridSize;
     private ArrayList<IndoorParams> indoorParams;
-
     private MyLocationManager myLocationManager;
-    private AlgorithmName algorithmName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +27,16 @@ public class ScanActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         indoorParams = (ArrayList<IndoorParams>) bundle.getSerializable("indoorParams");
 
-
+        Algorithm algorithm;
+        AlgorithmName algorithmName = AlgorithmName.MAGNETIC_FP;
+        for (int i = 0; i < indoorParams.size(); i++){
+            if (indoorParams.get(i).getName().equals("algorithm")){
+                algorithm = (Algorithm) indoorParams.get(i).getParamObject();
+                algorithmName = AlgorithmName.valueOf(algorithm.getName());
+            }
+        }
         // setting algorithm in mylocationmanager
-        myLocationManager = new MyLocationManager(AlgorithmName.MAGNETIC_FP,this, indoorParams);
+        myLocationManager = new MyLocationManager(algorithmName,this, indoorParams);
 
         final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
 
