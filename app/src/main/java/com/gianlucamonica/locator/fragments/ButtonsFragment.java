@@ -101,6 +101,19 @@ public class ButtonsFragment extends Fragment {
             }
         });
 
+        locateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // quando clicco su scan button
+                // istanziare il middleware
+                Intent intent = new Intent(getActivity(),LocateActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("indoorParams", indoorParams);
+                Log.i("buttonsFrag",indoorParams.toString());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
         // Inflate the layout for this fragment
         return v;
     }

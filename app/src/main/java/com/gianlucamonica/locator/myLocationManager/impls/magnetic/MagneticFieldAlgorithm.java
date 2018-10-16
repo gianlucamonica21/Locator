@@ -8,6 +8,8 @@ import com.gianlucamonica.locator.myLocationManager.impls.magnetic.offline.Magne
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.online.MagneticOnlineManager;
 import com.gianlucamonica.locator.myLocationManager.locAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
 
 import java.util.ArrayList;
 
@@ -36,8 +38,8 @@ public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
     }
 
     @Override
-    public MagneticFingerPrint locate() {
-        magneticOnlineManager = new MagneticOnlineManager(activity);
+    public OnlineScan locate() {
+        magneticOnlineManager = new MagneticOnlineManager(activity,indoorParams);
         return magneticOnlineManager.locate();
     }
 

@@ -5,14 +5,22 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrintDAO;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.online.EuclideanDistanceAlg;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScanDAO;
+import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,17 +36,20 @@ public class MagneticOnlineManager implements SensorEventListener {
     private int scanNumber = 0;
     private double magnitudeValue;
     private EuclideanDistanceAlg euclideanDistanceAlg;
+    private ArrayList<IndoorParams> indoorParams;
+    private IndoorParamsUtils indoorParamsUtils;
+    private int idScan;
 
-
-
-    public MagneticOnlineManager(Activity activity){
+    public MagneticOnlineManager(Activity activity, ArrayList<IndoorParams> indoorParams){
         this.activity = activity;
         databaseManager = new DatabaseManager(activity);
         magneticFingerPrints = new ArrayList<>();
         sensorManager = (SensorManager) MyApp.getContext().getSystemService(SENSOR_SERVICE);
+        this.indoorParams = indoorParams;
+        this.indoorParamsUtils = new IndoorParamsUtils();
     }
 
-    public MagneticFingerPrint locate(){
+    public OnlineScan locate(){
 
         //getting m.f. value
         sensorManager.registerListener(this,
@@ -46,28 +57,36 @@ public class MagneticOnlineManager implements SensorEventListener {
                 SensorManager.SENSOR_DELAY_NORMAL);
 
         //getting map from db and do alg
-        /*List<MagneticFingerPrint> magneticFingerPrintsDB = getMagneticFingerPrintsFromDb();
-        if (magneticFingerPrintsDB.size() > 0) {
+        List<OfflineScan> offlineScans = getMagneticFingerPrintsFromDb();
+        Log.i("offlineScan",offlineScans.toString());
+        if (offlineScans.size() > 0) {
 
-            euclideanDistanceAlg = new EuclideanDistanceAlg(magneticFingerPrintsDB, magnitudeValue);
+            Log.i("calcolo euclidean","");
+            euclideanDistanceAlg = new EuclideanDistanceAlg(offlineScans, magnitudeValue);
             int index = euclideanDistanceAlg.compute(AlgorithmName.MAGNETIC_FP);
 
-            return magneticFingerPrintsDB.get(index);
+            return new OnlineScan(idScan,index);
 
         } else {
             Toast.makeText(MyApp.getContext(),
                     "Non info in db",
                     Toast.LENGTH_SHORT).show();
-        }*/
+        }
 
         return null;
     }
 
-    public List<MagneticFingerPrint> getMagneticFingerPrintsFromDb(){
-        /*MagneticFingerPrintDAO magneticFingerPrintDAO = databaseManager.getAppDatabase().getMagneticFingerPrintDAO();
-        List<MagneticFingerPrint> magneticFingerPrints = magneticFingerPrintDAO.getMagneticFingerPrints();
-        return magneticFingerPrints;*/
-        return  null;
+    public List<OfflineScan> getMagneticFingerPrintsFromDb(){
+        int idBuilding = indoorParamsUtils.getBuilding(indoorParams).getId();
+        int idAlgorithm= indoorParamsUtils.getAlgorithm(indoorParams).getId();
+        int gridSize = indoorParamsUtils.getSize(indoorParams);
+
+        List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,gridSize);
+        idScan = scanSummary.get(0).getId();
+        Log.i("idScan", String.valueOf(idScan));
+        List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(idScan);
+
+        return  offlineScans;
     }
 
     @Override

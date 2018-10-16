@@ -53,7 +53,8 @@
         <activity android:name=".activities.magnetic.offline.OfflineMagneticActivity" />
         <activity android:name=".activities.magnetic.online.OnlineMagneticActivity" />
         <activity android:name=".fragments.InsertBuildingActivity" />
-        <activity android:name=".fragments.ScanActivity"></activity>
+        <activity android:name=".fragments.ScanActivity" />
+        <activity android:name=".fragments.LocateActivity"></activity>
     </application>
 
 </manifest>

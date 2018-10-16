@@ -3,13 +3,14 @@ package com.gianlucamonica.locator.myLocationManager.impls.wifi.online;
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.fingerPrint.WifiFingerPrint;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
+import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 
 import java.util.List;
 
 public class EuclideanDistanceAlg {
 
     private List<WifiFingerPrint> wifiRadioMap;
-    private List<MagneticFingerPrint> magneticRadioMap;
+    private List<OfflineScan> offlineScans;
     private int scannedRssi;
     private double magnitude;
 
@@ -18,8 +19,8 @@ public class EuclideanDistanceAlg {
         this.scannedRssi = scannedRssi;
     }
 
-    public EuclideanDistanceAlg(List<MagneticFingerPrint> magneticRadioMap, double magnitude){
-        this.magneticRadioMap = magneticRadioMap;
+    public EuclideanDistanceAlg(List<OfflineScan> offlineScans, double magnitude){
+        this.offlineScans = offlineScans;
         this.magnitude = magnitude;
     }
 
@@ -58,18 +59,18 @@ public class EuclideanDistanceAlg {
 
     public int computeMagn(){
 
-        for (int i = 0; i < magneticRadioMap.size(); i++) {
-            double magnTmp = magneticRadioMap.get(i).getMagnitude();
-            magneticRadioMap.get(i).setMagnitude(
+        for (int i = 0; i < offlineScans.size(); i++) {
+            double magnTmp = offlineScans.get(i).getValue();
+            offlineScans.get(i).setValue(
                     Math.sqrt(Math.pow((double) magnTmp - magnitude,2))
             );
         }
 
         int index = 0;
-        double minMagn = magneticRadioMap.get(0).getMagnitude();
-        for (int i = 0; i < magneticRadioMap.size() - 1; i++) {
-            if( magneticRadioMap.get(i+1).getMagnitude() < minMagn ){
-                minMagn = magneticRadioMap.get(i+1).getMagnitude();
+        double minMagn = offlineScans.get(0).getValue();
+        for (int i = 0; i < offlineScans.size() - 1; i++) {
+            if( offlineScans.get(i+1).getValue() < minMagn ){
+                minMagn = offlineScans.get(i+1).getValue();
                 index = i + 1;
             }
         }

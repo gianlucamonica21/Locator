@@ -14,7 +14,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineSc
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummaryDAO;
 
-@Database(entities = {Building.class,Algorithm.class,OfflineScan.class, OnlineScan.class, ScanSummary.class}, version = 27)
+@Database(entities = {Building.class,Algorithm.class,OfflineScan.class, OnlineScan.class, ScanSummary.class}, version = 28)
 public abstract class AppDatabase extends RoomDatabase {
 
     /*public abstract APDAO getAPDAO();

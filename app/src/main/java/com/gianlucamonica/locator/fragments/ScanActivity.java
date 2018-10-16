@@ -1,5 +1,6 @@
 package com.gianlucamonica.locator.fragments;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.activities.main.MainActivity;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
@@ -84,6 +86,8 @@ public class ScanActivity extends AppCompatActivity {
                 Toast.makeText(MyApp.getContext(),
                         "Scan finished",
                         Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ScanActivity.this,MainActivity.class);
+                startActivity(intent);
 
             }
         });
