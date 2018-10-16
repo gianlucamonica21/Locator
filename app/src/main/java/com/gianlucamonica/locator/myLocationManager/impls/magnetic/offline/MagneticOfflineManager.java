@@ -13,7 +13,10 @@ import android.widget.Toast;
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrintDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.map.Grid;
@@ -33,9 +36,18 @@ public class MagneticOfflineManager implements SensorEventListener {
     private int scanNumber = 0; // m. field scan counter
     private ArrayList<Double> magnitudes;
     private ArrayList<String> zones;
-    private ArrayList<MagneticFingerPrint> magneticFingerPrints;
+    private ArrayList<OfflineScan> offlineScans;
+    private int clicksOnMap = 0;
+    private boolean inserted = false;
+    private double liveMagnitude;
+    private String liveGridName;
 
     private ArrayList<IndoorParams> indoorParams;
+    private IndoorParamsUtils indoorParamsUtils;
+
+    private int idBuilding;
+    private int idAlgorithm;
+    private int gridSize;
 
     public MagneticOfflineManager(Activity activity,ArrayList<IndoorParams> indoorParams){
         this.activity = activity;
@@ -43,8 +55,12 @@ public class MagneticOfflineManager implements SensorEventListener {
         sensorManager = (SensorManager) MyApp.getContext().getSystemService(SENSOR_SERVICE);
         magnitudes = new ArrayList<>();
         zones = new ArrayList<>();
-        magneticFingerPrints = new ArrayList<>();
+        offlineScans = new ArrayList<>();
+        indoorParamsUtils = new IndoorParamsUtils();
         databaseManager = new DatabaseManager(activity);
+        idBuilding = indoorParamsUtils.getBuilding(indoorParams) != null ? indoorParamsUtils.getBuilding(indoorParams).getId() : -1;
+        idAlgorithm = indoorParamsUtils.getAlgorithm(indoorParams) != null ? indoorParamsUtils.getAlgorithm(indoorParams).getId() : -1;
+        gridSize = indoorParamsUtils.getSize(indoorParams) != -1 ? indoorParamsUtils.getSize(indoorParams) : -1;
     }
 
     /**
@@ -86,33 +102,45 @@ public class MagneticOfflineManager implements SensorEventListener {
                 Toast.makeText(MyApp.getContext(),"scan is finished, you can go to the online localization",Toast.LENGTH_SHORT).show();
                 Log.i("zone and magn size", zones.size() + " - " + magnitudes.size());
                 if(zones.size() == magnitudes.size()){
-                    for (int i = 0; i < zones.size(); i++){
-                        magneticFingerPrints.add(new MagneticFingerPrint(zones.get(i),magnitudes.get(i)));
+                    if(inserted){
+                        //1a) recupero id scan
+                        int idScan = getIdScanSummary();
+                        if( idScan != -1){
+                            for (int i = 0; i < zones.size(); i++){
+                                //2) inserisco in offline scan
+                                databaseManager.getAppDatabase().getOfflineScanDAO().insert(
+                                        new OfflineScan(idScan,Integer.parseInt(zones.get(i)),magnitudes.get(i))
+                                );
+                            }
+                        }
+                    }else{
+                        Log.i("insert scan summary","non riuscito");
                     }
                 }
-                Log.i("magnFParray",magneticFingerPrints.toString());
-                // inserting in db
-                for (int i = 0; i < magneticFingerPrints.size(); i++){
-                    /*if(result.size() == 0){
-                        Log.i("Scan finished","inserting in db");
-                    }*/
-                }
+
             }else{
                 for(int i = 0; i < rects.size(); i = i + 1){
                     float aX = ((rects.get(i).getA().getX()*mV.getScaleFactor())+ mV.getAdd());
                     float bX = ((rects.get(i).getB().getX()*mV.getScaleFactor())+ mV.getAdd());
                     float bY = ((rects.get(i).getB().getY()*mV.getScaleFactor())+ mV.getAdd());
                     float aY = ((rects.get(i).getA().getY()*mV.getScaleFactor())+ mV.getAdd());
-                    String gridName = rects.get(i).getName();
 
                     if( x >= aX && x <= bX){
                         if( y <= bY && y >= aY){
+                            liveGridName = rects.get(i).getName();
+                            Log.i("gridname clicked",liveGridName);
+
+                            clicksOnMap++;
+                            // se clicco all'interno della mappa, la prima volta inserisco in scan summary
+                            if(clicksOnMap == 1){
+                                inserted = insertNewScanSummary();
+                            }
                             //get magnetic field value
                             scanNumber = 0;
                             sensorManager.registerListener(this,
                                     sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-                                    SensorManager.SENSOR_DELAY_NORMAL);
-                            zones.add(rects.get(i).getName());
+                                    SensorManager.SENSOR_DELAY_FASTEST);
+
 
                             rects.remove(i);
                             Log.i("rects size on touch",String.valueOf(rects.size()));
@@ -133,17 +161,61 @@ public class MagneticOfflineManager implements SensorEventListener {
                 float magX = event.values[0];
                 float magY = event.values[1];
                 float magZ = event.values[2];
-                double magnitude = Math.sqrt((magX * magX) + (magY * magY) + (magZ * magZ));
+                liveMagnitude = Math.sqrt((magX * magX) + (magY * magY) + (magZ * magZ));
                 scanNumber++;
-                magnitudes.add(magnitude);
+
+                if(inserted){
+                    //1a) recupero id scan
+                    int idScan = getIdScanSummary();
+                    if( idScan != -1){
+                        //2) inserisco in offline scan
+                        Log.i("inserisco magnitude", String.valueOf(liveMagnitude));
+                        databaseManager.getAppDatabase().getOfflineScanDAO().insert(
+                                new OfflineScan(idScan,Integer.parseInt(liveGridName),liveMagnitude));
+                    }
+                    else{
+                        Log.i("insert scan summary","non riuscito");
+                    }
+                }
+                else{
+                    Log.i("insert scan summary","non riuscito");
+                }
                 // set value on the screen
-                Toast.makeText(activity, "magnitude value " + magnitude, Toast.LENGTH_SHORT).show();
+                Log.i("live magnitude", String.valueOf(liveMagnitude));
+                Toast.makeText(activity, "liveMagnitude  " + liveMagnitude + " grid " + liveGridName, Toast.LENGTH_SHORT).show();
             }
         }
+        sensorManager.unregisterListener(this);
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    private boolean insertNewScanSummary(){
+        if( idAlgorithm != -1 && idBuilding != -1 && gridSize != -1){
+            // inserisco in scan summary
+            try{
+                databaseManager.getAppDatabase().getScanSummaryDAO().insert(
+                        new ScanSummary(idBuilding,idAlgorithm,gridSize,"offline")
+                );
+            }catch(Exception e){
+                Log.i("catched ", String.valueOf(e));
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    private int getIdScanSummary(){
+        if( idAlgorithm != -1 && idBuilding != -1 && gridSize != -1){
+            ArrayList<ScanSummary> scanSummary;
+            // inserisco in scan summary
+            scanSummary = (ArrayList<ScanSummary>) databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(idBuilding, idAlgorithm, gridSize);
+            return scanSummary.get(0).getId();
+        }
+        return -1;
     }
 }

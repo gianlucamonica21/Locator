@@ -6,23 +6,28 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
-import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 @Entity(tableName = "offlineScan",
+        indices = {@Index(value = {"idScan", "idGrid"},
+                unique = true)}, // vincoli di unicità
         foreignKeys = {
-        @ForeignKey(
+        @ForeignKey( // chiave esterna
             entity = ScanSummary.class,
-            childColumns = "id",
+            childColumns = "idScan",
             parentColumns = "id",
-            onUpdate = ForeignKey.CASCADE,
-            onDelete = ForeignKey.CASCADE)}
+            onUpdate = CASCADE,
+            onDelete = CASCADE)}
         )
 public class OfflineScan {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     int id;
+
+    @NonNull
+    int idScan;
 
     @NonNull
     int idGrid;
@@ -30,8 +35,8 @@ public class OfflineScan {
     @NonNull
     double value;
 
-    public OfflineScan(int id, int idGrid, double value){
-        this.id = id;
+    public OfflineScan(int idScan, int idGrid, double value){
+        this.idScan = idScan;
         this.idGrid = idGrid;
         this.value = value;
     }
@@ -43,6 +48,15 @@ public class OfflineScan {
 
     public void setId(@NonNull int id) {
         this.id = id;
+    }
+
+    @NonNull
+    public int getIdScan() {
+        return idScan;
+    }
+
+    public void setIdScan(@NonNull int idScan) {
+        this.idScan = idScan;
     }
 
     @NonNull

@@ -12,11 +12,15 @@ import com.gianlucamonica.locator.fragments.BuildingFragment;
 import com.gianlucamonica.locator.fragments.ButtonsFragment;
 import com.gianlucamonica.locator.fragments.ParamFragment;
 import com.gianlucamonica.locator.fragments.ScanFragment;
+import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 
 import java.util.ArrayList;
 
@@ -51,17 +55,26 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         ft.commit();
 
         DatabaseManager databaseManager= new DatabaseManager(this);
+        // inserting building
+        if(databaseManager.getAppDatabase().getBuildingDAO().getBuildings().size() == 0)
+            databaseManager.getAppDatabase().getBuildingDAO().insert(new Building("Unione",5,5,123,123,123,123));
         // inserting algorithms
-        //databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.MAGNETIC_FP),true));
-        //databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.WIFI_RSS_FP),true));
+        if(databaseManager.getAppDatabase().getAlgorithmDAO().getAlgorithms().size() == 0){
+            databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.MAGNETIC_FP),true));
+            databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.WIFI_RSS_FP),true));
+        }
         // inserting onlineScan
         //databaseManager.getAppDatabase().getOnlineScanDAO().insert(new OnlineScan(2,0));
-        //databaseManager.getAppDatabase().getOnlineScanDAO().insert(new OnlineScan(3,0));
         // inserting offlineScan
-        //databaseManager.getAppDatabase().getOfflineScanDAO().insert(new OfflineScan(3,1,2.0));
+        //databaseManager.getAppDatabase().getOfflineScanDAO().insert(new OfflineScan(2,1,2.0));
+        //databaseManager.getAppDatabase().getOfflineScanDAO().insert(new OfflineScan(1,2,3.0));
+        //databaseManager.getAppDatabase().getOfflineScanDAO().insert(new OfflineScan(1,3,4.0));
         // inserting Scan Summary
         //databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(1,1,1,"offline"));
         //databaseManager.getAppDatabase().getScanSummaryDAO().insert(new ScanSummary(1,1,1,"online"));
+        //Log.i("deleting scan","");
+        //databaseManager.getAppDatabase().getScanSummaryDAO().deleteByBuildingAlgorithmSize(1,1,1,"offline");
+        //databaseManager.getAppDatabase().getScanSummaryDAO().deleteByBuildingAlgorithmSize(1,1,1,"online");
 
     }
 

@@ -6,14 +6,13 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
-import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 
-@Entity(tableName = "onlineScan",foreignKeys = {
+@Entity(tableName = "onlineScan",
+        foreignKeys = {
         @ForeignKey(
                 entity = ScanSummary.class,
-                childColumns = "id",
+                childColumns = "idScan",
                 parentColumns = "id",
                 onUpdate = ForeignKey.CASCADE,
                 onDelete = ForeignKey.CASCADE)}
@@ -24,11 +23,14 @@ public class OnlineScan {
     int id;
 
     @NonNull
+    int idScan;
+
+    @NonNull
     int idEstimateGrid;
 
 
-    public OnlineScan(int id,int idEstimateGrid){
-        this.id = id;
+    public OnlineScan(int idScan, int idEstimateGrid){
+        this.idScan = idScan;
         this.idEstimateGrid = idEstimateGrid;
     }
 

@@ -13,6 +13,7 @@ import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
@@ -29,12 +30,15 @@ public class ScanActivity extends AppCompatActivity {
     private ArrayList<IndoorParams> indoorParams;
     private MyLocationManager myLocationManager;
     private DatabaseManager databaseManager;
+    private IndoorParamsUtils indoorParamsUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
+        databaseManager = new DatabaseManager(this);
+        indoorParamsUtils = new IndoorParamsUtils();
         Bundle bundle = getIntent().getExtras();
         indoorParams = (ArrayList<IndoorParams>) bundle.getSerializable("indoorParams");
 
@@ -61,9 +65,11 @@ public class ScanActivity extends AppCompatActivity {
 
             public void onClick(View v) {
                 Toast.makeText(MyApp.getContext(),
-                        "Deleting entries",
+                        "Deleting scan",
                         Toast.LENGTH_SHORT).show();
 
+                // delete scan
+                deleteScanFromDB();
                 // refreshing the mapview
                 MapView mapView = (MapView) myLocationManager.build(MapView.class);
                 mLinearLayout.addView(mapView);
@@ -85,7 +91,10 @@ public class ScanActivity extends AppCompatActivity {
 
     private void deleteScanFromDB(){
         ScanSummaryDAO scanSummaryDAO = databaseManager.getAppDatabase().getScanSummaryDAO();
-
-
+        Algorithm algorithm = indoorParamsUtils.getAlgorithm(indoorParams);
+        Building building = indoorParamsUtils.getBuilding(indoorParams);
+        int size = indoorParamsUtils.getSize(indoorParams);
+        Log.i("cancello", String.valueOf(algorithm.getId() + " " +  building.getId()+ " " + size + " " + "OFFLINE"));
+        scanSummaryDAO.deleteByBuildingAlgorithmSize(algorithm.getId(),building.getId(),size,"offline");
     }
 }
