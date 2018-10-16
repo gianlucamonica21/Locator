@@ -8,15 +8,18 @@ import android.view.ViewGroup;
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LocateActivity extends AppCompatActivity {
 
@@ -35,14 +38,18 @@ public class LocateActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         indoorParams = (ArrayList<IndoorParams>) bundle.getSerializable("indoorParams");
 
+
+
         Algorithm algorithm;
+        algorithm = indoorParamsUtils.getAlgorithm(indoorParams);
         AlgorithmName algorithmName = AlgorithmName.MAGNETIC_FP;
-        for (int i = 0; i < indoorParams.size(); i++){
-            if (indoorParams.get(i).getName() == IndoorParamName.ALGORITHM){
-                algorithm = (Algorithm) indoorParams.get(i).getParamObject();
-                algorithmName = AlgorithmName.valueOf(algorithm.getName());
-            }
-        }
+        algorithmName = AlgorithmName.valueOf(algorithm.getName());
+        Building building = indoorParamsUtils.getBuilding(indoorParams);
+        int size = indoorParamsUtils.getSize(indoorParams);
+
+        List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),algorithm.getId(),size);
+        List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(scanSummary.get(0).getId());
+
         // setting algorithm in mylocationmanager
         myLocationManager = new MyLocationManager(algorithmName,this, indoorParams);
         OnlineScan onlineScan = myLocationManager.locate();
@@ -51,7 +58,7 @@ public class LocateActivity extends AppCompatActivity {
         final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
 
         // setting the map view
-        MapView mapView = new MapView(this, String.valueOf(onlineScan.getIdEstimateGrid()),indoorParams);
+        MapView mapView = new MapView(this, String.valueOf(onlineScan.getIdEstimateGrid()),indoorParams, offlineScans);
         mLinearLayout.addView(mapView);
     }
 }

@@ -10,8 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
-import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrintDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
@@ -22,7 +20,6 @@ import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.map.Grid;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -71,7 +68,7 @@ public class MagneticOfflineManager implements SensorEventListener {
      */
     public <T extends View> T build(Class<T> type){
 
-        mV = new MapView(this.activity,null,indoorParams);
+        mV = new MapView(this.activity,null,indoorParams, null);
         mV.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

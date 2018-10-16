@@ -10,20 +10,21 @@ import android.view.View;
 
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
-
-import org.json.JSONObject;
+import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapView extends View {
 
     private ArrayList<Grid> rects; // rects to draw which compounds the map
     private String estimateGridName;
+    private List<OfflineScan> offlineScans;
 
     // scale factors for drawing map
     int scaleFactor = 100;
     int add = 165;
-
+    boolean draw = true;
     // 2a versione
     private int height;
     private int width;
@@ -33,12 +34,14 @@ public class MapView extends View {
 
     /**
      * @param context
+     * @param offlineScans
      */
-    public MapView(Context context,String estimateGridName,ArrayList<IndoorParams> indoorParams){
+    public MapView(Context context, String estimateGridName, ArrayList<IndoorParams> indoorParams, List<OfflineScan> offlineScans){
         super(context);
 
         this.indoorParams = indoorParams;
         this.estimateGridName = estimateGridName;
+        this.offlineScans = offlineScans;
 
         for (int i = 0; i < this.indoorParams.size(); i++){
             switch (indoorParams.get(i).getName()){
@@ -85,11 +88,6 @@ public class MapView extends View {
         underlineText.setTextAlign(Paint.Align.CENTER);
         underlineText.setTextSize(40);
 
-        /*canvas.drawText("At the end", 500,  500, underlineText);
-        canvas.drawText("tap one more time", 500,  540, underlineText);
-        canvas.drawText("in order to", 500,  580, underlineText);
-        canvas.drawText("finish the scan", 500,  620, underlineText);*/
-
         for(int i = 0; i < rects.size(); i++){
 
             Paint myPaint = new Paint();
@@ -109,10 +107,24 @@ public class MapView extends View {
                     ((rects.get(i).getB().getX()* scaleFactor)+add),
                     ((rects.get(i).getB().getY()* scaleFactor)+add));
 
-            canvas.drawRect(r, myPaint);
-            myPaint.setStyle(Paint.Style.STROKE);
-            myPaint.setColor(Color.BLACK);
-            canvas.drawRect(r, myPaint);
+
+            if( offlineScans != null){
+                for(int j = 0; j < offlineScans.size(); j++){
+                    if(offlineScans.get(j).getIdGrid() == Integer.parseInt(rects.get(i).getName())){
+                        // draw rect and its margin
+                        canvas.drawRect(r, myPaint);
+                        myPaint.setStyle(Paint.Style.STROKE);
+                        myPaint.setColor(Color.BLACK);
+                        canvas.drawRect(r, myPaint);
+                    }
+                }
+            }else{
+                // draw rect and its margin
+                canvas.drawRect(r, myPaint);
+                myPaint.setStyle(Paint.Style.STROKE);
+                myPaint.setColor(Color.BLACK);
+                canvas.drawRect(r, myPaint);
+            }
 
             Paint textPaint = new Paint();
             if ( estimateGridName != null && rects.get(i).getName().equals(estimateGridName)){
@@ -126,8 +138,17 @@ public class MapView extends View {
             float x = ( ((rects.get(i).getA().getX()* scaleFactor)+add) + ((rects.get(i).getB().getX()* scaleFactor)+add) )/2;
             float y = ( ((rects.get(i).getA().getY()* scaleFactor)+add) + ((rects.get(i).getB().getY()* scaleFactor)+add) )/2;
 
-
-            canvas.drawText(rects.get(i).getName(), x  , y + 15, textPaint);
+            if( offlineScans != null){
+                for(int j = 0; j < offlineScans.size(); j++){
+                    if(offlineScans.get(j).getIdGrid() == Integer.parseInt(rects.get(i).getName())){
+                        // draw rect and its margin
+                        canvas.drawText(rects.get(i).getName(), x  , y + 15, textPaint);
+                    }
+                }
+            }else{
+                // draw rect and its margin
+                canvas.drawText(rects.get(i).getName(), x  , y + 15, textPaint);
+            }
 
         }
 
