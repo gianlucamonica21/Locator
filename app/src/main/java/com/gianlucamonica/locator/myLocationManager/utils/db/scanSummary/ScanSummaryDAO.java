@@ -7,8 +7,6 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
-
 import java.util.List;
 
 @Dao
@@ -26,13 +24,13 @@ public abstract class ScanSummaryDAO {
     @Query("DELETE FROM scanSummary")
     public abstract void deleteAll();
 
-    @Query("DELETE FROM scanSummary WHERE idBuilding = :idBuilding AND idAlgorithm = :idAlgorithm AND gridSize = :gridSize AND type = :type")
+    @Query("DELETE FROM scanSummary WHERE idBuilding = :idBuilding AND idAlgorithm = :idAlgorithm AND idConfig = :gridSize AND type = :type")
     public abstract void deleteByBuildingAlgorithmSize(int idBuilding, int idAlgorithm, int gridSize,String type);
 
     @Query("SELECT * FROM scanSummary")
     public abstract List<ScanSummary> getScanSummary();
 
-    @Query("SELECT * FROM scanSummary WHERE idBuilding = :idBuilding AND idAlgorithm = :idAlgorithm AND gridSize = :gridSize")
+    @Query("SELECT * FROM scanSummary WHERE idBuilding = :idBuilding AND idAlgorithm = :idAlgorithm AND idConfig = :gridSize")
     public abstract List<ScanSummary>  getScanSummaryByBuildingAlgorithm(int idBuilding, int idAlgorithm, int gridSize);
 
 }

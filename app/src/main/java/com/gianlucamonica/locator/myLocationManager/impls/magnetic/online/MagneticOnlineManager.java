@@ -23,6 +23,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineSc
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -65,7 +66,7 @@ public class MagneticOnlineManager implements SensorEventListener {
             euclideanDistanceAlg = new EuclideanDistanceAlg(offlineScans, magnitudeValue);
             int index = euclideanDistanceAlg.compute(AlgorithmName.MAGNETIC_FP);
 
-            return new OnlineScan(idScan,index);
+            return new OnlineScan(idScan,index,0,new Date());
 
         } else {
             Toast.makeText(MyApp.getContext(),

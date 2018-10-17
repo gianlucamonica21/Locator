@@ -58,7 +58,7 @@ public class LocateActivity extends AppCompatActivity {
         final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
 
         // setting the map view
-        MapView mapView = new MapView(this, String.valueOf(onlineScan.getIdEstimateGrid()),indoorParams, offlineScans);
+        MapView mapView = new MapView(this, String.valueOf(onlineScan.getIdEstimatedPos()),indoorParams, offlineScans);
         mLinearLayout.addView(mapView);
     }
 }

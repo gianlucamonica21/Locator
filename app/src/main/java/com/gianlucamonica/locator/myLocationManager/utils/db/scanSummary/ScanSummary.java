@@ -6,10 +6,9 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
-import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
-import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
 
 @Entity(tableName = "scanSummary",
         foreignKeys = {
@@ -25,9 +24,15 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineSc
                 childColumns = "idAlgorithm",
                 parentColumns = "id",
                 onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.CASCADE),
+        @ForeignKey(
+                entity = Config.class,
+                childColumns = "idConfig",
+                parentColumns = "id",
+                onUpdate = ForeignKey.CASCADE,
                 onDelete = ForeignKey.CASCADE)},
         indices = {@Index(value =
-                {"idBuilding","idAlgorithm","gridSize","type"}, unique = true)} // non posso comparire due righe aventi stesso building,algorithm,gridSize e type
+                {"idBuilding","idAlgorithm","idConfig","type"}, unique = true)} // non posso comparire due righe aventi stesso building,algorithm,idConfig e type
 )
 public class ScanSummary {
 
@@ -41,15 +46,15 @@ public class ScanSummary {
     int idAlgorithm;
 
     @NonNull
-    int gridSize;
+    int idConfig;
 
     @NonNull
     String type;
 
-    public ScanSummary(int idBuilding, int idAlgorithm, int gridSize,String type){
+    public ScanSummary(int idBuilding, int idAlgorithm, int idConfig, String type){
         this.idBuilding = idBuilding;
         this.idAlgorithm = idAlgorithm;
-        this.gridSize = gridSize;
+        this.idConfig = idConfig;
         this.type = type;
     }
 
@@ -80,12 +85,12 @@ public class ScanSummary {
     }
 
     @NonNull
-    public int getGridSize() {
-        return gridSize;
+    public int getIdConfig() {
+        return idConfig;
     }
 
-    public void setGridSize(@NonNull int gridSize) {
-        this.gridSize = gridSize;
+    public void setIdConfig(@NonNull int idConfig) {
+        this.idConfig = idConfig;
     }
 
     @NonNull
@@ -103,7 +108,7 @@ public class ScanSummary {
                 "id=" + id +
                 ", idBuilding=" + idBuilding +
                 ", idAlgorithm=" + idAlgorithm +
-                ", gridSize=" + gridSize +
+                ", idConfig=" + idConfig +
                 '}';
     }
 }

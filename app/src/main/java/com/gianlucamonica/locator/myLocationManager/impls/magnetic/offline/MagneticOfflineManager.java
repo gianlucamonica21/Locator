@@ -20,6 +20,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.map.Grid;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -106,7 +107,7 @@ public class MagneticOfflineManager implements SensorEventListener {
                             for (int i = 0; i < zones.size(); i++){
                                 //2) inserisco in offline scan
                                 databaseManager.getAppDatabase().getOfflineScanDAO().insert(
-                                        new OfflineScan(idScan,Integer.parseInt(zones.get(i)),magnitudes.get(i))
+                                        new OfflineScan(idScan,Integer.parseInt(zones.get(i)),magnitudes.get(i),new Date())
                                 );
                             }
                         }
@@ -168,7 +169,7 @@ public class MagneticOfflineManager implements SensorEventListener {
                         //2) inserisco in offline scan
                         Log.i("inserisco magnitude", String.valueOf(liveMagnitude));
                         databaseManager.getAppDatabase().getOfflineScanDAO().insert(
-                                new OfflineScan(idScan,Integer.parseInt(liveGridName),liveMagnitude));
+                                new OfflineScan(idScan,Integer.parseInt(liveGridName),liveMagnitude,new Date()));
                     }
                     else{
                         Log.i("insert scan summary","non riuscito");
@@ -210,6 +211,9 @@ public class MagneticOfflineManager implements SensorEventListener {
         if( idAlgorithm != -1 && idBuilding != -1 && gridSize != -1){
             ArrayList<ScanSummary> scanSummary;
             // inserisco in scan summary
+            databaseManager.getAppDatabase().getScanSummaryDAO().insert(
+                    new ScanSummary(idBuilding,idAlgorithm,1,"offline")
+            );
             scanSummary = (ArrayList<ScanSummary>) databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(idBuilding, idAlgorithm, gridSize);
             return scanSummary.get(0).getId();
         }

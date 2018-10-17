@@ -145,10 +145,10 @@ public class ScanFragment extends Fragment {
 
             for (int i = 0; i < scanSummaries.size(); i++){
                 if(scanSummaries.get(i).getType().equals("offline")){
-                    scanString.add(String.valueOf("Offline scan with size " + scanSummaries.get(i).getGridSize()));
+                    scanString.add(String.valueOf("Offline scan with size " + scanSummaries.get(i).getIdConfig()));
                     isOfflineScan = true;
                 }else if(scanSummaries.get(i).getType().equals("online")){
-                    scanString.add(String.valueOf("Online scan with size " + scanSummaries.get(i).getGridSize()));
+                    scanString.add(String.valueOf("Online scan with size " + scanSummaries.get(i).getIdConfig()));
                 }
             }
 

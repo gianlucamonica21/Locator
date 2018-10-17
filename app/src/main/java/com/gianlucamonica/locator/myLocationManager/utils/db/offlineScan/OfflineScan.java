@@ -4,9 +4,13 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
+import com.gianlucamonica.locator.myLocationManager.utils.db.utils.DateConverter;
+
+import java.util.Date;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -21,6 +25,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
             onUpdate = CASCADE,
             onDelete = CASCADE)}
         )
+@TypeConverters(DateConverter.class)
 public class OfflineScan {
 
     @PrimaryKey(autoGenerate = true)
@@ -35,10 +40,14 @@ public class OfflineScan {
     @NonNull
     double value;
 
-    public OfflineScan(int idScan, int idGrid, double value){
+    @NonNull
+    Date timeStamp;
+
+    public OfflineScan(@NonNull int idScan, @NonNull int idGrid, @NonNull double value, Date timeStamp) {
         this.idScan = idScan;
         this.idGrid = idGrid;
         this.value = value;
+        this.timeStamp = timeStamp;
     }
 
     @NonNull
@@ -78,12 +87,23 @@ public class OfflineScan {
         this.value = value;
     }
 
+    @NonNull
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(@NonNull Date timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
     @Override
     public String toString() {
         return "OfflineScan{" +
                 "id=" + id +
+                ", idScan=" + idScan +
                 ", idGrid=" + idGrid +
                 ", value=" + value +
+                ", timeStamp=" + timeStamp +
                 '}';
     }
 }
