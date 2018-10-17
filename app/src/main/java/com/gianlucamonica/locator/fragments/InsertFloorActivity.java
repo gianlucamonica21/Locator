@@ -55,6 +55,7 @@ public class InsertFloorActivity extends AppCompatActivity {
                             databaseManager.getAppDatabase().getBuildingFloorDAO().insert(
                                     new BuildingFloor(idBuilding, floorText)
                             );
+                            floorName.getText().clear();
                         }catch (Exception e){
                             Log.i("error insert new floor", e.toString());
                         }
