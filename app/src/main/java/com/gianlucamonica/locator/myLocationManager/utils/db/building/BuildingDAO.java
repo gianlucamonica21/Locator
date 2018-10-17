@@ -25,6 +25,9 @@ public abstract class BuildingDAO {
     @Query("DELETE FROM building")
     public void deleteAll(){};
 
+    @Query("DELETE FROM building WHERE id = :id")
+    public abstract void deleteById(int id);
+
     @Query("SELECT * FROM building")
     public abstract List<Building> getBuildings();
 

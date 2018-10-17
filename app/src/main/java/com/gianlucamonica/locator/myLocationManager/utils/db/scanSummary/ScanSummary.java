@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 
 @Entity(tableName = "scanSummary",
         foreignKeys = {
@@ -30,6 +31,12 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
                 childColumns = "idConfig",
                 parentColumns = "id",
                 onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.CASCADE),
+        @ForeignKey(
+                entity = BuildingFloor.class,
+                childColumns = "idBuildingFloor",
+                parentColumns = "id",
+                onUpdate = ForeignKey.CASCADE,
                 onDelete = ForeignKey.CASCADE)},
         indices = {@Index(value =
                 {"idBuilding","idAlgorithm","idConfig","type"}, unique = true)} // non posso comparire due righe aventi stesso building,algorithm,idConfig e type
@@ -42,6 +49,8 @@ public class ScanSummary {
     @NonNull
     int idBuilding;
 
+    int idBuildingFloor;
+
     @NonNull
     int idAlgorithm;
 
@@ -51,8 +60,9 @@ public class ScanSummary {
     @NonNull
     String type;
 
-    public ScanSummary(int idBuilding, int idAlgorithm, int idConfig, String type){
+    public ScanSummary(int idBuilding, int idBuildingFloor, int idAlgorithm, int idConfig, String type){
         this.idBuilding = idBuilding;
+        this.idBuildingFloor = idBuildingFloor;
         this.idAlgorithm = idAlgorithm;
         this.idConfig = idConfig;
         this.type = type;
@@ -73,6 +83,14 @@ public class ScanSummary {
 
     public void setIdBuilding(@NonNull int idBuilding) {
         this.idBuilding = idBuilding;
+    }
+
+    public int getIdBuildingFloor() {
+        return idBuildingFloor;
+    }
+
+    public void setIdBuildingFloor(int idBuildingFloor) {
+        this.idBuildingFloor = idBuildingFloor;
     }
 
     @NonNull
@@ -104,11 +122,13 @@ public class ScanSummary {
 
     @Override
     public String toString() {
-        return "OnlineScan{" +
+        return "ScanSummary{" +
                 "id=" + id +
                 ", idBuilding=" + idBuilding +
+                ", idBuildingFloor=" + idBuildingFloor +
                 ", idAlgorithm=" + idAlgorithm +
                 ", idConfig=" + idConfig +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

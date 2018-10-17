@@ -34,8 +34,7 @@ public class BuildingFloor implements Serializable {
     @NonNull
     String name;
 
-    public BuildingFloor(int id, @NonNull int idBuilding, @NonNull String name) {
-        this.id = id;
+    public BuildingFloor(@NonNull int idBuilding, @NonNull String name) {
         this.idBuilding = idBuilding;
         this.name = name;
     }

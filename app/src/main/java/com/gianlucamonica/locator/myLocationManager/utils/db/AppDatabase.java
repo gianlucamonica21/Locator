@@ -26,7 +26,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSum
         OfflineScan.class,
         OnlineScan.class,
         ScanSummary.class
-        }, version = 34)
+        }, version = 35)
 public abstract class AppDatabase extends RoomDatabase {
 
     /*public abstract APDAO getAPDAO();

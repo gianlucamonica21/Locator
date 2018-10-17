@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         ft.commit();
 
         DatabaseManager databaseManager= new DatabaseManager(this);
+        // deleting building
+        //databaseManager.getAppDatabase().getBuildingDAO().deleteById(11);
         // inserting building
         if(databaseManager.getAppDatabase().getBuildingDAO().getBuildings().size() == 0)
             databaseManager.getAppDatabase().getBuildingDAO().insert(new Building("Unione",5,5,123,123,123,123));

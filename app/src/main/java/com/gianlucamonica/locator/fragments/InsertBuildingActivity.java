@@ -1,5 +1,6 @@
 package com.gianlucamonica.locator.fragments;
 
+import android.content.Intent;
 import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -104,6 +105,11 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
                             Double.parseDouble(NELngEditText.getText().toString())
                     ));
                     Toast.makeText(MyApp.getContext(),"Building inserted!",Toast.LENGTH_SHORT).show();
+
+                    // todo caricare intent activity di inserimento floors
+                    Intent intent = new Intent(InsertBuildingActivity.this,InsertFloorActivity.class);
+                    intent.putExtra("name", nameEditText.getText().toString());
+                    startActivity(intent);
                 }
                 else {
                     Toast.makeText(MyApp.getContext(),"All fields are required!",Toast.LENGTH_SHORT).show();
