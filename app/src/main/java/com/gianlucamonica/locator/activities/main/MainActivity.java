@@ -2,6 +2,7 @@ package com.gianlucamonica.locator.activities.main;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,31 +11,35 @@ import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.fragments.AlgorithmFragment;
 import com.gianlucamonica.locator.fragments.BuildingFragment;
 import com.gianlucamonica.locator.fragments.ButtonsFragment;
-import com.gianlucamonica.locator.fragments.ParamFragment;
+import com.gianlucamonica.locator.fragments.MagnParamFragment;
 import com.gianlucamonica.locator.fragments.ScanFragment;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
-import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
-import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
-import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName.MAGNETIC_FP;
 
 public class MainActivity extends AppCompatActivity implements BuildingFragment.BuildingListener,
         AlgorithmFragment.OnFragmentInteractionListener,
         ButtonsFragment.OnFragmentInteractionListener,
-        ParamFragment.OnFragmentInteractionListener,
+        MagnParamFragment.OnFragmentInteractionListener,
         ScanFragment.OnFragmentInteractionListener{
 
     private ArrayList<IndoorParams> indoorParams; // contenitore indoor algorithm infos
     private Algorithm chosenAlgorithm;
     private Building chosenBuilding;
     private int chosenSize;
+    private DatabaseManager databaseManager;
+    private IndoorParamsUtils indoorParamsUtils;
+    private FragmentTransaction ft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +47,14 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         setContentView(R.layout.activity_main);
 
         indoorParams = new ArrayList<>();
+        databaseManager = new DatabaseManager(this);
+        indoorParamsUtils = new IndoorParamsUtils();
         // adding fragments
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment
         ft.replace(R.id.algorithmLayout, new AlgorithmFragment(), new AlgorithmFragment().getTag());
         ft.replace(R.id.buildingLayout, new BuildingFragment(), new BuildingFragment().getTag());
         ft.replace(R.id.buttonsLayout, new ButtonsFragment(), new ButtonsFragment().getTag());
-        ft.replace(R.id.paramLayout, new ParamFragment(), new ParamFragment().getTag());
         ft.replace(R.id.scanLayout, new ScanFragment(), new ScanFragment().getTag());
         ft.addToBackStack(null);
         // or ft.add(R.id.your_placeholder, new FooFragment());
@@ -56,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         ft.commit();
 
         DatabaseManager databaseManager= new DatabaseManager(this);
+        /** OPERAZIONI DB DI TESTING*/
         // deleting building
         //databaseManager.getAppDatabase().getBuildingDAO().deleteById(11);
         // inserting building
@@ -63,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
             databaseManager.getAppDatabase().getBuildingDAO().insert(new Building("Unione",5,5,123,123,123,123));
         // inserting algorithms
         if(databaseManager.getAppDatabase().getAlgorithmDAO().getAlgorithms().size() == 0){
-            databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.MAGNETIC_FP),true));
+            databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(MAGNETIC_FP),true));
             databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.WIFI_RSS_FP),true));
         }
         if(databaseManager.getAppDatabase().getConfigDAO().getAllConfigs().size() == 0){
@@ -90,6 +97,13 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         //Log.i("deleting scan","");
         //databaseManager.getAppDatabase().getScanSummaryDAO().deleteByBuildingAlgorithmSize(1,1,1,"offline");
         //databaseManager.getAppDatabase().getScanSummaryDAO().deleteByBuildingAlgorithmSize(1,1,1,"online");
+        // config isert
+        /*databaseManager.getAppDatabase().getConfigDAO().insert(
+                new Config(1,"sqSize",1)
+        );
+        databaseManager.getAppDatabase().getConfigDAO().insert(
+                new Config(2,"sqSize",1)
+        );*/
 
     }
 
@@ -108,6 +122,18 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         if(tag == IndoorParamName.ALGORITHM){
             chosenAlgorithm = (Algorithm) object;
             updateIndoorParams(tag, chosenAlgorithm); // populate indoor params
+            // caricare fragment differente a seconda di chosenAlgorithm
+            if( indoorParamsUtils.getAlgorithm(indoorParams).getName().equals(String.valueOf(MAGNETIC_FP))){
+                FragmentTransaction ft2 = getSupportFragmentManager().beginTransaction();
+                Log.i("alg scelto",indoorParamsUtils.getAlgorithm(indoorParams).getName());
+                ft2.add(R.id.paramLayout, new MagnParamFragment(), new MagnParamFragment().getTag());
+                ft2.commit();
+            }else{
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.paramLayout);
+                if( fragment != null)
+                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            }
+
         }
         if(tag == IndoorParamName.SIZE){
             chosenSize = (int) object;
