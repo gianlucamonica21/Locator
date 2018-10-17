@@ -38,29 +38,35 @@ public class InsertFloorActivity extends AppCompatActivity {
 
                 int idBuilding;
                 // query per estrarre id del suddetto building
-                List<Building> buildings = databaseManager.getAppDatabase().getBuildingDAO().getBuildingWithName(buildingName);
+                try{
+                    List<Building> buildings = databaseManager.getAppDatabase().getBuildingDAO().getBuildingWithName(buildingName);
 
-                if(buildings.size() > 0) {
-                    idBuilding = buildings.get(0).getId();
+                    if(buildings.size() > 0) {
+                        idBuilding = buildings.get(0).getId();
 
-                    if (floorName.getText().toString().equals("")) {
-                        valid = false;
-                    }
+                        if (floorName.getText().toString().equals("")) {
+                            valid = false;
+                        }
 
-                    if (valid) {
-                        //inserisco in db nuovo floor
-                        String floorText = floorName.getText().toString();
-                        Log.i("inserisco floor",floorText);
-                        try{
-                            databaseManager.getAppDatabase().getBuildingFloorDAO().insert(
-                                    new BuildingFloor(idBuilding, floorText)
-                            );
-                            floorName.getText().clear();
-                        }catch (Exception e){
-                            Log.i("error insert new floor", e.toString());
+                        if (valid) {
+                            //inserisco in db nuovo floor
+                            String floorText = floorName.getText().toString();
+                            Log.i("inserisco floor",floorText);
+                            try{
+                                databaseManager.getAppDatabase().getBuildingFloorDAO().insert(
+                                        new BuildingFloor(idBuilding, floorText)
+                                );
+                                floorName.getText().clear();
+                            }catch (Exception e){
+                                Log.i("error insert new floor", e.toString());
+                            }
                         }
                     }
                 }
+                catch (Exception e){
+                    Log.e("error get/insert floor",String.valueOf(e));
+                }
+
 
             }
         });

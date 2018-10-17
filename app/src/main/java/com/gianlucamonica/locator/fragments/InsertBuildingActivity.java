@@ -94,17 +94,21 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
                 }
 
                 if(valid){
-                    BuildingDAO buildingDAO = databaseManager.getAppDatabase().getBuildingDAO();
-                    buildingDAO.insert(new Building(
-                            nameEditText.getText().toString(),
-                            Integer.parseInt(heightEditText.getText().toString()),
-                            Integer.parseInt(widthEditText.getText().toString()),
-                            Double.parseDouble(SOLatEditText.getText().toString()),
-                            Double.parseDouble(SOLngEditText.getText().toString()),
-                            Double.parseDouble(NELatEditText.getText().toString()),
-                            Double.parseDouble(NELngEditText.getText().toString())
-                    ));
-                    Toast.makeText(MyApp.getContext(),"Building inserted!",Toast.LENGTH_SHORT).show();
+                    try{
+                        BuildingDAO buildingDAO = databaseManager.getAppDatabase().getBuildingDAO();
+                        buildingDAO.insert(new Building(
+                                nameEditText.getText().toString(),
+                                Integer.parseInt(heightEditText.getText().toString()),
+                                Integer.parseInt(widthEditText.getText().toString()),
+                                Double.parseDouble(SOLatEditText.getText().toString()),
+                                Double.parseDouble(SOLngEditText.getText().toString()),
+                                Double.parseDouble(NELatEditText.getText().toString()),
+                                Double.parseDouble(NELngEditText.getText().toString())
+                        ));
+                        Toast.makeText(MyApp.getContext(),"Building inserted!",Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){
+                        Log.e("error insert building",String.valueOf(e));
+                    }
 
                     // todo caricare intent activity di inserimento floors
                     Intent intent = new Intent(InsertBuildingActivity.this,InsertFloorActivity.class);

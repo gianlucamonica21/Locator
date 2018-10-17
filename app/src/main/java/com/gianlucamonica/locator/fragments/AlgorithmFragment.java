@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +81,12 @@ public class AlgorithmFragment extends Fragment {
 
         databaseManager = new DatabaseManager(getActivity());
 
-        algorithms = databaseManager.getAppDatabase().getAlgorithmDAO().getAlgorithms();
+        try{
+            algorithms = databaseManager.getAppDatabase().getAlgorithmDAO().getAlgorithms();
+        }
+        catch (Exception e){
+            Log.e("error get alg", String.valueOf(e));
+        }
 
         populateSpinner(v);
 

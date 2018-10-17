@@ -138,25 +138,29 @@ public class ScanFragment extends Fragment {
 
         if(algorithm != null && building != null){
             // getting offline and online scans
-            List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),
-                    algorithm.getId(), gridSize);
-            List<String> scanString = new ArrayList<>();
-            boolean isOfflineScan = false;
+            try {
+                List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),
+                        algorithm.getId(), gridSize);
+                List<String> scanString = new ArrayList<>();
+                boolean isOfflineScan = false;
 
-            for (int i = 0; i < scanSummaries.size(); i++){
-                if(scanSummaries.get(i).getType().equals("offline")){
-                    scanString.add(String.valueOf("Offline scan with size " + scanSummaries.get(i).getIdConfig()));
-                    isOfflineScan = true;
-                }else if(scanSummaries.get(i).getType().equals("online")){
-                    scanString.add(String.valueOf("Online scan with size " + scanSummaries.get(i).getIdConfig()));
+                for (int i = 0; i < scanSummaries.size(); i++){
+                    if(scanSummaries.get(i).getType().equals("offline")){
+                        scanString.add(String.valueOf("Offline scan with size " + scanSummaries.get(i).getIdConfig()));
+                        isOfflineScan = true;
+                    }else if(scanSummaries.get(i).getType().equals("online")){
+                        scanString.add(String.valueOf("Online scan with size " + scanSummaries.get(i).getIdConfig()));
+                    }
                 }
+
+                mListener.onFragmentInteraction(isOfflineScan);
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                        android.R.layout.simple_list_item_1, scanString);
+                scansSpinner.setAdapter(arrayAdapter);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            mListener.onFragmentInteraction(isOfflineScan);
-
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                    android.R.layout.simple_list_item_1, scanString);
-            scansSpinner.setAdapter(arrayAdapter);
         }
     }
 

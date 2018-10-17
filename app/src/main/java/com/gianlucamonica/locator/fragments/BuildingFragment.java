@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +117,13 @@ public class BuildingFragment extends Fragment {
     }
 
     public List<Building> getBuildingsFromDb(){
-        BuildingDAO buildingDAO = databaseManager.getAppDatabase().getBuildingDAO();
+        BuildingDAO buildingDAO = null;
+        try{
+            buildingDAO = databaseManager.getAppDatabase().getBuildingDAO();
+        }catch (Exception e){
+            Log.e("error get buildings", String.valueOf(e));
+        }
+
         return buildingDAO.getBuildings();
     }
 

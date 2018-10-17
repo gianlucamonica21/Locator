@@ -82,12 +82,18 @@ public class MagneticOnlineManager implements SensorEventListener {
         int idAlgorithm= indoorParamsUtils.getAlgorithm(indoorParams).getId();
         int gridSize = indoorParamsUtils.getSize(indoorParams);
 
-        List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,gridSize);
-        idScan = scanSummary.get(0).getId();
-        Log.i("idScan", String.valueOf(idScan));
-        List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(idScan);
+        try {
+            List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,gridSize);
+            idScan = scanSummary.get(0).getId();
+            Log.i("idScan", String.valueOf(idScan));
+            List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(idScan);
 
-        return  offlineScans;
+            return  offlineScans;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override

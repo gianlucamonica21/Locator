@@ -47,18 +47,23 @@ public class LocateActivity extends AppCompatActivity {
         Building building = indoorParamsUtils.getBuilding(indoorParams);
         int size = indoorParamsUtils.getSize(indoorParams);
 
-        List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),algorithm.getId(),size);
-        List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(scanSummary.get(0).getId());
+        try{
+            List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),algorithm.getId(),size);
+            List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(scanSummary.get(0).getId());
 
-        // setting algorithm in mylocationmanager
-        myLocationManager = new MyLocationManager(algorithmName,this, indoorParams);
-        OnlineScan onlineScan = myLocationManager.locate();
-        Log.i("online scan",onlineScan.toString());
+            // setting algorithm in mylocationmanager
+            myLocationManager = new MyLocationManager(algorithmName,this, indoorParams);
+            OnlineScan onlineScan = myLocationManager.locate();
+            Log.i("online scan",onlineScan.toString());
 
-        final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
+            final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
 
-        // setting the map view
-        MapView mapView = new MapView(this, String.valueOf(onlineScan.getIdEstimatedPos()),indoorParams, offlineScans);
-        mLinearLayout.addView(mapView);
+            // setting the map view
+            MapView mapView = new MapView(this, String.valueOf(onlineScan.getIdEstimatedPos()),indoorParams, offlineScans);
+            mLinearLayout.addView(mapView);
+
+        }catch(Exception e){
+            Log.e("error get scan",String.valueOf(e));
+        }
     }
 }

@@ -106,9 +106,13 @@ public class MagneticOfflineManager implements SensorEventListener {
                         if( idScan != -1){
                             for (int i = 0; i < zones.size(); i++){
                                 //2) inserisco in offline scan
-                                databaseManager.getAppDatabase().getOfflineScanDAO().insert(
-                                        new OfflineScan(idScan,Integer.parseInt(zones.get(i)),magnitudes.get(i),new Date())
-                                );
+                                try {
+                                    databaseManager.getAppDatabase().getOfflineScanDAO().insert(
+                                            new OfflineScan(idScan,Integer.parseInt(zones.get(i)),magnitudes.get(i),new Date())
+                                    );
+                                } catch (NumberFormatException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }else{
@@ -168,8 +172,12 @@ public class MagneticOfflineManager implements SensorEventListener {
                     if( idScan != -1){
                         //2) inserisco in offline scan
                         Log.i("inserisco magnitude", String.valueOf(liveMagnitude));
-                        databaseManager.getAppDatabase().getOfflineScanDAO().insert(
-                                new OfflineScan(idScan,Integer.parseInt(liveGridName),liveMagnitude,new Date()));
+                        try {
+                            databaseManager.getAppDatabase().getOfflineScanDAO().insert(
+                                    new OfflineScan(idScan,Integer.parseInt(liveGridName),liveMagnitude,new Date()));
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
                     }
                     else{
                         Log.i("insert scan summary","non riuscito");
