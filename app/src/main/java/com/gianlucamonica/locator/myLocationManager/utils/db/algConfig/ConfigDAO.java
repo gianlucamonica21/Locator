@@ -37,4 +37,7 @@ public abstract class ConfigDAO {
     @Query("SELECT * FROM config WHERE idAlgorithm =:idAlgorithm")
     public abstract List<Config> getConfigByIdAlgorithm(int idAlgorithm);
 
+    @Query("SELECT * FROM config WHERE idAlgorithm =:idAlgorithm AND id = :id")
+    public abstract List<Config> getConfigByIdAlgorithm(int idAlgorithm,int id);
+
 }

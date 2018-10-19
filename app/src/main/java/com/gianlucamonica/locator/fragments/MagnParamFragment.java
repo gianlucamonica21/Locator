@@ -3,9 +3,11 @@ package com.gianlucamonica.locator.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,11 +20,16 @@ import android.widget.Toast;
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,8 +56,9 @@ public class MagnParamFragment extends Fragment {
     private Building building;
     int gridSize;
     private ArrayList<IndoorParams> indoorParams;
-
+    private IndoorParamsUtils indoorParamsUtils;
     private OnFragmentInteractionListener mListener;
+    private DatabaseManager databaseManager;
 
     public MagnParamFragment() {
         // Required empty public constructor
@@ -89,7 +97,8 @@ public class MagnParamFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_param, container, false);
-
+        databaseManager = new DatabaseManager(getActivity());
+        indoorParamsUtils = new IndoorParamsUtils();
         String[] s = new String[] {"1","2","3"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_dropdown_item_1line, s);
@@ -184,6 +193,35 @@ public class MagnParamFragment extends Fragment {
                     this.gridSize = (int) indoorParams.get(i).getParamObject();
                     break;
             }
+        }
+        getSizeFromDB();
+    }
+
+    public void getSizeFromDB(){
+        Log.i("indorparams magn",indoorParams.toString());
+        Algorithm algorithm = indoorParamsUtils.getAlgorithm(indoorParams);
+        Building building = indoorParamsUtils.getBuilding(indoorParams);
+
+        try {
+            List<ScanSummary> scanSummaryList = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),algorithm.getId());
+            Log.i("scanSummary",scanSummaryList.toString());
+            if(scanSummaryList.size() > 0 ){
+                List<Config> configs = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(algorithm.getId(),scanSummaryList.get(0).getIdConfig());
+                Log.i("config",configs.toString());
+
+                List<String> size = new ArrayList<>();
+                for(int i = 0; i < configs.size(); i++){
+                    if(configs.get(i).getParName().equals("gridSize"))
+                        size.add(String.valueOf(configs.get(i).getParValue()));
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_dropdown_item_1line, size);
+                sizeEditText.setAdapter(adapter);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

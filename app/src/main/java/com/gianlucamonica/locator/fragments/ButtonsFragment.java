@@ -16,6 +16,7 @@ import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class ButtonsFragment extends Fragment {
 
     private Algorithm algorithm;
     private Building building;
+    private BuildingFloor buildingFloor;
     private int gridSize;
     private ArrayList<IndoorParams> indoorParams;
 
@@ -159,6 +161,9 @@ public class ButtonsFragment extends Fragment {
                     break;
                 case ALGORITHM:
                     this.algorithm = (Algorithm) indoorParams.get(i).getParamObject();
+                    break;
+                case FLOOR:
+                    this.buildingFloor = (BuildingFloor) indoorParams.get(i).getParamObject();
                     break;
                 case SIZE:
                     this.gridSize = (int) indoorParams.get(i).getParamObject();
