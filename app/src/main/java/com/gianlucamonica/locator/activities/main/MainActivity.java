@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements
         switch (tag){
             case BUILDING:
                 chosenBuilding = (Building) object;
-                updateIndoorParams(tag, chosenBuilding); // populate indoor params
+                indoorParamsUtils.updateIndoorParams(indoorParams,tag, chosenBuilding); // populate indoor params
 
                 FloorFragment floorFragment= (FloorFragment)
                         getSupportFragmentManager().findFragmentById(R.id.floorLayout);
@@ -140,15 +140,15 @@ public class MainActivity extends AppCompatActivity implements
             case FLOOR:
                 chosenFloor = (BuildingFloor) object;
                 if(chosenFloor != null){
-                    updateIndoorParams(tag,chosenFloor);
+                    indoorParamsUtils.updateIndoorParams(indoorParams,tag, chosenFloor); // populate indoor params
                 }else{
                     chosenFloor = new BuildingFloor(-1,"Empty");
-                    updateIndoorParams(tag,chosenFloor);
+                    indoorParamsUtils.updateIndoorParams(indoorParams,tag, chosenFloor); // populate indoor params
                 }
                 break;
             case ALGORITHM:
                 chosenAlgorithm = (Algorithm) object;
-                updateIndoorParams(tag, chosenAlgorithm); // populate indoor params
+                indoorParamsUtils.updateIndoorParams(indoorParams,tag, chosenAlgorithm); // populate indoor params
                 // caricare fragment differente a seconda di chosenAlgorithm
                 if( indoorParamsUtils.getAlgorithm(indoorParams).getName().equals(String.valueOf(MAGNETIC_FP))){
                     Log.i("alg scelto",indoorParamsUtils.getAlgorithm(indoorParams).getName());
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case SIZE:
                 chosenSize = (int) object;
-                updateIndoorParams(tag, chosenSize); // populate indoor params
+                indoorParamsUtils.updateIndoorParams(indoorParams,tag, chosenSize); // populate indoor params
                 break;
             default:
         }
@@ -200,16 +200,6 @@ public class MainActivity extends AppCompatActivity implements
             buttonsFragment.manageScanButton(true);
         }
 
-    }
-
-    public void updateIndoorParams(IndoorParamName tag, Object object){
-        for (int i = 0; i < indoorParams.size(); i++){
-            if(indoorParams.get(i).getName() == tag){
-                indoorParams.set(i,new IndoorParams(tag,object));
-                return;
-            }
-        }
-        indoorParams.add(new IndoorParams(tag,object));
     }
 
     @Override

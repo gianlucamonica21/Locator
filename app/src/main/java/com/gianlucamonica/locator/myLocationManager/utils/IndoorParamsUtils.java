@@ -44,4 +44,14 @@ public class IndoorParamsUtils {
         return -1;
     }
 
+    public void updateIndoorParams(ArrayList<IndoorParams> indoorParams, IndoorParamName tag, Object object){
+        for (int i = 0; i < indoorParams.size(); i++){
+            if(indoorParams.get(i).getName() == tag){
+                indoorParams.set(i,new IndoorParams(tag,object));
+                return;
+            }
+        }
+        indoorParams.add(new IndoorParams(tag,object));
+    }
+
 }
