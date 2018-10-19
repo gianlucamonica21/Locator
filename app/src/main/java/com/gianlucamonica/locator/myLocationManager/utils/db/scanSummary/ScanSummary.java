@@ -31,13 +31,13 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.Build
                 childColumns = "idConfig",
                 parentColumns = "id",
                 onUpdate = ForeignKey.CASCADE,
-                onDelete = ForeignKey.CASCADE),
-        @ForeignKey(
+                onDelete = ForeignKey.CASCADE)
+        /*@ForeignKey(
                 entity = BuildingFloor.class,
                 childColumns = "idBuildingFloor",
                 parentColumns = "id",
                 onUpdate = ForeignKey.CASCADE,
-                onDelete = ForeignKey.CASCADE)},
+                onDelete = ForeignKey.CASCADE)*/},
         indices = {@Index(value =
                 {"idBuilding","idAlgorithm","idConfig","type"}, unique = true)} // non posso comparire due righe aventi stesso building,algorithm,idConfig e type
 )

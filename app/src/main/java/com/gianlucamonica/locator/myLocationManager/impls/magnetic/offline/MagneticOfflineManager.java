@@ -46,6 +46,7 @@ public class MagneticOfflineManager implements SensorEventListener {
     private int idBuilding;
     private int idAlgorithm;
     private int gridSize;
+    private int idFloor;
 
     public MagneticOfflineManager(Activity activity,ArrayList<IndoorParams> indoorParams){
         this.activity = activity;
@@ -57,6 +58,7 @@ public class MagneticOfflineManager implements SensorEventListener {
         indoorParamsUtils = new IndoorParamsUtils();
         databaseManager = new DatabaseManager(activity);
         idBuilding = indoorParamsUtils.getBuilding(indoorParams) != null ? indoorParamsUtils.getBuilding(indoorParams).getId() : -1;
+        idFloor = indoorParamsUtils.getFloor(indoorParams) != null ? indoorParamsUtils.getBuilding(indoorParams).getId() : -1;
         idAlgorithm = indoorParamsUtils.getAlgorithm(indoorParams) != null ? indoorParamsUtils.getAlgorithm(indoorParams).getId() : -1;
         gridSize = indoorParamsUtils.getSize(indoorParams) != -1 ? indoorParamsUtils.getSize(indoorParams) : -1;
     }
@@ -204,7 +206,7 @@ public class MagneticOfflineManager implements SensorEventListener {
             // inserisco in scan summary
             try{
                 databaseManager.getAppDatabase().getScanSummaryDAO().insert(
-                        new ScanSummary(idBuilding, -1 , idAlgorithm, gridSize, "offline")
+                        new ScanSummary(idBuilding , idFloor, idAlgorithm, gridSize, "offline")
                 );
             }catch(Exception e){
                 Log.i("catched ", String.valueOf(e));
