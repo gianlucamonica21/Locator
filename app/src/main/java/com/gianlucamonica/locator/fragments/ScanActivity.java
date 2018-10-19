@@ -30,7 +30,7 @@ import java.util.ArrayList;
 public class ScanActivity extends AppCompatActivity {
 
     private ArrayList<IndoorParams> indoorParams;
-    private MyLocationManager myLocationManager;
+    private MyLocationManager myLocationManager; // fare tutto con MyLocMiddleware
     private DatabaseManager databaseManager;
     private IndoorParamsUtils indoorParamsUtils;
 

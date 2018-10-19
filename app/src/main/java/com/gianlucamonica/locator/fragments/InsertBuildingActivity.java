@@ -47,6 +47,7 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("insBuildAct","on create");
         setContentView(R.layout.activity_insert_building);
 
         insertButton = (Button) findViewById(R.id.insertButton);
@@ -125,16 +126,25 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("insBuildAct","on resume");
+        //myLocationManager = new MyLocationManager(AlgorithmName.GPS,this, null);
+        if (myLocationManager.getMyPermissionsManager().isGPSEnabled()) {
+            Log.i("insBuildAct","permission ok");
+            currentLocation = myLocationManager.locate();
+        }
 
-        Log.i("GPSactivity","on resume");
-        myLocationManager = new MyLocationManager(AlgorithmName.GPS,this, null);
-
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        Log.i("insBuildAct","drawing");
         if(currentLocation != null) {
+            Log.i("insBuildAct",currentLocation.toString());
             LatLng myLoc = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
             mMap.addMarker(new MarkerOptions().position(myLoc).title("You are here"));
             float zoomLevel = 16.0f; //This goes up to 21

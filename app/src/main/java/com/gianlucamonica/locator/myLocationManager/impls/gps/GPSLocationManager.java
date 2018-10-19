@@ -194,7 +194,7 @@ public class GPSLocationManager extends Service implements LocalizationAlgorithm
 
     @Override
     public Location locate() {
-         return getLoc();
+         return getLocation();
     }
 
     @Override

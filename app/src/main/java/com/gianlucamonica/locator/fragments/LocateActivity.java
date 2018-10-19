@@ -24,7 +24,7 @@ import java.util.List;
 public class LocateActivity extends AppCompatActivity {
 
     private ArrayList<IndoorParams> indoorParams;
-    private MyLocationManager myLocationManager;
+    private MyLocationManager myLocationManager; // fare tutto con MyLocMiddleware
     private DatabaseManager databaseManager;
     private IndoorParamsUtils indoorParamsUtils;
 

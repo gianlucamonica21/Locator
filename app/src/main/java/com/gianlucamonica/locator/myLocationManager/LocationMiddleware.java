@@ -41,8 +41,10 @@ public class LocationMiddleware implements LocationListener {
     private float liveGPSAcc = 0; // gps acc just registered
     private AlgorithmName chosenIndoorAlg = AlgorithmName.MAGNETIC_FP; // default indoor alg
 
+    private boolean INDOOR_LOC = false;
     private Activity activity; // ?
     private ArrayList<IndoorParams> indoorParams; // indoor algorithm's params such as building, algorithm and grid size
+    private MyLocationManager myLocationManager;
 
     /**
      * @param activity
@@ -71,11 +73,13 @@ public class LocationMiddleware implements LocationListener {
         if(liveGPSAcc > GPS_ACC_THRESHOLD){
             // istantiate outdoor alg
             Log.i("instantiate","GPS location");
-            Toast.makeText(MyApp.getContext(),"istantiate GPS",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MyApp.getContext(),"istantiate GPS",Toast.LENGTH_SHORT).show();
+            INDOOR_LOC = false;
          }else {
             // istantiate indoor alg
             Log.i("instantiate", "Indoor location");
-            Toast.makeText(MyApp.getContext(),"istantiate indoor",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MyApp.getContext(),"istantiate indoor",Toast.LENGTH_SHORT).show();
+            INDOOR_LOC = true;
          }
 
         // cancel location updates
@@ -164,4 +168,9 @@ public class LocationMiddleware implements LocationListener {
     public void onProviderDisabled(String provider) {
 
     }
+
+    public boolean isINDOOR_LOC() {
+        return INDOOR_LOC;
+    }
+
 }

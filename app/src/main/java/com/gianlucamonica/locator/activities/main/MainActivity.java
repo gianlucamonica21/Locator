@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.fragments.AlgorithmFragment;
@@ -14,6 +15,7 @@ import com.gianlucamonica.locator.fragments.ButtonsFragment;
 import com.gianlucamonica.locator.fragments.FloorFragment;
 import com.gianlucamonica.locator.fragments.MagnParamFragment;
 import com.gianlucamonica.locator.fragments.ScanFragment;
+import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
@@ -46,15 +48,24 @@ public class MainActivity extends AppCompatActivity implements
     private BuildingFloor chosenFloor;
     private int chosenSize;
 
+    private LocationMiddleware locationMiddleware;
     private DatabaseManager databaseManager;
 
     private FragmentTransaction ft;
+    private boolean INDOOR_LOC = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        locationMiddleware = new LocationMiddleware(this,indoorParams);
+        this.INDOOR_LOC = locationMiddleware.isINDOOR_LOC();
+        if(this.INDOOR_LOC){
+            Toast.makeText(this,"You are indoor",Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this,"You are outdoor",Toast.LENGTH_LONG).show();
+        }
         indoorParams = new ArrayList<>();
         databaseManager = new DatabaseManager(this);
         indoorParamsUtils = new IndoorParamsUtils();
@@ -194,10 +205,17 @@ public class MainActivity extends AppCompatActivity implements
         }
         // ****************************************************************
 
-        if ( chosenSize <= 0){
-            buttonsFragment.manageScanButton(false);
-        }else{
-            buttonsFragment.manageScanButton(true);
+        if(INDOOR_LOC){
+            if ( chosenSize <= 0){
+                buttonsFragment.manageScanButton(false);
+            }else{
+                buttonsFragment.manageScanButton(true);
+            }
+        }
+        else{
+            // OUTDOOR
+            // todo aggiungere tutti i disable del caso
+            //buttonsFragment.manageScanButton(false);
         }
 
     }
