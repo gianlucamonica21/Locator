@@ -11,6 +11,7 @@ import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.fragments.AlgorithmFragment;
 import com.gianlucamonica.locator.fragments.BuildingFragment;
 import com.gianlucamonica.locator.fragments.ButtonsFragment;
+import com.gianlucamonica.locator.fragments.FloorFragment;
 import com.gianlucamonica.locator.fragments.MagnParamFragment;
 import com.gianlucamonica.locator.fragments.ScanFragment;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
@@ -27,11 +28,13 @@ import java.util.List;
 
 import static com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName.MAGNETIC_FP;
 
-public class MainActivity extends AppCompatActivity implements BuildingFragment.BuildingListener,
-        AlgorithmFragment.OnFragmentInteractionListener,
-        ButtonsFragment.OnFragmentInteractionListener,
-        MagnParamFragment.OnFragmentInteractionListener,
-        ScanFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements
+        BuildingFragment.BuildingListener, // building
+        AlgorithmFragment.OnFragmentInteractionListener, // algorithm
+        ButtonsFragment.OnFragmentInteractionListener, // buttons
+        FloorFragment.OnFragmentInteractionListener,// flor
+        MagnParamFragment.OnFragmentInteractionListener, // magn param
+        ScanFragment.OnFragmentInteractionListener{ // scan
 
     private ArrayList<IndoorParams> indoorParams; // contenitore indoor algorithm infos
     private Algorithm chosenAlgorithm;
@@ -54,8 +57,9 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         // Replace the contents of the container with the new fragment
         ft.replace(R.id.algorithmLayout, new AlgorithmFragment(), new AlgorithmFragment().getTag());
         ft.replace(R.id.buildingLayout, new BuildingFragment(), new BuildingFragment().getTag());
+        ft.replace(R.id.floorLayout, new FloorFragment(), new FloorFragment().getTag());
         ft.replace(R.id.buttonsLayout, new ButtonsFragment(), new ButtonsFragment().getTag());
-        ft.replace(R.id.scanLayout, new ScanFragment(), new ScanFragment().getTag());
+        //ft.replace(R.id.scanLayout, new ScanFragment(), new ScanFragment().getTag());
         ft.addToBackStack(null);
         // or ft.add(R.id.your_placeholder, new FooFragment());
         // Complete the changes added above
@@ -118,6 +122,10 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         if(tag == IndoorParamName.BUILDING){
             chosenBuilding = (Building) object;
             updateIndoorParams(tag, chosenBuilding); // populate indoor params
+
+            FloorFragment floorFragment= (FloorFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.floorLayout);
+            floorFragment.setFloorByBuilding(chosenBuilding);
         }
         if(tag == IndoorParamName.ALGORITHM){
             chosenAlgorithm = (Algorithm) object;
@@ -143,14 +151,22 @@ public class MainActivity extends AppCompatActivity implements BuildingFragment.
         Log.i("indoorParams",indoorParams.toString());
 
         // Get ScanFragment, to get the scans already present in DB
-        ScanFragment scanFragment = (ScanFragment)
+        /*ScanFragment scanFragment = (ScanFragment)
                 getSupportFragmentManager().findFragmentById(R.id.scanLayout);
-        scanFragment.updateScansList(indoorParams);
+        scanFragment.updateScansList(indoorParams);*/
 
         // get buttons fragment, passing indoor params to buttons frag
         ButtonsFragment buttonsFragment = (ButtonsFragment)
                 getSupportFragmentManager().findFragmentById(R.id.buttonsLayout);
         buttonsFragment.loadIndoorParams(indoorParams);
+
+        // load info in dynamic fragment in paramLayout
+        if(chosenAlgorithm != null){
+            if(chosenAlgorithm.getName().equals(MAGNETIC_FP)){
+                MagnParamFragment magnParamFragment = (MagnParamFragment) getSupportFragmentManager().findFragmentById(R.id.paramLayout);
+                magnParamFragment.loadIndoorParams(indoorParams);
+            }
+        }
 
         if ( chosenSize <= 0){
             buttonsFragment.manageScanButton(false);

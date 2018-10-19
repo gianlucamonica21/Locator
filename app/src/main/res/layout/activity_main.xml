@@ -9,31 +9,45 @@
 
 
     <FrameLayout
+        android:id="@+id/floorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/algorithmLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buildingLayout">
+
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/buildingLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginBottom="456dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="70dp"
+        android:layout_marginBottom="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/floorLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"></FrameLayout>
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/algorithmLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginBottom="245dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/paramLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buildingLayout"
-        app:layout_constraintVertical_bias="0.0"></FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/floorLayout"></FrameLayout>
 
     <FrameLayout
         android:id="@+id/buttonsLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="120dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,28 +57,13 @@
     <FrameLayout
         android:id="@+id/paramLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="160dp"
-        app:layout_constraintBottom_toTopOf="@+id/scanLayout"
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/algorithmLayout">
 
     </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/scanLayout"
-        android:layout_width="match_parent"
-        android:layout_height="164dp"
-        android:layout_marginBottom="21dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/paramLayout">
-
-    </FrameLayout>
 </android.support.constraint.ConstraintLayout>

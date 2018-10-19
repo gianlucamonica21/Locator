@@ -7,12 +7,22 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,8 +42,13 @@ public class MagnParamFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private EditText sizeEditText;
+    private AutoCompleteTextView sizeEditText;
     private int sizeValue;
+
+    private Algorithm algorithm;
+    private Building building;
+    int gridSize;
+    private ArrayList<IndoorParams> indoorParams;
 
     private OnFragmentInteractionListener mListener;
 
@@ -75,7 +90,19 @@ public class MagnParamFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_param, container, false);
 
-        sizeEditText = (EditText) v.findViewById(R.id.sizeEditText);
+        String[] s = new String[] {"1","2","3"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_dropdown_item_1line, s);
+        sizeEditText = v.findViewById(R.id.sizeEditText);
+        sizeEditText.setAdapter(adapter);
+
+        sizeEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                sizeEditText.showDropDown();
+                return false;
+            }
+        });
 
         sizeEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -85,7 +112,9 @@ public class MagnParamFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                if(s.toString().length() == 0){
+                    sizeEditText.showDropDown();
+                }
             }
 
             @Override
@@ -139,5 +168,22 @@ public class MagnParamFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Object object, IndoorParamName tag);
+    }
+
+    public void loadIndoorParams(ArrayList<IndoorParams> indoorParams){
+        this.indoorParams = indoorParams;
+        for (int i = 0; i < indoorParams.size(); i++){
+            switch (indoorParams.get(i).getName()){
+                case BUILDING:
+                    this.building = (Building) indoorParams.get(i).getParamObject();
+                    break;
+                case ALGORITHM:
+                    this.algorithm = (Algorithm) indoorParams.get(i).getParamObject();
+                    break;
+                case SIZE:
+                    this.gridSize = (int) indoorParams.get(i).getParamObject();
+                    break;
+            }
+        }
     }
 }
