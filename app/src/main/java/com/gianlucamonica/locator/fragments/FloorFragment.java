@@ -89,8 +89,7 @@ public class FloorFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 BuildingFloor chosenFloor = getSelectedFloor();
-                if(chosenFloor != null)
-                    mListener.onFragmentInteraction(chosenFloor, IndoorParamName.FLOOR); // comunico all'activity il building scelto
+                mListener.onFragmentInteraction(chosenFloor, IndoorParamName.FLOOR); // comunico all'activity il floor scelto
             }
 
             @Override
@@ -167,26 +166,16 @@ public class FloorFragment extends Fragment {
     }
 
     public BuildingFloor getSelectedFloor(){
-        String building =  s.getSelectedItem().toString();
+        String floor =  s.getSelectedItem().toString();
+        if( floor.equals("Nessun piano")){
+            return null;
+        }
         for(int i=0; i<buildingFloors.size(); i++){
-            if(buildingFloors.get(i).getName().equals(building)){
+            if(buildingFloors.get(i).getName().equals(floor)){
                 return buildingFloors.get(i);
             }
         }
         return null;
     }
 
-    public void populateSpinner(View v){
-        /*List<String> buildingsName= new ArrayList<>();
-        for (int i=0; i < buildings.size(); i++){
-            buildingsName.add(buildings.get(i).getName());
-        }
-        // getting building spinner
-        s = (Spinner) v.findViewById(R.id.spinner);
-        // populate scansSpinner
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item, buildingsName);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
-        s.setAdapter(arrayAdapter);*/
-    }
 }

@@ -123,7 +123,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFragmentInteraction(Object object, IndoorParamName tag) {
-        Log.i("onFragmentInt",object.toString());
+        if(object != null) {
+            Log.i("onFragmentInt", object.toString());
+        }
         switch (tag){
             case BUILDING:
                 chosenBuilding = (Building) object;
@@ -135,7 +137,12 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case FLOOR:
                 chosenFloor = (BuildingFloor) object;
-                updateIndoorParams(tag,chosenFloor);
+                if(chosenFloor != null){
+                    updateIndoorParams(tag,chosenFloor);
+                }else{
+                    chosenFloor = new BuildingFloor(-1,"Empty");
+                    updateIndoorParams(tag,chosenFloor);
+                }
                 break;
             case ALGORITHM:
                 chosenAlgorithm = (Algorithm) object;
@@ -158,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             default:
         }
+
+
 
 
         Log.i("indoorParams",indoorParams.toString());
