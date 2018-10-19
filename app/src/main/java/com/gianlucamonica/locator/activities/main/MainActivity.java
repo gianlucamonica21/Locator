@@ -22,6 +22,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +38,15 @@ public class MainActivity extends AppCompatActivity implements
         ScanFragment.OnFragmentInteractionListener{ // scan
 
     private ArrayList<IndoorParams> indoorParams; // contenitore indoor algorithm infos
+    private IndoorParamsUtils indoorParamsUtils;
+
     private Algorithm chosenAlgorithm;
     private Building chosenBuilding;
+    private BuildingFloor chosenFloor;
     private int chosenSize;
+
     private DatabaseManager databaseManager;
-    private IndoorParamsUtils indoorParamsUtils;
+
     private FragmentTransaction ft;
 
     @Override
@@ -119,41 +124,43 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onFragmentInteraction(Object object, IndoorParamName tag) {
         Log.i("onFragmentInt",object.toString());
-        if(tag == IndoorParamName.BUILDING){
-            chosenBuilding = (Building) object;
-            updateIndoorParams(tag, chosenBuilding); // populate indoor params
+        switch (tag){
+            case BUILDING:
+                chosenBuilding = (Building) object;
+                updateIndoorParams(tag, chosenBuilding); // populate indoor params
 
-            FloorFragment floorFragment= (FloorFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.floorLayout);
-            floorFragment.setFloorByBuilding(chosenBuilding);
+                FloorFragment floorFragment= (FloorFragment)
+                        getSupportFragmentManager().findFragmentById(R.id.floorLayout);
+                floorFragment.setFloorByBuilding(chosenBuilding);
+                break;
+            case FLOOR:
+                chosenFloor = (BuildingFloor) object;
+                updateIndoorParams(tag,chosenFloor);
+                break;
+            case ALGORITHM:
+                chosenAlgorithm = (Algorithm) object;
+                updateIndoorParams(tag, chosenAlgorithm); // populate indoor params
+                // caricare fragment differente a seconda di chosenAlgorithm
+                if( indoorParamsUtils.getAlgorithm(indoorParams).getName().equals(String.valueOf(MAGNETIC_FP))){
+                    FragmentTransaction ft2 = getSupportFragmentManager().beginTransaction();
+                    Log.i("alg scelto",indoorParamsUtils.getAlgorithm(indoorParams).getName());
+                    ft2.add(R.id.paramLayout, new MagnParamFragment(), new MagnParamFragment().getTag());
+                    ft2.commit();
+                }else{
+                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.paramLayout);
+                    if( fragment != null)
+                        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                }
+                break;
+            case SIZE:
+                chosenSize = (int) object;
+                updateIndoorParams(tag, chosenSize); // populate indoor params
+                break;
+            default:
         }
-        if(tag == IndoorParamName.ALGORITHM){
-            chosenAlgorithm = (Algorithm) object;
-            updateIndoorParams(tag, chosenAlgorithm); // populate indoor params
-            // caricare fragment differente a seconda di chosenAlgorithm
-            if( indoorParamsUtils.getAlgorithm(indoorParams).getName().equals(String.valueOf(MAGNETIC_FP))){
-                FragmentTransaction ft2 = getSupportFragmentManager().beginTransaction();
-                Log.i("alg scelto",indoorParamsUtils.getAlgorithm(indoorParams).getName());
-                ft2.add(R.id.paramLayout, new MagnParamFragment(), new MagnParamFragment().getTag());
-                ft2.commit();
-            }else{
-                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.paramLayout);
-                if( fragment != null)
-                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-            }
 
-        }
-        if(tag == IndoorParamName.SIZE){
-            chosenSize = (int) object;
-            updateIndoorParams(tag, chosenSize); // populate indoor params
-        }
 
         Log.i("indoorParams",indoorParams.toString());
-
-        // Get ScanFragment, to get the scans already present in DB
-        /*ScanFragment scanFragment = (ScanFragment)
-                getSupportFragmentManager().findFragmentById(R.id.scanLayout);
-        scanFragment.updateScansList(indoorParams);*/
 
         // get buttons fragment, passing indoor params to buttons frag
         ButtonsFragment buttonsFragment = (ButtonsFragment)

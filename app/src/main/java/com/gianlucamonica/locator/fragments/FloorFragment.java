@@ -8,10 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
@@ -82,6 +84,21 @@ public class FloorFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_floor, container, false);
         s = v.findViewById(R.id.floorSpinner);
 
+        // getting selected item from floor spinner
+        s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                BuildingFloor chosenFloor = getSelectedFloor();
+                if(chosenFloor != null)
+                    mListener.onFragmentInteraction(chosenFloor, IndoorParamName.FLOOR); // comunico all'activity il building scelto
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                BuildingFloor chosenFloor = getSelectedFloor();
+            }
+        });
+
 
         // Inflate the layout for this fragment
         return v;
@@ -90,7 +107,6 @@ public class FloorFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
         }
     }
 
@@ -123,7 +139,7 @@ public class FloorFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Object object, IndoorParamName tag);
     }
 
     // set floor
@@ -148,6 +164,16 @@ public class FloorFragment extends Fragment {
             e.printStackTrace();
         }
 
+    }
+
+    public BuildingFloor getSelectedFloor(){
+        String building =  s.getSelectedItem().toString();
+        for(int i=0; i<buildingFloors.size(); i++){
+            if(buildingFloors.get(i).getName().equals(building)){
+                return buildingFloors.get(i);
+            }
+        }
+        return null;
     }
 
     public void populateSpinner(View v){
