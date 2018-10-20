@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 
@@ -31,6 +33,7 @@ public class MapView extends View {
     private int gridSize;
 
     private ArrayList<IndoorParams> indoorParams;
+    private IndoorParamsUtils indoorParamsUtils;
 
     /**
      * @param context
@@ -42,6 +45,7 @@ public class MapView extends View {
         this.indoorParams = indoorParams;
         this.estimateGridName = estimateGridName;
         this.offlineScans = offlineScans;
+        this.indoorParamsUtils = new IndoorParamsUtils();
 
         for (int i = 0; i < this.indoorParams.size(); i++){
             switch (indoorParams.get(i).getName()){
@@ -53,6 +57,10 @@ public class MapView extends View {
                 case SIZE:
                     int size = (int) indoorParams.get(i).getParamObject();
                     this.gridSize = size;
+                    break;
+                case CONFIG:
+                    Config config = indoorParamsUtils.getConfig(indoorParams);
+                    gridSize = config.getParValue();
                     break;
             }
         }

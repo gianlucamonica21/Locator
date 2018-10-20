@@ -138,6 +138,7 @@ public class MagneticOfflineManager implements SensorEventListener {
                             // se clicco all'interno della mappa, la prima volta inserisco in scan summary
                             if(clicksOnMap == 1){
                                 inserted = insertNewScanSummary();
+                                Log.i("inserisco scansummary","offline");
                             }
                             //get magnetic field value
                             scanNumber = 0;
@@ -173,6 +174,7 @@ public class MagneticOfflineManager implements SensorEventListener {
                     int idScan = getIdScanSummary();
                     if( idScan != -1){
                         //2) inserisco in offline scan
+                        Log.i("idScan", String.valueOf(idScan));
                         Log.i("inserisco magnitude", String.valueOf(liveMagnitude));
                         try {
                             databaseManager.getAppDatabase().getOfflineScanDAO().insert(
@@ -205,6 +207,7 @@ public class MagneticOfflineManager implements SensorEventListener {
         if( idAlgorithm != -1 && idBuilding != -1 && gridSize != -1){
             // inserisco in scan summary
             try{
+                // todo inserire config e non gridSize
                 databaseManager.getAppDatabase().getScanSummaryDAO().insert(
                         new ScanSummary(idBuilding , idFloor, idAlgorithm, gridSize, "offline")
                 );
@@ -221,10 +224,11 @@ public class MagneticOfflineManager implements SensorEventListener {
         if( idAlgorithm != -1 && idBuilding != -1 && gridSize != -1){
             ArrayList<ScanSummary> scanSummary;
             // inserisco in scan summary
-            databaseManager.getAppDatabase().getScanSummaryDAO().insert(
-                    new ScanSummary(idBuilding, -1, idAlgorithm, 1, "offline")
-            );
-            scanSummary = (ArrayList<ScanSummary>) databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(idBuilding, idAlgorithm, gridSize);
+            //databaseManager.getAppDatabase().getScanSummaryDAO().insert(
+              //      new ScanSummary(idBuilding, -1, idAlgorithm, 1, "offline")
+            //);
+            scanSummary = (ArrayList<ScanSummary>) databaseManager.getAppDatabase().getScanSummaryDAO().
+                    getScanSummaryByBuildingAlgorithm(idBuilding, idAlgorithm, gridSize);
             return scanSummary.get(0).getId();
         }
         return -1;

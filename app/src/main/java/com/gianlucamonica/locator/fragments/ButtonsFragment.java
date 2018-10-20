@@ -14,6 +14,7 @@ import android.widget.Button;
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
@@ -47,6 +48,7 @@ public class ButtonsFragment extends Fragment {
     private Building building;
     private BuildingFloor buildingFloor;
     private int gridSize;
+    private Config config;
     private ArrayList<IndoorParams> indoorParams;
 
     public ButtonsFragment() {
@@ -167,6 +169,9 @@ public class ButtonsFragment extends Fragment {
                     break;
                 case SIZE:
                     this.gridSize = (int) indoorParams.get(i).getParamObject();
+                    break;
+                case CONFIG:
+                    this.config = (Config) indoorParams.get(i).getParamObject();
                     break;
             }
         }

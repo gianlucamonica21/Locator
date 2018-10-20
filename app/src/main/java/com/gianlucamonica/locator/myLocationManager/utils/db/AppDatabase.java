@@ -40,6 +40,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ScanSummaryDAO getScanSummaryDAO();
     public abstract BuildingFloorDAO getBuildingFloorDAO();
     public abstract ConfigDAO getConfigDAO();
+    public abstract MyDao getMyDAO();
 
 
 }

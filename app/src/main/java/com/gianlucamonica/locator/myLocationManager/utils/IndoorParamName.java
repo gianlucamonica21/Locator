@@ -4,5 +4,6 @@ public enum IndoorParamName {
     BUILDING,
     FLOOR,
     ALGORITHM,
-    SIZE
+    SIZE,
+    CONFIG
 }

@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 
+import java.io.Serializable;
+
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "config",indices = {@Index(value =
@@ -20,7 +22,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
                     onUpdate = CASCADE,
                     onDelete = CASCADE)
         })
-public class Config {
+public class Config implements Serializable{
 
     @PrimaryKey(autoGenerate = true)
     int id;

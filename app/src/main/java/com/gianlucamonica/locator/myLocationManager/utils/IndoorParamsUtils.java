@@ -1,5 +1,6 @@
 package com.gianlucamonica.locator.myLocationManager.utils;
 
+import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
@@ -42,6 +43,15 @@ public class IndoorParamsUtils {
             }
         }
         return -1;
+    }
+
+    public Config getConfig(ArrayList<IndoorParams> indoorParams){
+        for(int i = 0; i < indoorParams.size(); i++){
+            if(indoorParams.get(i).getName().equals(IndoorParamName.CONFIG)){
+                return (Config) indoorParams.get(i).getParamObject();
+            }
+        }
+        return null;
     }
 
     public void updateIndoorParams(ArrayList<IndoorParams> indoorParams, IndoorParamName tag, Object object){

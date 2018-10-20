@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements
     private Building chosenBuilding;
     private BuildingFloor chosenFloor;
     private int chosenSize;
+    private Config chosenConfig;
 
     private LocationMiddleware locationMiddleware;
     private DatabaseManager databaseManager;
@@ -178,6 +179,11 @@ public class MainActivity extends AppCompatActivity implements
                 chosenSize = (int) object;
                 indoorParamsUtils.updateIndoorParams(indoorParams,tag, chosenSize); // populate indoor params
                 break;
+            case CONFIG:
+                chosenConfig = (Config) object;
+                Log.i("config main ", String.valueOf(chosenConfig));
+                indoorParamsUtils.updateIndoorParams(indoorParams,tag,chosenConfig);
+                break;
             default:
         }
 
@@ -205,18 +211,20 @@ public class MainActivity extends AppCompatActivity implements
         }
         // ****************************************************************
 
+        if ( chosenConfig == null){
+            buttonsFragment.manageScanButton(false);
+        }else{
+            buttonsFragment.manageScanButton(true);
+        }
+        /*
         if(INDOOR_LOC){
-            if ( chosenSize <= 0){
-                buttonsFragment.manageScanButton(false);
-            }else{
-                buttonsFragment.manageScanButton(true);
-            }
+
         }
         else{
             // OUTDOOR
             // todo aggiungere tutti i disable del caso
             //buttonsFragment.manageScanButton(false);
-        }
+        }*/
 
     }
 

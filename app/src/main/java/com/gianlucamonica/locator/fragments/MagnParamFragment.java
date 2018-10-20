@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -54,7 +55,9 @@ public class MagnParamFragment extends Fragment {
 
     private Algorithm algorithm;
     private Building building;
+    private List<Config> configList;
     int gridSize;
+    private Config config;
     private ArrayList<IndoorParams> indoorParams;
     private IndoorParamsUtils indoorParamsUtils;
     private OnFragmentInteractionListener mListener;
@@ -113,6 +116,26 @@ public class MagnParamFragment extends Fragment {
             }
         });
 
+        sizeEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                sizeValue = Integer.parseInt(sizeEditText.getText().toString());
+
+                //controllo se la size scelta è già presente nella tabella config
+                for (int i = 0; i < configList.size(); i++){
+                    if(configList.get(i).getParName().equals("gridSize")){
+                        if(configList.get(i).getParValue() == sizeValue){
+                            config = configList.get(i); // setto config
+                            break;
+                        }
+                    }
+                }
+
+                Log.i("passo a main",config.toString());
+                mListener.onFragmentInteraction(config, IndoorParamName.CONFIG);
+            }
+        });
+
         sizeEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -133,7 +156,47 @@ public class MagnParamFragment extends Fragment {
                 }else{
                     sizeValue = Integer.parseInt( sizeEditText.getText().toString() ); // getting value
                 }
-                mListener.onFragmentInteraction(sizeValue, IndoorParamName.SIZE);
+
+                boolean newConfig = true;
+
+                //controllo se la size scelta è già presente nella tabella config
+                for (int i = 0; i < configList.size(); i++){
+                    if(configList.get(i).getParName().equals("gridSize")){
+                        if(configList.get(i).getParValue() == sizeValue){
+                            config = configList.get(i); // setto config
+                            newConfig = false;
+                            break;
+                        }
+                    }
+                }
+
+                Log.i("new conf", String.valueOf(newConfig));
+
+                if(newConfig){
+                    Log.i("insert new config","");
+                    try {
+                        // inserisco nuova config
+                        databaseManager.getAppDatabase().getConfigDAO().insert(
+                                new Config(algorithm.getId(),"gridSize",sizeValue)
+                        );
+                        // pesco nuova config
+                        List<Config> configs = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(
+                                algorithm.getId(),"gridSize",sizeValue
+                        );
+                        Log.i("pesco nuova config",configs.toString());
+                        if(configs.size() == 1){
+                            config = configs.get(0);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Log.i("passo a main",config.toString());
+                // devo passare la config corrispondente alla size scelta, altrimenti creare una nuova config
+                mListener.onFragmentInteraction(config, IndoorParamName.CONFIG);
+
             }
         });
         // Inflate the layout for this fragment
@@ -197,29 +260,24 @@ public class MagnParamFragment extends Fragment {
         getSizeFromDB();
     }
 
+    /* cerco config per l'algoritmo e il building scelto*/
     public void getSizeFromDB(){
-        Log.i("indorparams magn",indoorParams.toString());
         Algorithm algorithm = indoorParamsUtils.getAlgorithm(indoorParams);
         Building building = indoorParamsUtils.getBuilding(indoorParams);
 
         try {
-            List<ScanSummary> scanSummaryList = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),algorithm.getId());
-            Log.i("scanSummary",scanSummaryList.toString());
-            if(scanSummaryList.size() > 0 ){
-                List<Config> configs = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(algorithm.getId(),scanSummaryList.get(0).getIdConfig());
-                Log.i("config",configs.toString());
+            configList = databaseManager.getAppDatabase().getMyDAO().findConfigByBuildingAndAlgorithm(building.getId(),algorithm.getId());
+            Log.i("config trovate",configList.toString());
 
-                List<String> size = new ArrayList<>();
-                for(int i = 0; i < configs.size(); i++){
-                    if(configs.get(i).getParName().equals("gridSize"))
-                        size.add(String.valueOf(configs.get(i).getParValue()));
-                }
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_dropdown_item_1line, size);
-                sizeEditText.setAdapter(adapter);
-
+            List<String> size = new ArrayList<>();
+            for(int i = 0; i < configList.size(); i++){
+                if(configList.get(i).getParName().equals("gridSize"))
+                    size.add(String.valueOf(configList.get(i).getParValue()));
             }
+            // popolo lo spinner con le config trovate
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                    android.R.layout.simple_dropdown_item_1line, size);
+            sizeEditText.setAdapter(adapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
