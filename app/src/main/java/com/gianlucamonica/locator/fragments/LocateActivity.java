@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
@@ -41,11 +42,11 @@ public class LocateActivity extends AppCompatActivity {
 
 
         Algorithm algorithm;
-        algorithm = indoorParamsUtils.getAlgorithm(indoorParams);
+        algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.ALGORITHM);
         AlgorithmName algorithmName = AlgorithmName.MAGNETIC_FP;
         algorithmName = AlgorithmName.valueOf(algorithm.getName());
-        Building building = indoorParamsUtils.getBuilding(indoorParams);
-        int size = indoorParamsUtils.getSize(indoorParams);
+        Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
+        int size =(int) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.SIZE);
 
         try{
             List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),algorithm.getId(),size);

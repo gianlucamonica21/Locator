@@ -98,15 +98,12 @@ public class MagnParamFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_param, container, false);
         databaseManager = new DatabaseManager(getActivity());
         indoorParamsUtils = new IndoorParamsUtils();
-        String[] s = new String[] {"1","2","3"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_dropdown_item_1line, s);
+
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_param, container, false);
         sizeEditText = v.findViewById(R.id.sizeEditText);
-        sizeEditText.setAdapter(adapter);
 
         sizeEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -118,7 +115,7 @@ public class MagnParamFragment extends Fragment {
 
         sizeEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // quando l'utente clicca una config preesistente
                 sizeValue = Integer.parseInt(sizeEditText.getText().toString());
 
                 //controllo se la size scelta è già presente nella tabella config
@@ -150,12 +147,15 @@ public class MagnParamFragment extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable s) { // quando l'utente clicca una nuova configurazione viene aggiunta in db
+
                 if( sizeEditText.getText().toString().equals("")){
                     sizeValue = -1;
                 }else{
                     sizeValue = Integer.parseInt( sizeEditText.getText().toString() ); // getting value
                 }
+                Log.i("after text changed", String.valueOf(sizeValue));
+                getSizeFromDB();
 
                 boolean newConfig = true;
 
@@ -181,8 +181,7 @@ public class MagnParamFragment extends Fragment {
                         );
                         // pesco nuova config
                         List<Config> configs = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(
-                                algorithm.getId(),"gridSize",sizeValue
-                        );
+                                algorithm.getId(),"gridSize",sizeValue);
                         Log.i("pesco nuova config",configs.toString());
                         if(configs.size() == 1){
                             config = configs.get(0);
@@ -243,6 +242,7 @@ public class MagnParamFragment extends Fragment {
     }
 
     public void loadIndoorParams(ArrayList<IndoorParams> indoorParams){
+        Log.i("sono qui","ssssss");
         this.indoorParams = indoorParams;
         for (int i = 0; i < indoorParams.size(); i++){
             switch (indoorParams.get(i).getName()){
@@ -257,13 +257,12 @@ public class MagnParamFragment extends Fragment {
                     break;
             }
         }
-        getSizeFromDB();
     }
 
     /* cerco config per l'algoritmo e il building scelto*/
     public void getSizeFromDB(){
-        Algorithm algorithm = indoorParamsUtils.getAlgorithm(indoorParams);
-        Building building = indoorParamsUtils.getBuilding(indoorParams);
+        Algorithm algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.ALGORITHM);
+        Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
 
         try {
             configList = databaseManager.getAppDatabase().getMyDAO().findConfigByBuildingAndAlgorithm(building.getId(),algorithm.getId());

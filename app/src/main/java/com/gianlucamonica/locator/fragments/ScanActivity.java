@@ -96,9 +96,9 @@ public class ScanActivity extends AppCompatActivity {
     private void deleteScanFromDB(){
         try{
             ScanSummaryDAO scanSummaryDAO = databaseManager.getAppDatabase().getScanSummaryDAO();
-            Algorithm algorithm = indoorParamsUtils.getAlgorithm(indoorParams);
-            Building building = indoorParamsUtils.getBuilding(indoorParams);
-            int size = indoorParamsUtils.getSize(indoorParams);
+            Algorithm algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.ALGORITHM);
+            Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
+            int size = (int) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.SIZE);
             Log.i("cancello", String.valueOf(algorithm.getId() + " " +  building.getId()+ " " + size + " " + "OFFLINE"));
             scanSummaryDAO.deleteByBuildingAlgorithmSize(algorithm.getId(),building.getId(),size,"offline");
         }catch (Exception e){

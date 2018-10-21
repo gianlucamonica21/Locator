@@ -10,9 +10,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
@@ -47,6 +52,7 @@ public class MagneticOfflineManager implements SensorEventListener {
     private int idAlgorithm;
     private int gridSize;
     private int idFloor;
+    private int idConfig;
 
     public MagneticOfflineManager(Activity activity,ArrayList<IndoorParams> indoorParams){
         this.activity = activity;
@@ -57,10 +63,20 @@ public class MagneticOfflineManager implements SensorEventListener {
         offlineScans = new ArrayList<>();
         indoorParamsUtils = new IndoorParamsUtils();
         databaseManager = new DatabaseManager(activity);
-        idBuilding = indoorParamsUtils.getBuilding(indoorParams) != null ? indoorParamsUtils.getBuilding(indoorParams).getId() : -1;
-        idFloor = indoorParamsUtils.getFloor(indoorParams) != null ? indoorParamsUtils.getBuilding(indoorParams).getId() : -1;
-        idAlgorithm = indoorParamsUtils.getAlgorithm(indoorParams) != null ? indoorParamsUtils.getAlgorithm(indoorParams).getId() : -1;
-        gridSize = indoorParamsUtils.getSize(indoorParams) != -1 ? indoorParamsUtils.getSize(indoorParams) : -1;
+
+        // recupero indoor params
+        Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
+        idBuilding = building != null ? building.getId() : -1;
+
+        BuildingFloor buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.FLOOR);
+        idFloor = buildingFloor != null ? buildingFloor.getId() : -1;
+
+        Algorithm algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.ALGORITHM);
+        idAlgorithm = algorithm != null ? algorithm.getId() : -1;
+
+        Config config = (Config) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.CONFIG);
+        idConfig = config != null ? config.getId() : -1;
+
     }
 
     /**
@@ -204,12 +220,12 @@ public class MagneticOfflineManager implements SensorEventListener {
     }
 
     private boolean insertNewScanSummary(){
-        if( idAlgorithm != -1 && idBuilding != -1 && gridSize != -1){
+        if( idAlgorithm != -1 && idBuilding != -1 && idConfig != -1){
             // inserisco in scan summary
             try{
                 // todo inserire config e non gridSize
                 databaseManager.getAppDatabase().getScanSummaryDAO().insert(
-                        new ScanSummary(idBuilding , idFloor, idAlgorithm, gridSize, "offline")
+                        new ScanSummary(idBuilding , idFloor, idAlgorithm, idConfig, "offline")
                 );
             }catch(Exception e){
                 Log.i("catched ", String.valueOf(e));
@@ -221,14 +237,11 @@ public class MagneticOfflineManager implements SensorEventListener {
     }
 
     private int getIdScanSummary(){
-        if( idAlgorithm != -1 && idBuilding != -1 && gridSize != -1){
+        if( idAlgorithm != -1 && idBuilding != -1 && idConfig != -1){
             ArrayList<ScanSummary> scanSummary;
-            // inserisco in scan summary
-            //databaseManager.getAppDatabase().getScanSummaryDAO().insert(
-              //      new ScanSummary(idBuilding, -1, idAlgorithm, 1, "offline")
-            //);
+
             scanSummary = (ArrayList<ScanSummary>) databaseManager.getAppDatabase().getScanSummaryDAO().
-                    getScanSummaryByBuildingAlgorithm(idBuilding, idAlgorithm, gridSize);
+                    getScanSummaryByBuildingAlgorithm(idBuilding, idAlgorithm, idConfig);
             return scanSummary.get(0).getId();
         }
         return -1;

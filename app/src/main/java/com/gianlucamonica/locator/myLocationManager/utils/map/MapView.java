@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.util.Log;
 import android.view.View;
 
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
@@ -59,7 +60,7 @@ public class MapView extends View {
                     this.gridSize = size;
                     break;
                 case CONFIG:
-                    Config config = indoorParamsUtils.getConfig(indoorParams);
+                    Config config = (Config) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.CONFIG);
                     gridSize = config.getParValue();
                     break;
             }

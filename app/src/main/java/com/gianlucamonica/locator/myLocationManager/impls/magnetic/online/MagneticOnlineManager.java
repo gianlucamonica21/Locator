@@ -10,12 +10,14 @@ import android.widget.Toast;
 
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrintDAO;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.online.EuclideanDistanceAlg;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScanDAO;
@@ -78,9 +80,11 @@ public class MagneticOnlineManager implements SensorEventListener {
     }
 
     public List<OfflineScan> getMagneticFingerPrintsFromDb(){
-        int idBuilding = indoorParamsUtils.getBuilding(indoorParams).getId();
-        int idAlgorithm= indoorParamsUtils.getAlgorithm(indoorParams).getId();
-        int gridSize = indoorParamsUtils.getSize(indoorParams);
+        Building building =  (Building) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.BUILDING);
+        int idBuilding = building.getId();
+        Algorithm algorithm =  (Algorithm) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.ALGORITHM);
+        int idAlgorithm= algorithm.getId();
+        int gridSize = (int) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.SIZE);
 
         try {
             List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,gridSize);

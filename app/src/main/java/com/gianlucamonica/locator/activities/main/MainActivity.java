@@ -162,8 +162,8 @@ public class MainActivity extends AppCompatActivity implements
                 chosenAlgorithm = (Algorithm) object;
                 indoorParamsUtils.updateIndoorParams(indoorParams,tag, chosenAlgorithm); // populate indoor params
                 // caricare fragment differente a seconda di chosenAlgorithm
-                if( indoorParamsUtils.getAlgorithm(indoorParams).getName().equals(String.valueOf(MAGNETIC_FP))){
-                    Log.i("alg scelto",indoorParamsUtils.getAlgorithm(indoorParams).getName());
+                if( chosenAlgorithm.getName().equals(String.valueOf(MAGNETIC_FP))){
+                    Log.i("alg scelto",chosenAlgorithm.getName());
 
                     FragmentTransaction ft2 = getSupportFragmentManager().beginTransaction();
                     ft2.add(R.id.paramLayout, new MagnParamFragment(), new MagnParamFragment().getTag());

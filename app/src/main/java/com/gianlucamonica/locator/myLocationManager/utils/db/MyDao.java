@@ -9,7 +9,7 @@ import java.util.List;
 
 @Dao
 public interface MyDao {
-    @Query("SELECT * FROM config "
+    @Query("SELECT config.* FROM config "
             + "INNER JOIN scanSummary ON scanSummary.idConfig = config.id "
             + "WHERE scanSummary.idBuilding = :idBuilding AND scanSummary.idAlgorithm = :idAlgorithm")
     public List<Config> findConfigByBuildingAndAlgorithm(int idBuilding, int idAlgorithm);
