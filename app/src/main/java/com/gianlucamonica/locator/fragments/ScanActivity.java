@@ -18,6 +18,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
@@ -98,9 +99,10 @@ public class ScanActivity extends AppCompatActivity {
             ScanSummaryDAO scanSummaryDAO = databaseManager.getAppDatabase().getScanSummaryDAO();
             Algorithm algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.ALGORITHM);
             Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
-            int size = (int) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.SIZE);
-            Log.i("cancello", String.valueOf(algorithm.getId() + " " +  building.getId()+ " " + size + " " + "OFFLINE"));
-            scanSummaryDAO.deleteByBuildingAlgorithmSize(algorithm.getId(),building.getId(),size,"offline");
+            Config config = (Config) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.CONFIG);
+
+            Log.i("cancello", String.valueOf(algorithm.getId() + " " +  building.getId()+ " " + config.getId() + " " + "OFFLINE"));
+            scanSummaryDAO.deleteByBuildingAlgorithmConfig(algorithm.getId(),building.getId(),config.getId(),"offline");
         }catch (Exception e){
             Log.e("error get scan",String.valueOf(e));
         }

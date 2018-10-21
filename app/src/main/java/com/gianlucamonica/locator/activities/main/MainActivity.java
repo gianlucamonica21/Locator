@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements
             databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(MAGNETIC_FP),true));
             databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.WIFI_RSS_FP),true));
         }
-        if(databaseManager.getAppDatabase().getConfigDAO().getAllConfigs().size() == 0){
+        /*if(databaseManager.getAppDatabase().getConfigDAO().getAllConfigs().size() == 0){
             databaseManager.getAppDatabase().getConfigDAO().insert(
                     new Config(1,"gridSize",1)
             );
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements
             databaseManager.getAppDatabase().getConfigDAO().insert(
                     new Config(1,"gridSize",3)
             );
-        }
+        }*/
         // inserting onlineScan
         //databaseManager.getAppDatabase().getOnlineScanDAO().insert(new OnlineScan(2,0));
         // inserting offlineScan

@@ -113,6 +113,7 @@ public class MagnParamFragment extends Fragment {
             }
         });
 
+
         sizeEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // quando l'utente clicca una config preesistente
@@ -155,7 +156,6 @@ public class MagnParamFragment extends Fragment {
                     sizeValue = Integer.parseInt( sizeEditText.getText().toString() ); // getting value
                 }
                 Log.i("after text changed", String.valueOf(sizeValue));
-                getSizeFromDB();
 
                 boolean newConfig = true;
 
@@ -257,6 +257,7 @@ public class MagnParamFragment extends Fragment {
                     break;
             }
         }
+        getSizeFromDB();
     }
 
     /* cerco config per l'algoritmo e il building scelto*/

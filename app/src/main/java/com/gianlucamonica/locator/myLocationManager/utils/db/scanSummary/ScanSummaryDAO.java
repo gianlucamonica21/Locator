@@ -24,8 +24,8 @@ public abstract class ScanSummaryDAO {
     @Query("DELETE FROM scanSummary")
     public abstract void deleteAll();
 
-    @Query("DELETE FROM scanSummary WHERE idBuilding = :idBuilding AND idAlgorithm = :idAlgorithm AND idConfig = :gridSize AND type = :type")
-    public abstract void deleteByBuildingAlgorithmSize(int idBuilding, int idAlgorithm, int gridSize,String type);
+    @Query("DELETE FROM scanSummary WHERE idBuilding = :idBuilding AND idAlgorithm = :idAlgorithm AND idConfig = :idConfig AND type = :type")
+    public abstract void deleteByBuildingAlgorithmConfig(int idBuilding, int idAlgorithm, int idConfig,String type);
 
     @Query("SELECT * FROM scanSummary")
     public abstract List<ScanSummary> getScanSummary();
