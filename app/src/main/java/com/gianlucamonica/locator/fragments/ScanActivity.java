@@ -101,10 +101,10 @@ public class ScanActivity extends AppCompatActivity {
             Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
             Config config = (Config) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.CONFIG);
 
-            Log.i("cancello", String.valueOf(algorithm.getId() + " " +  building.getId()+ " " + config.getId() + " " + "OFFLINE"));
-            scanSummaryDAO.deleteByBuildingAlgorithmConfig(algorithm.getId(),building.getId(),config.getId(),"offline");
+            Log.i("cancello", String.valueOf("a"+algorithm.getId() + "b" +  building.getId()+ "c" + config.getId() + " " + "OFFLINE"));
+            scanSummaryDAO.deleteByBuildingAlgorithmConfig(building.getId(),algorithm.getId(),config.getId(),"offline");
         }catch (Exception e){
-            Log.e("error get scan",String.valueOf(e));
+            Log.e("error get scan","error " +String.valueOf(e));
         }
     }
 }

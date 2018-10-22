@@ -193,6 +193,7 @@ public class MagnParamFragment extends Fragment {
                             }
                         }else{
                             Log.i("exisConfig","size " + existingConfigs.size());
+                            Log.i("exisConfig","config " + existingConfigs.toString());
                             // estraggo config già esistente
                             config = existingConfigs.get(0);
                         }
@@ -276,8 +277,8 @@ public class MagnParamFragment extends Fragment {
         Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
 
         try {
-            //configList = databaseManager.getAppDatabase().getMyDAO().findConfigByBuildingAndAlgorithm(building.getId(),algorithm.getId());
-            configList = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(algorithm.getId(),"gridSize");
+            configList = databaseManager.getAppDatabase().getMyDAO().findConfigByBuildingAndAlgorithm(building.getId(),algorithm.getId());
+            //configList = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(algorithm.getId(),"gridSize");
             Log.i("config trovate",configList.toString());
 
             List<String> size = new ArrayList<>();
