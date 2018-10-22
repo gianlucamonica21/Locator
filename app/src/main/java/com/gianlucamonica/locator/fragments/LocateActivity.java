@@ -36,6 +36,7 @@ public class LocateActivity extends AppCompatActivity {
     private IndoorParamsUtils indoorParamsUtils;
 
     private EditText actualGrid;
+    private EditText estimatedGrid;
 
     // loop
     final Handler handler = new Handler();
@@ -53,7 +54,8 @@ public class LocateActivity extends AppCompatActivity {
         indoorParams = (ArrayList<IndoorParams>) bundle.getSerializable("indoorParams");
 
         actualGrid = (EditText) findViewById(R.id.actualGridEditText);
-
+        estimatedGrid = (EditText) findViewById(R.id.estimateGridEditText);
+        estimatedGrid.setEnabled(false);
         // recupero parametri indoor
         Algorithm algorithm;
         algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.ALGORITHM);
@@ -96,12 +98,15 @@ public class LocateActivity extends AppCompatActivity {
                     //prima scansione
                     OnlineScan onlineScan = myLocationManager.locate();
                     Log.i("locate activity", "onlinescan " + onlineScan.toString());
+                    estimatedGrid.setText(String.valueOf(onlineScan.getIdEstimatedPos()));
+                    handler.removeCallbacks(runnable);
                     //todo inserire online scan in db
                     //successive altre scansioni
                     handler.postDelayed(runnable = new Runnable(){
                         public void run(){
                             //do something
                             OnlineScan onlineScan = myLocationManager.locate();
+                            estimatedGrid.setText(String.valueOf(onlineScan.getIdEstimatedPos()));
                             Log.i("locate activity", "onlinescan " + onlineScan.toString());
                             //todo inserire online scan in db
                             final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
