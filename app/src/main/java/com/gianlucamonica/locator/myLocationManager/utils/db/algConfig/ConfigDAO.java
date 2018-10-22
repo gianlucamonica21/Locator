@@ -40,6 +40,9 @@ public abstract class ConfigDAO {
     @Query("SELECT * FROM config WHERE idAlgorithm =:idAlgorithm AND id = :id")
     public abstract List<Config> getConfigByIdAlgorithm(int idAlgorithm,int id);
 
+    @Query("SELECT * FROM config WHERE idAlgorithm =:idAlgorithm AND parName = :parName")
+    public abstract List<Config> getConfigByIdAlgorithm(int idAlgorithm,String parName);
+
     @Query("SELECT * FROM config WHERE idAlgorithm =:idAlgorithm AND parName = :parName AND parValue = :parValue")
     public abstract List<Config> getConfigByIdAlgorithm(int idAlgorithm,String parName,int parValue);
 

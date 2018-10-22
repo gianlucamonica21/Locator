@@ -119,7 +119,7 @@ public class MagnParamFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // quando l'utente clicca una config preesistente
                 sizeValue = Integer.parseInt(sizeEditText.getText().toString());
 
-                //controllo se la size scelta è già presente nella tabella config
+                //controllo se la size scelta è già presente nella tabella config !deve essere già presente se è qui!
                 for (int i = 0; i < configList.size(); i++){
                     if(configList.get(i).getParName().equals("gridSize")){
                         if(configList.get(i).getParValue() == sizeValue){
@@ -142,9 +142,7 @@ public class MagnParamFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().length() == 0){
-                    sizeEditText.showDropDown();
-                }
+
             }
 
             @Override
@@ -173,18 +171,30 @@ public class MagnParamFragment extends Fragment {
                 Log.i("new conf", String.valueOf(newConfig));
 
                 if(newConfig){
-                    Log.i("insert new config","");
+                    Log.i("insert new config","insert");
                     try {
-                        // inserisco nuova config
-                        databaseManager.getAppDatabase().getConfigDAO().insert(
-                                new Config(algorithm.getId(),"gridSize",sizeValue)
-                        );
-                        // pesco nuova config
-                        List<Config> configs = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(
-                                algorithm.getId(),"gridSize",sizeValue);
-                        Log.i("pesco nuova config",configs.toString());
-                        if(configs.size() == 1){
-                            config = configs.get(0);
+                        // controllo se esiste già una config del genere
+                        List<Config> existingConfigs = databaseManager.getAppDatabase().getConfigDAO().
+                                getConfigByIdAlgorithm(algorithm.getId(),"gridSize",sizeValue);
+
+                        if(existingConfigs.size() == 0){
+                            // inserisco nuova config
+                            databaseManager.getAppDatabase().getConfigDAO().insert(
+                                    new Config(algorithm.getId(),"gridSize",sizeValue)
+                            );
+
+                            // pesco nuova config
+                            List<Config> configs = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(
+                                    algorithm.getId(),"gridSize",sizeValue);
+                            Log.i("pesco nuova config","nuova config "+ configs.toString());
+
+                            if(configs.size() == 1){
+                                config = configs.get(0);
+                            }
+                        }else{
+                            Log.i("exisConfig","size " + existingConfigs.size());
+                            // estraggo config già esistente
+                            config = existingConfigs.get(0);
                         }
 
                     } catch (Exception e) {
@@ -266,7 +276,8 @@ public class MagnParamFragment extends Fragment {
         Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
 
         try {
-            configList = databaseManager.getAppDatabase().getMyDAO().findConfigByBuildingAndAlgorithm(building.getId(),algorithm.getId());
+            //configList = databaseManager.getAppDatabase().getMyDAO().findConfigByBuildingAndAlgorithm(building.getId(),algorithm.getId());
+            configList = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(algorithm.getId(),"gridSize");
             Log.i("config trovate",configList.toString());
 
             List<String> size = new ArrayList<>();
