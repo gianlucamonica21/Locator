@@ -9,18 +9,17 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
-import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrintDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
-import com.gianlucamonica.locator.myLocationManager.impls.wifi.online.EuclideanDistanceAlg;
+import com.gianlucamonica.locator.myLocationManager.impls.EuclideanDistanceAlg;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
-import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScanDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 
@@ -64,9 +63,9 @@ public class MagneticOnlineManager implements SensorEventListener {
         Log.i("offlineScan",offlineScans.toString());
         if (offlineScans.size() > 0) {
 
-            Log.i("calcolo euclidean","");
             euclideanDistanceAlg = new EuclideanDistanceAlg(offlineScans, magnitudeValue);
             int index = euclideanDistanceAlg.compute(AlgorithmName.MAGNETIC_FP);
+            Log.i("magn online manag","index " + index);
 
             return new OnlineScan(idScan,index,0,new Date());
 
@@ -84,10 +83,10 @@ public class MagneticOnlineManager implements SensorEventListener {
         int idBuilding = building.getId();
         Algorithm algorithm =  (Algorithm) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.ALGORITHM);
         int idAlgorithm= algorithm.getId();
-        int gridSize = (int) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.SIZE);
-
+        Config config = (Config) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.CONFIG);
+        int idConfig = config.getId();
         try {
-            List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,gridSize);
+            List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,idConfig);
             idScan = scanSummary.get(0).getId();
             Log.i("idScan", String.valueOf(idScan));
             List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(idScan);

@@ -213,8 +213,14 @@ public class MainActivity extends AppCompatActivity implements
 
         if ( chosenConfig == null){
             buttonsFragment.manageScanButton(false);
+            buttonsFragment.manageLocateButton(false);
         }else{
             buttonsFragment.manageScanButton(true);
+            List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().
+                    getScanSummaryByBuildingAlgorithm(chosenBuilding.getId(),chosenAlgorithm.getId(),chosenConfig.getId());
+            if(scanSummaries.size() > 0){
+                buttonsFragment.manageLocateButton(true);
+            }
         }
         /*
         if(INDOOR_LOC){

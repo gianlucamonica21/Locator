@@ -6,9 +6,9 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.gianlucamonica.locator.myLocationManager.impls.EuclideanDistanceAlg;
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.fingerPrint.WifiFingerPrint;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
-import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.fingerPrint.WifiFingerPrintDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;

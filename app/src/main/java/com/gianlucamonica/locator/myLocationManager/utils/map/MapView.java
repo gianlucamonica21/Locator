@@ -55,10 +55,6 @@ public class MapView extends View {
                     this.height = building.getHeight();
                     this.width = building.getWidht();
                     break;
-                case SIZE:
-                    int size = (int) indoorParams.get(i).getParamObject();
-                    this.gridSize = size;
-                    break;
                 case CONFIG:
                     Config config = (Config) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.CONFIG);
                     gridSize = config.getParValue();

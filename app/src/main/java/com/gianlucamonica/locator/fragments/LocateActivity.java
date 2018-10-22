@@ -12,6 +12,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
@@ -40,22 +41,25 @@ public class LocateActivity extends AppCompatActivity {
         indoorParams = (ArrayList<IndoorParams>) bundle.getSerializable("indoorParams");
 
 
-
+        // recupero parametri indoor
         Algorithm algorithm;
         algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.ALGORITHM);
         AlgorithmName algorithmName = AlgorithmName.MAGNETIC_FP;
         algorithmName = AlgorithmName.valueOf(algorithm.getName());
         Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
-        int size =(int) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.SIZE);
+        Config config = (Config) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.CONFIG);
 
         try{
-            List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(building.getId(),algorithm.getId(),size);
+            List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().
+                    getScanSummaryByBuildingAlgorithm(building.getId(),algorithm.getId(),config.getId());
             List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(scanSummary.get(0).getId());
+            Log.i("locate activity","scansummary " +scanSummary.toString());
+            Log.i("locate activity","offlinescans " +offlineScans.toString());
 
             // setting algorithm in mylocationmanager
             myLocationManager = new MyLocationManager(algorithmName,this, indoorParams);
             OnlineScan onlineScan = myLocationManager.locate();
-            Log.i("online scan",onlineScan.toString());
+            Log.i("locate activity", "onlinescan " + onlineScan.toString());
 
             final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
 

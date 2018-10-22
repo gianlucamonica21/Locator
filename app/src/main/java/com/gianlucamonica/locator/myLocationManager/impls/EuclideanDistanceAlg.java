@@ -1,4 +1,6 @@
-package com.gianlucamonica.locator.myLocationManager.impls.wifi.online;
+package com.gianlucamonica.locator.myLocationManager.impls;
+
+import android.util.Log;
 
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.fingerPrint.WifiFingerPrint;
@@ -59,12 +61,15 @@ public class EuclideanDistanceAlg {
 
     public int computeMagn(){
 
+        Log.i("euclidean","offline scans before" + offlineScans.size());
         for (int i = 0; i < offlineScans.size(); i++) {
             double magnTmp = offlineScans.get(i).getValue();
             offlineScans.get(i).setValue(
                     Math.sqrt(Math.pow((double) magnTmp - magnitude,2))
             );
         }
+
+        Log.i("euclidean","offline scans after" + offlineScans.size());
 
         int index = 0;
         double minMagn = offlineScans.get(0).getValue();
@@ -74,7 +79,10 @@ public class EuclideanDistanceAlg {
                 index = i + 1;
             }
         }
-        return index;
+
+        Log.i("euclidean","index estim pos " + index);
+        Log.i("euclidean","gridname estim pos " + offlineScans.get(index).getIdGrid());
+        return offlineScans.get(index).getIdGrid();
     }
 
 }
