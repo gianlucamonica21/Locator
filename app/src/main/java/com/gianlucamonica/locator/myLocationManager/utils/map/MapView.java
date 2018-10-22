@@ -22,6 +22,7 @@ public class MapView extends View {
 
     private ArrayList<Grid> rects; // rects to draw which compounds the map
     private String estimateGridName;
+    private String estimateActualGridName;
     private List<OfflineScan> offlineScans;
 
     // scale factors for drawing map
@@ -38,13 +39,15 @@ public class MapView extends View {
 
     /**
      * @param context
+     * @param estimateActualGridName
      * @param offlineScans
      */
-    public MapView(Context context, String estimateGridName, ArrayList<IndoorParams> indoorParams, List<OfflineScan> offlineScans){
+    public MapView(Context context, String estimateGridName, String estimateActualGridName, ArrayList<IndoorParams> indoorParams, List<OfflineScan> offlineScans){
         super(context);
 
         this.indoorParams = indoorParams;
         this.estimateGridName = estimateGridName;
+        this.estimateActualGridName = estimateActualGridName;
         this.offlineScans = offlineScans;
         this.indoorParamsUtils = new IndoorParamsUtils();
 
@@ -99,7 +102,14 @@ public class MapView extends View {
             myPaint.setStyle(Paint.Style.FILL);
 
             if ( estimateGridName != null && rects.get(i).getName().equals(estimateGridName)){
-                myPaint.setColor(Color.YELLOW);
+                if(estimateGridName != null && rects.get(i).getName().equals(estimateActualGridName))
+                    myPaint.setColor(Color.GREEN);
+                else{
+                    myPaint.setColor(Color.YELLOW);
+                }
+
+            }else if( estimateGridName != null && rects.get(i).getName().equals(estimateActualGridName) ) {
+                myPaint.setColor(Color.BLUE);
             }else{
                 myPaint.setColor(Color.parseColor("#CD5C5C"));
             }
