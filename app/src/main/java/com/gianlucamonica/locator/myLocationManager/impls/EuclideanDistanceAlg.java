@@ -16,10 +16,6 @@ public class EuclideanDistanceAlg {
     private int scannedRssi;
     private double magnitude;
 
-    public EuclideanDistanceAlg(List<WifiFingerPrint> wifiRadioMap, int scannedRssi){
-        this.wifiRadioMap = wifiRadioMap;
-        this.scannedRssi = scannedRssi;
-    }
 
     public EuclideanDistanceAlg(List<OfflineScan> offlineScans, double magnitude){
         this.offlineScans = offlineScans;
@@ -41,22 +37,22 @@ public class EuclideanDistanceAlg {
 
     public int computeWifi(){
 
-        for (int i = 0; i < wifiRadioMap.size(); i++) {
-            int rssiTmp = wifiRadioMap.get(i).getRssi();
-            wifiRadioMap.get(i).setRssi((int)
+        for (int i = 0; i < offlineScans.size(); i++) {
+            int rssiTmp = (int) offlineScans.get(i).getValue();
+            offlineScans.get(i).setValue((int)
                     Math.sqrt(Math.pow((double) rssiTmp - scannedRssi,2))
             );
         }
 
         int index = 0;
-        int minRssi = wifiRadioMap.get(0).getRssi();
-        for (int i = 0; i < wifiRadioMap.size() - 1; i++) {
-            if( wifiRadioMap.get(i).getRssi() < minRssi){
-                minRssi = wifiRadioMap.get(i+1).getRssi();
+        int minRssi = (int) offlineScans.get(0).getValue();
+        for (int i = 0; i < offlineScans.size() - 1; i++) {
+            if( offlineScans.get(i).getValue() < minRssi){
+                minRssi = (int) offlineScans.get(i+1).getValue();
                 index = i+1;
             }
         }
-        return index;
+        return offlineScans.get(index).getIdGrid();
     }
 
     public int computeMagn(){

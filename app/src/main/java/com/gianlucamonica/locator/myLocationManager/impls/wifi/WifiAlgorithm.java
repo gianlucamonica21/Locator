@@ -10,6 +10,8 @@ import com.gianlucamonica.locator.myLocationManager.locAlgInterface.Localization
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.online.WifiOnlineManager;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
 
 import java.util.ArrayList;
 
@@ -37,8 +39,8 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
     }
 
     @Override
-    public WifiFingerPrint locate() {
-        this.wifiOnlineManager = new WifiOnlineManager();
+    public OnlineScan locate() {
+        this.wifiOnlineManager = new WifiOnlineManager(indoorParams);
         return  wifiOnlineManager.locate();
     }
 
