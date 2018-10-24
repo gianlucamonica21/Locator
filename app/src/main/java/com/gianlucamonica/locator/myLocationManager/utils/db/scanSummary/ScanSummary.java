@@ -2,6 +2,7 @@ package com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -9,7 +10,6 @@ import android.support.annotation.NonNull;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
-import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 
 @Entity(tableName = "scanSummary",
         foreignKeys = {
@@ -57,9 +57,21 @@ public class ScanSummary {
     @NonNull
     int idConfig;
 
+    int idWifiAP;
+
     @NonNull
     String type;
 
+    public ScanSummary(int idBuilding, int idBuildingFloor, int idAlgorithm, int idConfig, int idWifiAP, String type){
+        this.idBuilding = idBuilding;
+        this.idBuildingFloor = idBuildingFloor;
+        this.idAlgorithm = idAlgorithm;
+        this.idConfig = idConfig;
+        this.idWifiAP = idWifiAP;
+        this.type = type;
+    }
+
+    @Ignore
     public ScanSummary(int idBuilding, int idBuildingFloor, int idAlgorithm, int idConfig, String type){
         this.idBuilding = idBuilding;
         this.idBuildingFloor = idBuildingFloor;
@@ -111,6 +123,14 @@ public class ScanSummary {
         this.idConfig = idConfig;
     }
 
+    public int getIdWifiAP() {
+        return idWifiAP;
+    }
+
+    public void setIdWifiAP(int idWifiAP) {
+        this.idWifiAP = idWifiAP;
+    }
+
     @NonNull
     public String getType() {
         return type;
@@ -128,6 +148,7 @@ public class ScanSummary {
                 ", idBuildingFloor=" + idBuildingFloor +
                 ", idAlgorithm=" + idAlgorithm +
                 ", idConfig=" + idConfig +
+                ", idWifiAP=" + idWifiAP +
                 ", type='" + type + '\'' +
                 '}';
     }

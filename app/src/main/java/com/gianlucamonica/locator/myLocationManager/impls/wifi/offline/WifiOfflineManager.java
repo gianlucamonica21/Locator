@@ -1,6 +1,5 @@
 package com.gianlucamonica.locator.myLocationManager.impls.wifi.offline;
 
-import android.app.Activity;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,15 +8,25 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.AP.AP;
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.fingerPrint.WifiFingerPrint;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
+import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
+import com.gianlucamonica.locator.myLocationManager.utils.db.wifiAP.WifiAP;
 import com.gianlucamonica.locator.myLocationManager.utils.map.Grid;
 import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class WifiOfflineManager extends AppCompatActivity{
 
@@ -26,20 +35,29 @@ public class WifiOfflineManager extends AppCompatActivity{
     private WifiManager wifiManager;
     private WifiInfo wifiInfo;
 
-    public Activity activity;
-
     public MapView mV;
-    private AP ap;
-    private ArrayList<WifiFingerPrint> wifiFingerPrints;
+    private WifiAP wifiAP;
+    private ScanSummary scanSummary;
 
+    private IndoorParamsUtils indoorParamsUtils;
     private ArrayList<IndoorParams> indoorParams;
+    private Building building;
+    private BuildingFloor buildingFloor;
+    private Algorithm algorithm;
+    private Config config;
+
+    private int clickNumber = 0;
 
 
     public WifiOfflineManager(ArrayList<IndoorParams> indoorParams){
-        this.activity = activity;
-        this.wifiFingerPrints = new ArrayList<>();
         this.indoorParams = indoorParams;
+        this.indoorParamsUtils = new IndoorParamsUtils();
+        this.databaseManager = new DatabaseManager();
         scanAPs();
+        building = (Building) indoorParamsUtils.getParamObject(this.indoorParams, IndoorParamName.BUILDING);
+        buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(this.indoorParams, IndoorParamName.FLOOR);
+        algorithm = (Algorithm) indoorParamsUtils.getParamObject(this.indoorParams, IndoorParamName.ALGORITHM);
+        config = (Config) indoorParamsUtils.getParamObject(this.indoorParams, IndoorParamName.CONFIG);
     }
 
     public <T extends View> T build(Class<T> type){
@@ -52,7 +70,7 @@ public class WifiOfflineManager extends AppCompatActivity{
                 return false;
             }
         });
-        Toast.makeText(this.activity,
+        Toast.makeText(MyApp.getContext(),
                 "Tap on the grid corresponding to your position to do a scan, if you want to redo it click 'Redo Scan'",
                 Toast.LENGTH_LONG).show();
 
@@ -60,32 +78,20 @@ public class WifiOfflineManager extends AppCompatActivity{
 
     }
 
+    /**
+     * insert the new ap if it doesn't exist yet
+     */
     public void scanAPs(){
         wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(WIFI_SERVICE);
         wifiInfo = wifiManager.getConnectionInfo();
-        ap = new AP();
-        int id = 0;
-        //todo impl multiple aps managing
-        if( wifiInfo != null){
-            id = wifiInfo.getNetworkId();
-            String mac = wifiInfo.getMacAddress();
-            String ssid = wifiInfo.getSSID();
-            Log.i("mac addr", mac);
-            Log.i("netw id", String.valueOf(id));
-            Log.i("ssid", ssid);
-            ap.setId(id);
-            ap.setMac(mac);
-            ap.setSsid(ssid);
+        if(wifiInfo != null){
+
+            wifiAP = new WifiAP(wifiInfo.getSSID(),wifiInfo.getMacAddress());
+            List<WifiAP> wifiAPList = databaseManager.getAppDatabase().getWifiAPDAO().getBySsid(wifiAP.getSsid());
+            if(wifiAPList.size() == 0){
+                databaseManager.getAppDatabase().getWifiAPDAO().insert(wifiAP);
+            }
         }
-
-        databaseManager = new DatabaseManager();
-        /*APDAO apdao = databaseManager.getAppDatabase().getAPDAO();
-        if(apdao.getAPWithId(id)==null)
-            apdao.insert(ap);
-
-        WifiFingerPrintDAO wifiFingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
-        wifiFingerPrintDAO.deleteByAPSsid(ap.getSsid());*/
-
     }
 
     public int wifiScan(String gridName){
@@ -96,24 +102,38 @@ public class WifiOfflineManager extends AppCompatActivity{
         return rssiValue;
     }
 
-    public void buildRssiMap(int rssiValue, ArrayList<Grid> rects,int i){
+    public void insertRssInDB(int rssiValue, ArrayList<Grid> rects, int i){
 
-        String gridName = rects.get(i).getName();
-        wifiFingerPrints.add(new WifiFingerPrint(
-                ap.getSsid(),
-                rects.get(i).getName(),
-                rssiValue));
-        for(int k = 0; k < wifiFingerPrints.size(); k++)
-            Log.i("wifiFingerPrints", wifiFingerPrints.get(k).toString());
+        List<ScanSummary> scanSummaryList = null;
 
-        /*WifiFingerPrintDAO wifiFingerPrintDAO = databaseManager.getAppDatabase().getFingerPrintDAO();
-        if(wifiFingerPrintDAO.getFingerPrintWithAPSsidAndGridName(ap.getSsid(),gridName)==null){
-            wifiFingerPrintDAO.insert(new WifiFingerPrint(
-                ap.getSsid(),
-                rects.get(i).getName(),
-                rssiValue));
+        if(clickNumber == 0){
+            List<WifiAP> wifiAPList = databaseManager.getAppDatabase().getWifiAPDAO().getBySsid(wifiAP.getSsid());
+            if( wifiAPList.size() != 0){
+                //inizio di un nuovo scan, inserisco in scanSummary
+                scanSummary = new ScanSummary(building.getId(),buildingFloor.getId(),algorithm.getId(),config.getId(), 1 ,"offline");
+                databaseManager.getAppDatabase().getScanSummaryDAO().insert(scanSummary);
 
-        }*/
+                 scanSummaryList = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(
+                        building.getId(), algorithm.getId(),config.getId()
+                );
+                if(scanSummaryList.size() != 0){
+
+                    //inserisco in offlinescan
+                    databaseManager.getAppDatabase().getOfflineScanDAO().insert(
+                            new OfflineScan(scanSummaryList.get(0).getId(), Integer.valueOf(rects.get(i).getName()),rssiValue,new Date())
+                    );
+                }
+            }
+        }else{
+            scanSummaryList = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(
+                    building.getId(), algorithm.getId(),config.getId()
+            );
+            //inserisco in offlinescan
+            databaseManager.getAppDatabase().getOfflineScanDAO().insert(
+                    new OfflineScan(scanSummaryList.get(0).getId(), Integer.valueOf(rects.get(i).getName()),rssiValue,new Date())
+            );
+        }
+
 
     }
 
@@ -127,7 +147,6 @@ public class WifiOfflineManager extends AppCompatActivity{
 
             if(rects.size() == 0){
                 Toast.makeText(MyApp.getContext(),"scan is finished",Toast.LENGTH_SHORT).show();
-                MyApp.getWifiOfflineManagerInstance().setWifiFingerPrints(wifiFingerPrints);
             }else{
                 for(int i = 0; i < rects.size(); i = i + 1){
                     float aX = ((rects.get(i).getA().getX()*mV.getScaleFactor())+ mV.getAdd());
@@ -141,8 +160,10 @@ public class WifiOfflineManager extends AppCompatActivity{
                             //scan wifi rss
                             int rssiValue = wifiScan(gridName);
                             //inserisco in db
-                            buildRssiMap(rssiValue,rects,i);
+                            insertRssInDB(rssiValue,rects,i);
                             rects.remove(i);
+                            clickNumber++;
+
                         }
                     }
                 }
@@ -151,11 +172,4 @@ public class WifiOfflineManager extends AppCompatActivity{
         }
     }
 
-    public ArrayList<WifiFingerPrint> getWifiFingerPrints() {
-        return wifiFingerPrints;
-    }
-
-    public void setWifiFingerPrints(ArrayList<WifiFingerPrint> wifiFingerPrints) {
-        this.wifiFingerPrints = wifiFingerPrints;
-    }
 }

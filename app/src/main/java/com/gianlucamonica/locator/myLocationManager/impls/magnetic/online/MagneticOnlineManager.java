@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.gianlucamonica.locator.myLocationManager.impls.magnetic.MagneticUtil;
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
