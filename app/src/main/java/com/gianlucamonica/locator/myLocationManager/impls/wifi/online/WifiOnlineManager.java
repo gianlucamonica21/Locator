@@ -48,6 +48,7 @@ public class WifiOnlineManager {
         this.indoorParams = indoorParams;
         algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.ALGORITHM);
         building = (Building) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.BUILDING);
+        config = (Config) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.CONFIG);
     }
 
     public OnlineScan locate(){
@@ -59,7 +60,7 @@ public class WifiOnlineManager {
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         if( wifiInfo != null) {
 
-            List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getMyDAO().getOfflineScan(building.getId(),algorithm.getId());
+            List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getMyDAO().getOfflineScan(building.getId(),algorithm.getId(),config.getId());
             if (offlineScans.size() > 0) {
 
                 euclideanDistanceAlg = new EuclideanDistanceAlg(offlineScans, rssiValue);
@@ -69,7 +70,7 @@ public class WifiOnlineManager {
                         "Sei nel riquadro " + offlineScans.get(index).getIdGrid(),
                         Toast.LENGTH_SHORT).show();
 
-                OnlineScan onlineScan = new OnlineScan(offlineScans.get(0).getIdScan(),index,0,new Date());
+                OnlineScan onlineScan = new OnlineScan(offlineScans.get(0).getIdScan(),offlineScans.get(index).getIdGrid(),0,new Date());
                 return onlineScan;
             } else {
                 Toast.makeText(MyApp.getContext(),

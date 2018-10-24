@@ -17,8 +17,8 @@ public interface MyDao {
 
     @Query("SELECT offlineScan.* FROM offlineScan "
             + "INNER JOIN scanSummary ON scanSummary.id = offlineScan.idScan "
-            + "WHERE scanSummary.idBuilding = :idBuilding AND scanSummary.idAlgorithm = :idAlgorithm")
-    public List<OfflineScan> getOfflineScan(int idBuilding, int idAlgorithm);
+            + "WHERE scanSummary.idBuilding = :idBuilding AND scanSummary.idAlgorithm = :idAlgorithm AND scanSummary.idConfig = :idConfig")
+    public List<OfflineScan> getOfflineScan(int idBuilding, int idAlgorithm, int idConfig);
 
 
 }
