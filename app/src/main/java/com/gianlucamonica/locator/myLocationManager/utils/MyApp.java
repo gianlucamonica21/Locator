@@ -17,6 +17,7 @@ public class MyApp extends Application {
     private static MyLocationManager myLocationManagerInstance;
     private static WifiOfflineManager wifiOfflineManagerInstance;
     private static Activity activity;
+    private static double magnitude;
 
     public static MyApp getInstance() {
         return instance;
@@ -55,5 +56,13 @@ public class MyApp extends Application {
 
     public static void setActivity(Activity activity) {
         MyApp.activity = activity;
+    }
+
+    public static double getMagnitude() {
+        return magnitude;
+    }
+
+    public static void setMagnitude(double magnitude) {
+        MyApp.magnitude = magnitude;
     }
 }

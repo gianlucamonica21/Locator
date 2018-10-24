@@ -69,9 +69,9 @@ public class MagneticOnlineManager implements SensorEventListener {
 
         if (offlineScans.size() > 0) {
 
-            Log.i("online manager","live magnitude " + magnitudeValue);
+            Log.i("online manager","live magnitude " + MyApp.getMagnitude());
             Random random = new Random();
-            euclideanDistanceAlg = new EuclideanDistanceAlg(offlineScans, random.nextInt(60 - 30 + 1) + 30);
+            euclideanDistanceAlg = new EuclideanDistanceAlg(offlineScans, MyApp.getMagnitude());
             int index = euclideanDistanceAlg.compute(AlgorithmName.MAGNETIC_FP);
             Log.i("magn online manag","index " + index);
             onlineScan = new OnlineScan(idScan,index,0,new Date());
@@ -117,7 +117,7 @@ public class MagneticOnlineManager implements SensorEventListener {
             this.magnitudeValue = Math.sqrt((magX * magX) + (magY * magY) + (magZ * magZ));
             Log.i("magn online man","magn value " + this.magnitudeValue);
             getMagnitude = true;
-
+            MyApp.setMagnitude(magnitudeValue);
             // set value on the screen
             Toast.makeText(MyApp.getContext(), "m.f. value " + this.magnitudeValue, Toast.LENGTH_SHORT).show();
             sensorManager.unregisterListener(this);
