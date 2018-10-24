@@ -79,7 +79,7 @@ public class FloorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        databaseManager = new DatabaseManager(getActivity());
+        databaseManager = new DatabaseManager();
 
         View v = inflater.inflate(R.layout.fragment_floor, container, false);
         s = v.findViewById(R.id.floorSpinner);

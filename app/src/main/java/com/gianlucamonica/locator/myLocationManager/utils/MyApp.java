@@ -1,5 +1,6 @@
 package com.gianlucamonica.locator.myLocationManager.utils;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
@@ -15,6 +16,7 @@ public class MyApp extends Application {
     private static MyApp instance;
     private static MyLocationManager myLocationManagerInstance;
     private static WifiOfflineManager wifiOfflineManagerInstance;
+    private static Activity activity;
 
     public static MyApp getInstance() {
         return instance;
@@ -47,4 +49,11 @@ public class MyApp extends Application {
         MyApp.wifiOfflineManagerInstance = wifiOfflineManagerInstance;
     }
 
+    public static Activity getActivity() {
+        return activity;
+    }
+
+    public static void setActivity(Activity activity) {
+        MyApp.activity = activity;
+    }
 }

@@ -17,7 +17,6 @@ import com.gianlucamonica.locator.activities.wifi.offlineActivity.OfflineWIFIAct
 import com.gianlucamonica.locator.activities.wifi.onlineActivity.OnlineWIFIActivity;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
-import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 
 public class WIFIActivity extends AppCompatActivity {
@@ -60,7 +59,7 @@ public class WIFIActivity extends AppCompatActivity {
                     wifiInfoSSID = wifiInfo.getSSID();
                     textView.setText("You are connected to " + wifiInfoSSID);
 
-                    databaseManager = new DatabaseManager(this);
+                    databaseManager = new DatabaseManager();
                     /*APDAO apdao = databaseManager.getAppDatabase().getAPDAO();
 
                     AP ap = apdao.getAPWithSsid(wifiInfoSSID);

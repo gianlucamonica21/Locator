@@ -48,7 +48,7 @@ public class LocateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locate);
 
-        databaseManager = new DatabaseManager(this);
+        databaseManager = new DatabaseManager();
         indoorParamsUtils = new IndoorParamsUtils();
         Bundle bundle = getIntent().getExtras();
         indoorParams = (ArrayList<IndoorParams>) bundle.getSerializable("indoorParams");
@@ -72,8 +72,7 @@ public class LocateActivity extends AppCompatActivity {
             Log.i("locate activity","offlinescans " +offlineScans.toString());
 
             // setting algorithm in mylocationmanager
-            //todo fare scan ogni tot secondi
-            myLocationManager = new MyLocationManager(algorithmName,this, indoorParams);
+            myLocationManager = new MyLocationManager(algorithmName, indoorParams);
 
             final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
 
@@ -95,12 +94,28 @@ public class LocateActivity extends AppCompatActivity {
                 @Override
                 public void afterTextChanged(Editable s) {
 
+                    /*Thread one = new Thread() {
+                        public void run() {
+                            try {
+                                System.out.println("Does it work?");
+
+                                Thread.sleep(1000);
+
+                                System.out.println("Nope, it doesnt...again.");
+                            } catch(InterruptedException v) {
+                                System.out.println(v);
+                            }
+                        }
+                    };
+
+                    one.start();*/
                     //prima scansione
                     OnlineScan onlineScan = myLocationManager.locate();
                     Log.i("locate activity", "onlinescan " + onlineScan.toString());
                     estimatedGrid.setText(String.valueOf(onlineScan.getIdEstimatedPos()));
                     handler.removeCallbacks(runnable);
                     //todo inserire online scan in db
+
                     //successive altre scansioni
                     handler.postDelayed(runnable = new Runnable(){
                         public void run(){

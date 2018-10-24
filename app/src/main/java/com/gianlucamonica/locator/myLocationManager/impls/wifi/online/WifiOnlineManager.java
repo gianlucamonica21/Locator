@@ -1,6 +1,5 @@
 package com.gianlucamonica.locator.myLocationManager.impls.wifi.online;
 
-import android.app.Activity;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
@@ -21,15 +20,13 @@ import static android.content.Context.WIFI_SERVICE;
 public class WifiOnlineManager {
 
     private ArrayList<WifiFingerPrint> wifiFingerPrints;
-    private Activity activity;
     private EuclideanDistanceAlg euclideanDistanceAlg;
     private DatabaseManager databaseManager;
     private MapView mapView;
 
-    public WifiOnlineManager(Activity activity){
-        this.activity = activity;
+    public WifiOnlineManager(){
         this.wifiFingerPrints = new ArrayList<>();
-        databaseManager = new DatabaseManager(activity);
+        databaseManager = new DatabaseManager();
     }
 
     public WifiFingerPrint locate(){

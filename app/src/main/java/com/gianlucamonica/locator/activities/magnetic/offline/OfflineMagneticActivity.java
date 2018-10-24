@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrintDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
@@ -23,7 +22,7 @@ public class OfflineMagneticActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        databaseManager = new DatabaseManager(this);
+        databaseManager = new DatabaseManager();
         myLocationManager = MyApp.getMyLocationManagerInstance();
 
         setContentView(R.layout.activity_offline_magnetic);

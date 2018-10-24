@@ -20,6 +20,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
@@ -59,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        locationMiddleware = new LocationMiddleware(this,indoorParams);
+        MyApp.setActivity(this);
+        locationMiddleware = new LocationMiddleware(indoorParams);
         this.INDOOR_LOC = locationMiddleware.isINDOOR_LOC();
         if(this.INDOOR_LOC){
             Toast.makeText(this,"You are indoor",Toast.LENGTH_LONG).show();
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements
             Toast.makeText(this,"You are outdoor",Toast.LENGTH_LONG).show();
         }
         indoorParams = new ArrayList<>();
-        databaseManager = new DatabaseManager(this);
+        databaseManager = new DatabaseManager();
         indoorParamsUtils = new IndoorParamsUtils();
         // adding fragments
         ft = getSupportFragmentManager().beginTransaction();
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements
         // Complete the changes added above
         ft.commit();
 
-        DatabaseManager databaseManager= new DatabaseManager(this);
+        DatabaseManager databaseManager= new DatabaseManager();
         /** OPERAZIONI DB DI TESTING*/
         // deleting building
         //databaseManager.getAppDatabase().getBuildingDAO().deleteById(11);

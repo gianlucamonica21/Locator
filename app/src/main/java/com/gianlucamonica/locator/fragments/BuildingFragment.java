@@ -80,7 +80,7 @@ public class BuildingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        databaseManager = new DatabaseManager(getActivity());
+        databaseManager = new DatabaseManager();
         buildings = new ArrayList<>();
         buildings = getBuildingsFromDb();
 

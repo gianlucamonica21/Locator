@@ -59,9 +59,10 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
         NELatEditText = (EditText) findViewById(R.id.NELatEditText);
         NELngEditText = (EditText) findViewById(R.id.NELngEditText);
 
-        databaseManager = new DatabaseManager(this);
+        databaseManager = new DatabaseManager();
+        MyApp.setActivity(this);
 
-        myLocationManager = new MyLocationManager(AlgorithmName.GPS,this,null);
+        myLocationManager = new MyLocationManager(AlgorithmName.GPS, null);
         if (myLocationManager.getMyPermissionsManager().isGPSEnabled()) {
             currentLocation = myLocationManager.locate();
         }

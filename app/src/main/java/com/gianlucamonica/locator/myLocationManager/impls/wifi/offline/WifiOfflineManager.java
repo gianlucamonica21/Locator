@@ -35,7 +35,7 @@ public class WifiOfflineManager extends AppCompatActivity{
     private ArrayList<IndoorParams> indoorParams;
 
 
-    public WifiOfflineManager(Activity activity, ArrayList<IndoorParams> indoorParams){
+    public WifiOfflineManager(ArrayList<IndoorParams> indoorParams){
         this.activity = activity;
         this.wifiFingerPrints = new ArrayList<>();
         this.indoorParams = indoorParams;
@@ -44,7 +44,7 @@ public class WifiOfflineManager extends AppCompatActivity{
 
     public <T extends View> T build(Class<T> type){
 
-        mV = new MapView(this.activity,null, null, indoorParams, null);
+        mV = new MapView(MyApp.getContext(),null, null, indoorParams, null);
         mV.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -78,7 +78,7 @@ public class WifiOfflineManager extends AppCompatActivity{
             ap.setSsid(ssid);
         }
 
-        databaseManager = new DatabaseManager(activity);
+        databaseManager = new DatabaseManager();
         /*APDAO apdao = databaseManager.getAppDatabase().getAPDAO();
         if(apdao.getAPWithId(id)==null)
             apdao.insert(ap);

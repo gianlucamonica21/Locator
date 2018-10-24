@@ -33,12 +33,12 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
     /**
      * istantiate this class according to algoName
      * @param algoName
-     * @param activity
      * @param indoorParams
      */
-    public MyLocationManager(AlgorithmName algoName, Activity activity, ArrayList<IndoorParams> indoorParams) {
+    public MyLocationManager(AlgorithmName algoName, ArrayList<IndoorParams> indoorParams) {
 
-        myPermissionsManager = new MyPermissionsManager(activity, algoName);
+
+        myPermissionsManager = new MyPermissionsManager(algoName);
         if( indoorParams != null )
             this.indoorParams = indoorParams;
 
@@ -60,7 +60,7 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
                 checkPermissions();
 
                 if (myPermissionsManager.isWIFIEnabled())
-                    localizationAlgorithmInterface = new WifiAlgorithm(activity, indoorParams);
+                    localizationAlgorithmInterface = new WifiAlgorithm(indoorParams);
                 break;
             case MAGNETIC_FP:
                 this.algoName = algoName;
@@ -69,7 +69,7 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
 
                 checkPermissions();
 
-                localizationAlgorithmInterface = new MagneticFieldAlgorithm(activity, indoorParams);
+                localizationAlgorithmInterface = new MagneticFieldAlgorithm(indoorParams);
 
                 break;
             default:

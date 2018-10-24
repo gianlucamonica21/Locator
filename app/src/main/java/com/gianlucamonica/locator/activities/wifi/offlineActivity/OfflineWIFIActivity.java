@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.fingerPrint.WifiFingerPrintDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
@@ -26,7 +25,7 @@ public class OfflineWIFIActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myLocationManager = MyApp.getMyLocationManagerInstance();
-        databaseManager = new DatabaseManager(this);
+        databaseManager = new DatabaseManager();
 
         setContentView(R.layout.activity_offline_wifi);
         final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.infoText);

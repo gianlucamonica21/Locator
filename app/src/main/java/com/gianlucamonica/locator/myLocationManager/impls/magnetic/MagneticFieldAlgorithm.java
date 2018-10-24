@@ -3,12 +3,10 @@ package com.gianlucamonica.locator.myLocationManager.impls.magnetic;
 import android.app.Activity;
 import android.view.View;
 
-import com.gianlucamonica.locator.myLocationManager.impls.magnetic.db.magneticFingerPrint.MagneticFingerPrint;
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.offline.MagneticOfflineManager;
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.online.MagneticOnlineManager;
 import com.gianlucamonica.locator.myLocationManager.locAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
-import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
 
 import java.util.ArrayList;
@@ -21,8 +19,7 @@ public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
 
     private ArrayList<IndoorParams> indoorParams;
 
-    public MagneticFieldAlgorithm(Activity activity, ArrayList<IndoorParams> indoorParams){
-        this.activity = activity;
+    public MagneticFieldAlgorithm(ArrayList<IndoorParams> indoorParams){
         this.indoorParams = indoorParams;
     }
 
@@ -33,13 +30,13 @@ public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
 
     @Override
     public <T extends View> T build(Class<T> type)  {
-        this.magneticOfflineManager = new MagneticOfflineManager(this.activity,indoorParams);
+        this.magneticOfflineManager = new MagneticOfflineManager(indoorParams);
         return magneticOfflineManager.build(type);
     }
 
     @Override
     public OnlineScan locate() {
-        magneticOnlineManager = new MagneticOnlineManager(activity,indoorParams);
+        magneticOnlineManager = new MagneticOnlineManager(indoorParams);
         return magneticOnlineManager.locate();
     }
 

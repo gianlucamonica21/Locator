@@ -10,7 +10,6 @@ import android.widget.EditText;
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
-import com.gianlucamonica.locator.myLocationManager.utils.db.building.BuildingDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class InsertFloorActivity extends AppCompatActivity {
 
         floorName = (EditText) findViewById(R.id.nameEditText);
         insertButton = (Button) findViewById(R.id.insertButton);
-        databaseManager = new DatabaseManager(this);
+        databaseManager = new DatabaseManager();
 
         insertButton.setOnClickListener(new View.OnClickListener() { // onclick button
             @Override

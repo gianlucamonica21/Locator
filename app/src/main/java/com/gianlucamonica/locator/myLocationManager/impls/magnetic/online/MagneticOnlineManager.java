@@ -26,6 +26,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSum
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -41,33 +42,40 @@ public class MagneticOnlineManager implements SensorEventListener {
     private ArrayList<IndoorParams> indoorParams;
     private IndoorParamsUtils indoorParamsUtils;
     private int idScan;
+    private OnlineScan onlineScan;
+    private List<OfflineScan> offlineScans;
+    private boolean getMagnitude = false;
 
-    public MagneticOnlineManager(Activity activity, ArrayList<IndoorParams> indoorParams){
-        this.activity = activity;
-        databaseManager = new DatabaseManager(activity);
+    public MagneticOnlineManager(ArrayList<IndoorParams> indoorParams){
+        databaseManager = new DatabaseManager();
         magneticFingerPrints = new ArrayList<>();
         sensorManager = (SensorManager) MyApp.getContext().getSystemService(SENSOR_SERVICE);
         this.indoorParams = indoorParams;
         this.indoorParamsUtils = new IndoorParamsUtils();
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
+                SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     public OnlineScan locate(){
 
-        //getting m.f. value
         sensorManager.registerListener(this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-                SensorManager.SENSOR_DELAY_NORMAL);
+                SensorManager.SENSOR_DELAY_FASTEST);
 
         //getting map from db and do alg
         List<OfflineScan> offlineScans = getMagneticFingerPrintsFromDb();
         Log.i("offlineScan",offlineScans.toString());
+
         if (offlineScans.size() > 0) {
 
-            euclideanDistanceAlg = new EuclideanDistanceAlg(offlineScans, magnitudeValue);
+            Log.i("online manager","live magnitude " + magnitudeValue);
+            Random random = new Random();
+            euclideanDistanceAlg = new EuclideanDistanceAlg(offlineScans, random.nextInt(60 - 30 + 1) + 30);
             int index = euclideanDistanceAlg.compute(AlgorithmName.MAGNETIC_FP);
             Log.i("magn online manag","index " + index);
-
-            return new OnlineScan(idScan,index,0,new Date());
+            onlineScan = new OnlineScan(idScan,index,0,new Date());
+            return onlineScan;
 
         } else {
             Toast.makeText(MyApp.getContext(),
@@ -89,7 +97,7 @@ public class MagneticOnlineManager implements SensorEventListener {
             List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,idConfig);
             idScan = scanSummary.get(0).getId();
             Log.i("idScan", String.valueOf(idScan));
-            List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(idScan);
+            offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(idScan);
 
             return  offlineScans;
         } catch (Exception e) {
@@ -101,18 +109,18 @@ public class MagneticOnlineManager implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        while(scanNumber == 0) {
-            if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-                // get values for each axes X,Y,Z
-                float magX = event.values[0];
-                float magY = event.values[1];
-                float magZ = event.values[2];
-                double magnitude = Math.sqrt((magX * magX) + (magY * magY) + (magZ * magZ));
-                scanNumber++;
-                magnitudeValue = magnitude;
-                // set value on the screen
-                Toast.makeText(activity, "m.f. value " + magnitude, Toast.LENGTH_SHORT).show();
-            }
+        if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            // get values for each axes X,Y,Z
+            float magX = event.values[0];
+            float magY = event.values[1];
+            float magZ = event.values[2];
+            this.magnitudeValue = Math.sqrt((magX * magX) + (magY * magY) + (magZ * magZ));
+            Log.i("magn online man","magn value " + this.magnitudeValue);
+            getMagnitude = true;
+
+            // set value on the screen
+            Toast.makeText(MyApp.getContext(), "m.f. value " + this.magnitudeValue, Toast.LENGTH_SHORT).show();
+            sensorManager.unregisterListener(this);
         }
     }
 
@@ -120,4 +128,6 @@ public class MagneticOnlineManager implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+
 }

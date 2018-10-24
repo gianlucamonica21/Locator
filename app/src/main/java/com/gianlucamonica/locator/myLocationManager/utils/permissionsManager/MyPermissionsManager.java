@@ -1,6 +1,7 @@
 package com.gianlucamonica.locator.myLocationManager.utils.permissionsManager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -20,7 +21,6 @@ import static android.provider.Settings.ACTION_WIFI_SETTINGS;
 
 public class MyPermissionsManager {
 
-    private Activity activity;
     private boolean isGPSEnabled;
     private boolean isWIFIEnabled;
     private LocationManager locationManager;
@@ -28,9 +28,8 @@ public class MyPermissionsManager {
     private String providerMsg = "";
     private AlgorithmName algorithmName;
 
-    public MyPermissionsManager(Activity activity, AlgorithmName algorithmName){
+    public MyPermissionsManager(AlgorithmName algorithmName){
 
-        this.activity = activity;
         this.algorithmName = algorithmName;
 
         switch (algorithmName){
@@ -56,7 +55,7 @@ public class MyPermissionsManager {
 
 
     public void requestPermission(final String[] permissions){
-        PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(activity,
+        PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(MyApp.getActivity(),
             permissions, new PermissionsResultAction() {
 
                     @Override
@@ -66,11 +65,11 @@ public class MyPermissionsManager {
 
                     @Override
                     public void onDenied(String permission) {
-                        Toast.makeText(activity,
+                        Toast.makeText(MyApp.getContext(),
                                 "Sorry, we need the this permission",
                                 Toast.LENGTH_SHORT).show();
                         ActivityCompat.requestPermissions(
-                                activity,
+                                (Activity) MyApp.getContext(),
                                 permissions,200);
 
                     }
@@ -122,7 +121,7 @@ public class MyPermissionsManager {
 
     public android.support.v7.app.AlertDialog.Builder buildDialog(final String providerToEnable){
 
-        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(activity);
+        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(MyApp.getActivity());
         alertDialog.setTitle(providerMsg + " is not Enabled!");
         alertDialog.setMessage("Do you want to turn on " + providerMsg + "?");
 
@@ -131,7 +130,7 @@ public class MyPermissionsManager {
                 switch (providerToEnable){
                     case ACTION_LOCATION_SOURCE_SETTINGS:
                         Intent intent = new Intent(providerToEnable);
-                        activity.startActivity(intent);
+                        MyApp.getActivity().startActivity(intent);
                         //locationManager.setTestProviderEnabled(LocationManager.GPS_PROVIDER,true);
                         break;
                     case ACTION_WIFI_SETTINGS:
@@ -146,7 +145,7 @@ public class MyPermissionsManager {
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
-                android.support.v7.app.AlertDialog.Builder alertDialog2 = new android.support.v7.app.AlertDialog.Builder(activity);
+                android.support.v7.app.AlertDialog.Builder alertDialog2 = new android.support.v7.app.AlertDialog.Builder(MyApp.getActivity());
 
                 alertDialog2.setTitle("Info");
 

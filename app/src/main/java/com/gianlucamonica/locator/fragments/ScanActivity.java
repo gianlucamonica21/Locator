@@ -21,8 +21,6 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
-import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
-import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScanDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummaryDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
 
@@ -40,7 +38,7 @@ public class ScanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
-        databaseManager = new DatabaseManager(this);
+        databaseManager = new DatabaseManager();
         indoorParamsUtils = new IndoorParamsUtils();
         Bundle bundle = getIntent().getExtras();
         indoorParams = (ArrayList<IndoorParams>) bundle.getSerializable("indoorParams");
@@ -54,7 +52,7 @@ public class ScanActivity extends AppCompatActivity {
             }
         }
         // setting algorithm in mylocationmanager
-        myLocationManager = new MyLocationManager(algorithmName,this, indoorParams);
+        myLocationManager = new MyLocationManager(algorithmName, indoorParams);
 
         final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
 

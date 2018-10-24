@@ -17,30 +17,28 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
 
     private WifiOfflineManager wifiOfflineManager;
     private WifiOnlineManager wifiOnlineManager;
-    private Activity activity;
 
     private ArrayList<IndoorParams> indoorParams;
 
-    public WifiAlgorithm(Activity activity, ArrayList<IndoorParams> indoorParams){
-        this.activity = activity;
+    public WifiAlgorithm(ArrayList<IndoorParams> indoorParams){
         this.indoorParams = indoorParams;
     }
 
     @Override
     public Object getBuildClass(Activity activity) {
-        return new WifiOfflineManager(this.activity, indoorParams);
+        return new WifiOfflineManager(indoorParams);
     }
 
     @Override
     public <T extends View> T build(Class<T> type) {
-        this.wifiOfflineManager = new WifiOfflineManager(this.activity, indoorParams);
+        this.wifiOfflineManager = new WifiOfflineManager(indoorParams);
         MyApp.setWifiOfflineManagerInstance(wifiOfflineManager);
         return wifiOfflineManager.build(type);
     }
 
     @Override
     public WifiFingerPrint locate() {
-        this.wifiOnlineManager = new WifiOnlineManager(activity);
+        this.wifiOnlineManager = new WifiOnlineManager();
         return  wifiOnlineManager.locate();
     }
 

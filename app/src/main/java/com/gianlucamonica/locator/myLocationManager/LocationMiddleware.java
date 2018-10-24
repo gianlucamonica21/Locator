@@ -9,7 +9,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
@@ -47,13 +46,11 @@ public class LocationMiddleware implements LocationListener {
     private MyLocationManager myLocationManager;
 
     /**
-     * @param activity
      * @param indoorParams
      */
-    public LocationMiddleware(Activity activity, ArrayList<IndoorParams> indoorParams){
-        this.activity = activity;
+    public LocationMiddleware(ArrayList<IndoorParams> indoorParams){
         this.indoorParams = indoorParams;
-        this.myPermissionsManager = new MyPermissionsManager(activity, AlgorithmName.GPS);
+        this.myPermissionsManager = new MyPermissionsManager(AlgorithmName.GPS);
         permissions = new String[] {
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION};

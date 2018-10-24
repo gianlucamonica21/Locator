@@ -79,7 +79,7 @@ public class AlgorithmFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_algorithm, container, false);
 
-        databaseManager = new DatabaseManager(getActivity());
+        databaseManager = new DatabaseManager();
 
         try{
             algorithms = databaseManager.getAppDatabase().getAlgorithmDAO().getAlgorithms();

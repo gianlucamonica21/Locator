@@ -54,7 +54,7 @@ public class MagneticOfflineManager implements SensorEventListener {
     private int idFloor;
     private int idConfig;
 
-    public MagneticOfflineManager(Activity activity,ArrayList<IndoorParams> indoorParams){
+    public MagneticOfflineManager(ArrayList<IndoorParams> indoorParams){
         this.activity = activity;
         this.indoorParams = indoorParams;
         sensorManager = (SensorManager) MyApp.getContext().getSystemService(SENSOR_SERVICE);
@@ -62,7 +62,7 @@ public class MagneticOfflineManager implements SensorEventListener {
         zones = new ArrayList<>();
         offlineScans = new ArrayList<>();
         indoorParamsUtils = new IndoorParamsUtils();
-        databaseManager = new DatabaseManager(activity);
+        databaseManager = new DatabaseManager();
 
         // recupero indoor params
         Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
@@ -87,7 +87,7 @@ public class MagneticOfflineManager implements SensorEventListener {
      */
     public <T extends View> T build(Class<T> type){
 
-        mV = new MapView(this.activity,null, null, indoorParams, null);
+        mV = new MapView(MyApp.getContext(),null, null, indoorParams, null);
         mV.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -96,7 +96,7 @@ public class MagneticOfflineManager implements SensorEventListener {
                 return false;
             }
         });
-        Toast.makeText(this.activity,
+        Toast.makeText(MyApp.getContext(),
                 "Tap on the grid corresponding to your position to do a scan, if you want to redo it click 'Redo Scan'",
                 Toast.LENGTH_LONG).show();
 
@@ -208,7 +208,7 @@ public class MagneticOfflineManager implements SensorEventListener {
                 }
                 // set value on the screen
                 Log.i("live magnitude", String.valueOf(liveMagnitude));
-                Toast.makeText(activity, "liveMagnitude  " + liveMagnitude + " grid " + liveGridName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyApp.getContext(), "liveMagnitude  " + liveMagnitude + " grid " + liveGridName, Toast.LENGTH_SHORT).show();
             }
         }
         sensorManager.unregisterListener(this);

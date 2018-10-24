@@ -61,15 +61,20 @@ public class EuclideanDistanceAlg {
 
     public int computeMagn(){
 
-        Log.i("euclidean","offline scans before" + offlineScans.size());
+
+        Log.i("euclidean","offline scans before" + offlineScans.toString());
         for (int i = 0; i < offlineScans.size(); i++) {
             double magnTmp = offlineScans.get(i).getValue();
+            Log.i("euclidean","static "+String.valueOf(magnTmp));
+            Log.i("euclidean","live" + magnitude);
             offlineScans.get(i).setValue(
-                    Math.sqrt(Math.pow((double) magnTmp - magnitude,2))
+                    Math.sqrt(
+                            Math.pow((double) magnTmp - magnitude,2)
+                    )
             );
         }
 
-        Log.i("euclidean","offline scans after" + offlineScans.size());
+        Log.i("euclidean","offline scans after" + offlineScans.toString());
 
         int index = 0;
         double minMagn = offlineScans.get(0).getValue();
