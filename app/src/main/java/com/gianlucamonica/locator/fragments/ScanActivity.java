@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.main.MainActivity;
+import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
@@ -32,6 +33,7 @@ public class ScanActivity extends AppCompatActivity {
     private MyLocationManager myLocationManager; // fare tutto con MyLocMiddleware
     private DatabaseManager databaseManager;
     private IndoorParamsUtils indoorParamsUtils;
+    private LocationMiddleware locationMiddleware;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +57,17 @@ public class ScanActivity extends AppCompatActivity {
 
         Log.i("scan act","alg name "+ algorithmName);
 
+        // setting location middleware
+        locationMiddleware = new LocationMiddleware(algorithmName,indoorParams);
+
         // setting algorithm in mylocationmanager
-        myLocationManager = new MyLocationManager(algorithmName, indoorParams);
+        //myLocationManager = new MyLocationManager(algorithmName, indoorParams);
 
         final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
 
         // setting the map view
-        MapView v = (MapView) myLocationManager.build(MapView.class);
+        //MapView v = (MapView) myLocationManager.build(MapView.class);
+        MapView v = (MapView) locationMiddleware.build(MapView.class);
         mLinearLayout.addView(v);
 
 
@@ -77,7 +83,9 @@ public class ScanActivity extends AppCompatActivity {
                 // delete scan
                 deleteScanFromDB();
                 // refreshing the mapview
-                MapView mapView = (MapView) myLocationManager.build(MapView.class);
+//                MapView mapView = (MapView) myLocationManager.build(MapView.class);
+                MapView mapView = (MapView) locationMiddleware.build(MapView.class);
+
                 mLinearLayout.addView(mapView);
             }
         });

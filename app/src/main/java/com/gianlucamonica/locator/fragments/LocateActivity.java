@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
@@ -34,6 +35,7 @@ public class LocateActivity extends AppCompatActivity {
     private MyLocationManager myLocationManager; // fare tutto con MyLocMiddleware
     private DatabaseManager databaseManager;
     private IndoorParamsUtils indoorParamsUtils;
+    private LocationMiddleware locationMiddleware;
 
     private EditText actualGrid;
     private EditText estimatedGrid;
@@ -72,8 +74,11 @@ public class LocateActivity extends AppCompatActivity {
             Log.i("locate activity","scansummary " +scanSummary.toString());
             Log.i("locate activity","offlinescans " +offlineScans.toString());
 
+
+
+            locationMiddleware = new LocationMiddleware(algorithmName,indoorParams);
             // setting algorithm in mylocationmanager
-            myLocationManager = new MyLocationManager(algorithmName, indoorParams);
+            //myLocationManager = new MyLocationManager(algorithmName, indoorParams);
 
             final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
 
@@ -111,7 +116,8 @@ public class LocateActivity extends AppCompatActivity {
 
                     one.start();*/
                     //prima scansione
-                    OnlineScan onlineScan = myLocationManager.locate();
+                    //OnlineScan onlineScan = myLocationManager.locate();
+                    OnlineScan onlineScan = locationMiddleware.locate();
                     Log.i("locate activity", "onlinescan " + onlineScan.toString());
                     estimatedGrid.setText(String.valueOf(onlineScan.getIdEstimatedPos()));
                     handler.removeCallbacks(runnable);
@@ -121,7 +127,9 @@ public class LocateActivity extends AppCompatActivity {
                     handler.postDelayed(runnable = new Runnable(){
                         public void run(){
                             //do something
-                            OnlineScan onlineScan = myLocationManager.locate();
+                            //OnlineScan onlineScan = myLocationManager.locate();
+                            OnlineScan onlineScan = locationMiddleware.locate();
+
                             estimatedGrid.setText(String.valueOf(onlineScan.getIdEstimatedPos()));
                             Log.i("locate activity", "onlinescan " + onlineScan.toString());
                             //todo inserire online scan in db

@@ -9,7 +9,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.View;
 
+import com.gianlucamonica.locator.myLocationManager.locAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
@@ -23,7 +25,7 @@ import static android.content.Context.LOCATION_SERVICE;
  * this class lies between the app and the my loc manager class
  * the user only instantiate it by the public constructor, then an outdoor or indoor alg is called according to the GPS acc
  */
-public class LocationMiddleware implements LocationListener {
+public class LocationMiddleware implements LocationListener, LocalizationAlgorithmInterface {
 
     /**
      * location listener's and location params
@@ -63,10 +65,31 @@ public class LocationMiddleware implements LocationListener {
         }
     }
 
+    public LocationMiddleware(AlgorithmName algName, ArrayList<IndoorParams> indoorParams){
+        this.indoorParams = indoorParams;
+        this.myPermissionsManager = new MyPermissionsManager(AlgorithmName.GPS);
+        this.chosenIndoorAlg = algName;
+        myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
+
+        permissions = new String[] {
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION};
+
+        checkPermissions();  // asking gps permissions
+        initLocManager();
+
+        if(checkGPS || checkNetwork){
+            requestUpdates(); // request location updates
+        }
+    }
+
     /**
      * checks if the user is outside or inside a building and instatiate relative myLocMan
      */
     public void init(){
+        // per ora qui di modo che posso testare
+        myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
+
         if(liveGPSAcc > GPS_ACC_THRESHOLD){
             // istantiate outdoor alg
             Log.i("instantiate","GPS location");
@@ -75,6 +98,7 @@ public class LocationMiddleware implements LocationListener {
          }else {
             // istantiate indoor alg
             Log.i("instantiate", "Indoor location");
+            myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
             //Toast.makeText(MyApp.getContext(),"istantiate indoor",Toast.LENGTH_SHORT).show();
             INDOOR_LOC = true;
          }
@@ -130,6 +154,21 @@ public class LocationMiddleware implements LocationListener {
             }
             locationManager.removeUpdates(LocationMiddleware.this);
         }
+    }
+
+    @Override
+    public Object getBuildClass() {
+        return null;
+    }
+
+    @Override
+    public <T extends View> T build(Class<T> type) {
+        return myLocationManager.build(type);
+    }
+
+    @Override
+    public <T> T locate() {
+        return myLocationManager.locate();
     }
 
     /**
