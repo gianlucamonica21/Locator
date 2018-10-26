@@ -48,6 +48,7 @@ public class LocateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locate);
 
+        MyApp.setActivity(this);
         databaseManager = new DatabaseManager();
         indoorParamsUtils = new IndoorParamsUtils();
         Bundle bundle = getIntent().getExtras();

@@ -1,16 +1,13 @@
 package com.gianlucamonica.locator.myLocationManager.impls.wifi;
 
 
-import android.app.Activity;
 import android.view.View;
 
-import com.gianlucamonica.locator.myLocationManager.impls.wifi.db.fingerPrint.WifiFingerPrint;
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.offline.WifiOfflineManager;
 import com.gianlucamonica.locator.myLocationManager.locAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.online.WifiOnlineManager;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
-import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
 
 import java.util.ArrayList;
@@ -27,7 +24,7 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
     }
 
     @Override
-    public Object getBuildClass(Activity activity) {
+    public Object getBuildClass() {
         return new WifiOfflineManager(indoorParams);
     }
 

@@ -37,6 +37,7 @@ public class ScanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+        MyApp.setActivity(this);
 
         databaseManager = new DatabaseManager();
         indoorParamsUtils = new IndoorParamsUtils();
@@ -51,6 +52,9 @@ public class ScanActivity extends AppCompatActivity {
                 algorithmName = AlgorithmName.valueOf(algorithm.getName());
             }
         }
+
+        Log.i("scan act","alg name "+ algorithmName);
+
         // setting algorithm in mylocationmanager
         myLocationManager = new MyLocationManager(algorithmName, indoorParams);
 
@@ -59,6 +63,7 @@ public class ScanActivity extends AppCompatActivity {
         // setting the map view
         MapView v = (MapView) myLocationManager.build(MapView.class);
         mLinearLayout.addView(v);
+
 
         // handling redo scan
         Button redoButton = (Button) findViewById(R.id.redoButton);
@@ -85,6 +90,7 @@ public class ScanActivity extends AppCompatActivity {
                 Toast.makeText(MyApp.getContext(),
                         "Scan finished",
                         Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(ScanActivity.this,MainActivity.class);
                 startActivity(intent);
 

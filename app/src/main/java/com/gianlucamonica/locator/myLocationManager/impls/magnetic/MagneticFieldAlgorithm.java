@@ -24,7 +24,7 @@ public class MagneticFieldAlgorithm implements LocalizationAlgorithmInterface {
     }
 
     @Override
-    public Object getBuildClass(Activity activity) {
+    public Object getBuildClass() {
         return null;
     }
 

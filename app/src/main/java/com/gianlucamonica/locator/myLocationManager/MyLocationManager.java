@@ -59,8 +59,10 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
 
                 checkPermissions();
 
-                if (myPermissionsManager.isWIFIEnabled())
+                if (myPermissionsManager.isWIFIEnabled()){
                     localizationAlgorithmInterface = new WifiAlgorithm(indoorParams);
+                }
+
                 break;
             case MAGNETIC_FP:
                 this.algoName = algoName;
@@ -78,12 +80,11 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
     }
 
     /**
-     * @param activity
      * @return algorithm build class
      */
     @Override
-    public Object getBuildClass(Activity activity) {
-        return localizationAlgorithmInterface.getBuildClass(activity);
+    public Object getBuildClass() {
+        return localizationAlgorithmInterface.getBuildClass();
     }
 
     /**

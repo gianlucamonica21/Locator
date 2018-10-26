@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.anthonycr.grant.PermissionsManager;
@@ -69,7 +70,7 @@ public class MyPermissionsManager {
                                 "Sorry, we need the this permission",
                                 Toast.LENGTH_SHORT).show();
                         ActivityCompat.requestPermissions(
-                                (Activity) MyApp.getContext(),
+                                (Activity) MyApp.getActivity(),
                                 permissions,200);
 
                     }
@@ -88,8 +89,10 @@ public class MyPermissionsManager {
                 break;
             case WIFI_RSS_FP:
 
-                if (!isWIFIEnabled)
+                if (!isWIFIEnabled){
                     showDialog(Settings.ACTION_WIFI_SETTINGS);
+
+                }
 
                 break;
         }
@@ -112,14 +115,13 @@ public class MyPermissionsManager {
                 break;
         }
 
-
         android.support.v7.app.AlertDialog.Builder alertDialog = buildDialog(providerToEnable);
         alertDialog.show();
-
-
+        Log.i("show dialog","show dialog " + MyApp.getActivity());
     }
 
     public android.support.v7.app.AlertDialog.Builder buildDialog(final String providerToEnable){
+
 
         android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(MyApp.getActivity());
         alertDialog.setTitle(providerMsg + " is not Enabled!");
