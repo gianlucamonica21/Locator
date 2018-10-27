@@ -31,7 +31,6 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
     @Override
     public <T extends View> T build(Class<T> type) {
         this.wifiOfflineManager = new WifiOfflineManager(indoorParams);
-        MyApp.setWifiOfflineManagerInstance(wifiOfflineManager);
         return wifiOfflineManager.build(type);
     }
 

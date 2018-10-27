@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 
+import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.offline.WifiOfflineManager;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
@@ -15,7 +16,7 @@ public class MyApp extends Application {
 
     private static MyApp instance;
     private static MyLocationManager myLocationManagerInstance;
-    private static WifiOfflineManager wifiOfflineManagerInstance;
+    private static LocationMiddleware locationMiddlewareInstance;
     private static Activity activity;
     private static double magnitude;
 
@@ -42,12 +43,12 @@ public class MyApp extends Application {
         MyApp.myLocationManagerInstance = myLocationManagerInstance;
     }
 
-    public static WifiOfflineManager getWifiOfflineManagerInstance() {
-        return wifiOfflineManagerInstance;
+    public static LocationMiddleware getLocationMiddlewareInstance() {
+        return locationMiddlewareInstance;
     }
 
-    public static void setWifiOfflineManagerInstance(WifiOfflineManager wifiOfflineManagerInstance) {
-        MyApp.wifiOfflineManagerInstance = wifiOfflineManagerInstance;
+    public static void setLocationMiddlewareInstance(LocationMiddleware locationMiddlewareInstance) {
+        MyApp.locationMiddlewareInstance = locationMiddlewareInstance;
     }
 
     public static Activity getActivity() {

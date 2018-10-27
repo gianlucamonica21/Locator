@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
@@ -83,6 +84,11 @@ public class FloorFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_floor, container, false);
         s = v.findViewById(R.id.floorSpinner);
+
+        // se outdoor scan button disabled
+        if(!MyApp.getLocationMiddlewareInstance().isINDOOR_LOC()){
+            s.setEnabled(false);
+        }
 
         // getting selected item from floor spinner
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

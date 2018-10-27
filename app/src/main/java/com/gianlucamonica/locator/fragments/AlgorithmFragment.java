@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 
@@ -154,6 +155,13 @@ public class AlgorithmFragment extends Fragment {
         }
         // getting algorithm spinner
         s = (Spinner) v.findViewById(R.id.spinner);
+
+        // se outdoor scan button disabled
+        if(!MyApp.getLocationMiddlewareInstance().isINDOOR_LOC()){
+            s.setEnabled(false);
+        }
+
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, algorithmsName);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);

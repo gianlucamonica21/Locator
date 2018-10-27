@@ -16,6 +16,7 @@ import android.widget.Spinner;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.BuildingDAO;
@@ -181,6 +182,12 @@ public class BuildingFragment extends Fragment {
         }
         // getting building spinner
         s = (Spinner) v.findViewById(R.id.spinner);
+
+        // se outdoor scan button disabled
+        if(!MyApp.getLocationMiddlewareInstance().isINDOOR_LOC()){
+            s.setEnabled(false);
+        }
+
         // populate scansSpinner
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, buildingsName);

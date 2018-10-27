@@ -30,7 +30,7 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
     /**
      * location listener's and location params
      */
-    private static final float GPS_ACC_THRESHOLD = 15;
+    private static final float GPS_ACC_THRESHOLD = 20;
     protected LocationManager locationManager; // in order to retrieve the gps loc
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;
     private static final long MIN_TIME_BW_UPDATES = 0;
@@ -42,7 +42,7 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
     private float liveGPSAcc = 0; // gps acc just registered
     private AlgorithmName chosenIndoorAlg = AlgorithmName.MAGNETIC_FP; // default indoor alg
 
-    private boolean INDOOR_LOC = false;
+    private boolean INDOOR_LOC;
     private Activity activity; // ?
     private ArrayList<IndoorParams> indoorParams; // indoor algorithm's params such as building, algorithm and grid size
     private MyLocationManager myLocationManager;
@@ -89,10 +89,11 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
     public void init(){
         // per ora qui di modo che posso testare
         myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
-
+        Log.i("loc midd","live gpsacc " + liveGPSAcc + "thres " + GPS_ACC_THRESHOLD);
         if(liveGPSAcc > GPS_ACC_THRESHOLD){
             // istantiate outdoor alg
             Log.i("instantiate","GPS location");
+            myLocationManager = new MyLocationManager(AlgorithmName.GPS,indoorParams);
             //Toast.makeText(MyApp.getContext(),"istantiate GPS",Toast.LENGTH_SHORT).show();
             INDOOR_LOC = false;
          }else {
@@ -209,4 +210,7 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
         return INDOOR_LOC;
     }
 
+    public void setINDOOR_LOC(boolean INDOOR_LOC) {
+        this.INDOOR_LOC = INDOOR_LOC;
+    }
 }

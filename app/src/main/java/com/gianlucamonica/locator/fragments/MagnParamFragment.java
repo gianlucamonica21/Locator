@@ -19,6 +19,7 @@ import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
@@ -96,9 +97,16 @@ public class MagnParamFragment extends Fragment {
         databaseManager = new DatabaseManager();
         indoorParamsUtils = new IndoorParamsUtils();
 
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_param, container, false);
         sizeEditText = v.findViewById(R.id.sizeEditText);
+
+        Log.i("param fragment", "indoor"+MyApp.getLocationMiddlewareInstance().isINDOOR_LOC());
+        // se outdoor scan button disabled
+        if(!MyApp.getLocationMiddlewareInstance().isINDOOR_LOC()){
+            sizeEditText.setEnabled(false);
+        }
 
         sizeEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
