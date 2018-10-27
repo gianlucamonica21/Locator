@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.fragments;
+package com.gianlucamonica.locator.fragments.param;
 
 import android.content.Context;
 import android.net.Uri;

@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.fragments;
+package com.gianlucamonica.locator.activities.scan;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

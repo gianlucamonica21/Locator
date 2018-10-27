@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.fragments;
+package com.gianlucamonica.locator.activities.newBuilding;
 
 import android.content.Intent;
 import android.location.Location;
@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.activities.newFloor.InsertFloorActivity;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;

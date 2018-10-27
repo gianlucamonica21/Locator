@@ -1,6 +1,5 @@
 package com.gianlucamonica.locator.myLocationManager.utils;
 
-import com.gianlucamonica.locator.fragments.FloorFragment;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;

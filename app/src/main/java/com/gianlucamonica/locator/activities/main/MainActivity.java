@@ -9,12 +9,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
-import com.gianlucamonica.locator.fragments.AlgorithmFragment;
-import com.gianlucamonica.locator.fragments.BuildingFragment;
-import com.gianlucamonica.locator.fragments.ButtonsFragment;
-import com.gianlucamonica.locator.fragments.FloorFragment;
-import com.gianlucamonica.locator.fragments.MagnParamFragment;
-import com.gianlucamonica.locator.fragments.ScanFragment;
+import com.gianlucamonica.locator.fragments.algorithm.AlgorithmFragment;
+import com.gianlucamonica.locator.fragments.building.BuildingFragment;
+import com.gianlucamonica.locator.fragments.buttons.ButtonsFragment;
+import com.gianlucamonica.locator.fragments.floor.FloorFragment;
+import com.gianlucamonica.locator.fragments.param.MagnParamFragment;
+import com.gianlucamonica.locator.fragments.scan.ScanFragment;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;

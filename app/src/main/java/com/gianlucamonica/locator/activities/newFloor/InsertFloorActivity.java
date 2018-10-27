@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.fragments;
+package com.gianlucamonica.locator.activities.newFloor;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
