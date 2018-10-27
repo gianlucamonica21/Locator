@@ -37,21 +37,31 @@ public class EuclideanDistanceAlg {
 
     public int computeWifi(){
 
+        Log.i("euclidean","offline scans before" + offlineScans.toString());
         for (int i = 0; i < offlineScans.size(); i++) {
-            int rssiTmp = (int) offlineScans.get(i).getValue();
-            offlineScans.get(i).setValue((int)
-                    Math.sqrt(Math.pow((double) rssiTmp - scannedRssi,2))
+            double magnTmp = offlineScans.get(i).getValue();
+            Log.i("euclidean","static "+String.valueOf(magnTmp));
+            Log.i("euclidean","live" + magnitude);
+            offlineScans.get(i).setValue(
+                    Math.sqrt(
+                            Math.pow((double) magnTmp - magnitude,2)
+                    )
             );
         }
 
+        Log.i("euclidean","offline scans after" + offlineScans.toString());
+
         int index = 0;
-        int minRssi = (int) offlineScans.get(0).getValue();
+        double minMagn = offlineScans.get(0).getValue();
         for (int i = 0; i < offlineScans.size() - 1; i++) {
-            if( offlineScans.get(i).getValue() < minRssi){
-                minRssi = (int) offlineScans.get(i+1).getValue();
-                index = i+1;
+            if( offlineScans.get(i+1).getValue() < minMagn ){
+                minMagn = offlineScans.get(i+1).getValue();
+                index = i + 1;
             }
         }
+
+        Log.i("euclidean","index estim pos " + index);
+        Log.i("euclidean","gridname estim pos " + offlineScans.get(index).getIdGrid());
         return offlineScans.get(index).getIdGrid();
     }
 
