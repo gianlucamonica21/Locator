@@ -13,9 +13,9 @@ import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamName;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
@@ -118,10 +118,24 @@ public class LocateActivity extends AppCompatActivity {
                     //prima scansione
                     //OnlineScan onlineScan = myLocationManager.locate();
                     OnlineScan onlineScan = locationMiddleware.locate();
-                    Log.i("locate activity", "onlinescan " + onlineScan.toString());
-                    estimatedGrid.setText(String.valueOf(onlineScan.getIdEstimatedPos()));
-                    handler.removeCallbacks(runnable);
-                    //todo inserire online scan in db
+                    if(onlineScan != null){
+                        Log.i("locate activity", "onlinescan " + onlineScan.toString());
+                        estimatedGrid.setText(String.valueOf(onlineScan.getIdEstimatedPos()));
+                        handler.removeCallbacks(runnable);
+
+                        if(onlineScan != null){
+                            int actualPos = -1;
+                            if(!actualGrid.getText().toString().equals("")){
+                                actualPos = Integer.parseInt(actualGrid.getText().toString());
+                            }
+                            onlineScan.setIdActualPos(actualPos );
+                            try {
+                                databaseManager.getAppDatabase().getOnlineScanDAO().insert(onlineScan);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
 
                     //successive altre scansioni
                     handler.postDelayed(runnable = new Runnable(){
@@ -129,6 +143,19 @@ public class LocateActivity extends AppCompatActivity {
                             //do something
                             //OnlineScan onlineScan = myLocationManager.locate();
                             OnlineScan onlineScan = locationMiddleware.locate();
+
+                            if(onlineScan != null){
+                                int actualPos = -1;
+                                if(!actualGrid.getText().toString().equals("")){
+                                    actualPos = Integer.parseInt(actualGrid.getText().toString());
+                                }
+                                onlineScan.setIdActualPos(actualPos );
+                                try {
+                                    databaseManager.getAppDatabase().getOnlineScanDAO().insert(onlineScan);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
                             estimatedGrid.setText(String.valueOf(onlineScan.getIdEstimatedPos()));
                             Log.i("locate activity", "onlinescan " + onlineScan.toString());

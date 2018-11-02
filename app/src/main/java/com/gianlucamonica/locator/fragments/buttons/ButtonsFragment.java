@@ -17,7 +17,7 @@ import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.gps.fragments.MapsActivity;
 import com.gianlucamonica.locator.activities.locate.LocateActivity;
 import com.gianlucamonica.locator.activities.scan.ScanActivity;
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;

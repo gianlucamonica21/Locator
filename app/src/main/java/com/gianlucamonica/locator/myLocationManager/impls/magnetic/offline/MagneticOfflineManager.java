@@ -10,9 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
+import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
@@ -20,9 +18,11 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
-import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
-import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamName;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.map.Grid;
+import com.gianlucamonica.locator.myLocationManager.utils.map.MapView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,8 +97,8 @@ public class MagneticOfflineManager implements SensorEventListener {
             }
         });
         Toast.makeText(MyApp.getContext(),
-                "Tap on the grid corresponding to your position to do a scan, if you want to redo it click 'Redo Scan'",
-                Toast.LENGTH_LONG).show();
+                "Tap on the square corresponding to your position to do a scan, if you want to redo it click 'Redo Scan'",
+                Toast.LENGTH_SHORT).show();
 
         return type.cast(mV);
 
@@ -126,7 +126,7 @@ public class MagneticOfflineManager implements SensorEventListener {
                                 //2) inserisco in offline scan
                                 try {
                                     databaseManager.getAppDatabase().getOfflineScanDAO().insert(
-                                            new OfflineScan(idScan,Integer.parseInt(zones.get(i)),magnitudes.get(i),new Date())
+                                            new OfflineScan(idScan,Integer.parseInt(zones.get(i)), -1, magnitudes.get(i), new Date())
                                     );
                                 } catch (NumberFormatException e) {
                                     e.printStackTrace();
@@ -194,7 +194,7 @@ public class MagneticOfflineManager implements SensorEventListener {
                         Log.i("inserisco magnitude", String.valueOf(liveMagnitude));
                         try {
                             databaseManager.getAppDatabase().getOfflineScanDAO().insert(
-                                    new OfflineScan(idScan,Integer.parseInt(liveGridName),liveMagnitude,new Date()));
+                                    new OfflineScan(idScan,Integer.parseInt(liveGridName), -1, liveMagnitude, new Date()));
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                         }
@@ -208,7 +208,7 @@ public class MagneticOfflineManager implements SensorEventListener {
                 }
                 // set value on the screen
                 Log.i("live magnitude", String.valueOf(liveMagnitude));
-                Toast.makeText(MyApp.getContext(), "liveMagnitude  " + liveMagnitude + " grid " + liveGridName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyApp.getContext(), "square " + liveGridName + " scanned", Toast.LENGTH_SHORT).show();
             }
         }
         sensorManager.unregisterListener(this);

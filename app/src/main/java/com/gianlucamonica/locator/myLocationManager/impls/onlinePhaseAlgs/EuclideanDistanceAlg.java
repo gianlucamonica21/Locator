@@ -1,6 +1,7 @@
-package com.gianlucamonica.locator.myLocationManager.impls;
+package com.gianlucamonica.locator.myLocationManager.impls.onlinePhaseAlgs;
 
 import android.util.Log;
+
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 
@@ -9,7 +10,6 @@ import java.util.List;
 public class EuclideanDistanceAlg {
 
     private List<OfflineScan> offlineScans;
-    private int scannedRssi;
     private double magnitude;
 
 

@@ -1,16 +1,21 @@
 package com.gianlucamonica.locator.myLocationManager.impls.wifi;
 
 
+import android.content.IntentFilter;
+import android.net.wifi.WifiManager;
 import android.view.View;
 
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.offline.WifiOfflineManager;
-import com.gianlucamonica.locator.myLocationManager.locAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.online.WifiOnlineManager;
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.impls.wifi.utils.WifiScanReceiver;
+import com.gianlucamonica.locator.myLocationManager.locAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
 
 import java.util.ArrayList;
+
+import static android.content.Context.WIFI_SERVICE;
 
 public class WifiAlgorithm implements LocalizationAlgorithmInterface {
 
@@ -19,8 +24,18 @@ public class WifiAlgorithm implements LocalizationAlgorithmInterface {
 
     private ArrayList<IndoorParams> indoorParams;
 
+    private WifiManager wifiManager;
+    private final WifiScanReceiver wifiScanReceiver;
+
     public WifiAlgorithm(ArrayList<IndoorParams> indoorParams){
         this.indoorParams = indoorParams;
+        wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(WIFI_SERVICE);
+        // faccio partire lo scan
+        wifiManager.startScan();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        wifiScanReceiver = new WifiScanReceiver();
+        MyApp.getContext().registerReceiver(wifiScanReceiver, intentFilter);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.myLocationManager.utils;
+package com.gianlucamonica.locator.myLocationManager.utils.indoorParams;
 
 public enum IndoorParamName {
     BUILDING,

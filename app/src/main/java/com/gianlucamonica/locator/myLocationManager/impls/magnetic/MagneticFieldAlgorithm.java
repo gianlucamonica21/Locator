@@ -6,8 +6,8 @@ import android.view.View;
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.offline.MagneticOfflineManager;
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.online.MagneticOnlineManager;
 import com.gianlucamonica.locator.myLocationManager.locAlgInterface.LocalizationAlgorithmInterface;
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
 
 import java.util.ArrayList;
 

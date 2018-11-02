@@ -17,9 +17,9 @@ import com.gianlucamonica.locator.fragments.param.MagnParamFragment;
 import com.gianlucamonica.locator.fragments.scan.ScanFragment;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamName;
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParams;
-import com.gianlucamonica.locator.myLocationManager.utils.IndoorParamsUtils;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamName;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamsUtils;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
@@ -255,6 +255,11 @@ public class MainActivity extends AppCompatActivity implements
         ButtonsFragment buttonsFragment = (ButtonsFragment)
                 getSupportFragmentManager().findFragmentById(R.id.buttonsLayout);
         buttonsFragment.manageLocateButton(isOfflineScan);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
 }

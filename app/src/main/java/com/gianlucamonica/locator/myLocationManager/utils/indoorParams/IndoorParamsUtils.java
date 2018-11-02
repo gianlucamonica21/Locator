@@ -1,4 +1,4 @@
-package com.gianlucamonica.locator.myLocationManager.utils;
+package com.gianlucamonica.locator.myLocationManager.utils.indoorParams;
 
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;

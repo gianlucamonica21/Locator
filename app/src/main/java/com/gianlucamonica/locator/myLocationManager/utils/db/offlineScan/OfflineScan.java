@@ -15,7 +15,7 @@ import java.util.Date;
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "offlineScan",
-        indices = {@Index(value = {"idScan", "idGrid"},
+        indices = {@Index(value = {"idScan", "idGrid","idWifiAP"},
                 unique = true)}, // vincoli di unicità
         foreignKeys = {
         @ForeignKey( // chiave esterna
@@ -38,14 +38,18 @@ public class OfflineScan {
     int idGrid;
 
     @NonNull
+    int idWifiAP;
+
+    @NonNull
     double value;
 
     @NonNull
     Date timeStamp;
 
-    public OfflineScan(@NonNull int idScan, @NonNull int idGrid, @NonNull double value, Date timeStamp) {
+    public OfflineScan(@NonNull int idScan, @NonNull int idGrid, int idWifiAP, @NonNull double value, Date timeStamp) {
         this.idScan = idScan;
         this.idGrid = idGrid;
+        this.idWifiAP = idWifiAP;
         this.value = value;
         this.timeStamp = timeStamp;
     }
@@ -77,6 +81,14 @@ public class OfflineScan {
         this.idGrid = idGrid;
     }
 
+    @NonNull
+    public int getIdWifiAP() {
+        return idWifiAP;
+    }
+
+    public void setIdWifiAP(@NonNull int idWifiAP) {
+        this.idWifiAP = idWifiAP;
+    }
 
     @NonNull
     public double getValue() {
@@ -102,6 +114,7 @@ public class OfflineScan {
                 "id=" + id +
                 ", idScan=" + idScan +
                 ", idGrid=" + idGrid +
+                ", idWifiAP=" + idWifiAP +
                 ", value=" + value +
                 ", timeStamp=" + timeStamp +
                 '}';

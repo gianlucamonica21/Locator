@@ -11,6 +11,8 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.BuildingDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloorDAO;
+import com.gianlucamonica.locator.myLocationManager.utils.db.liveMeasurements.LiveMeasurements;
+import com.gianlucamonica.locator.myLocationManager.utils.db.liveMeasurements.LiveMeasurementsDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScanDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
@@ -19,6 +21,8 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSum
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummaryDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.wifiAP.WifiAP;
 import com.gianlucamonica.locator.myLocationManager.utils.db.wifiAP.WifiAPDAO;
+import com.gianlucamonica.locator.myLocationManager.utils.db.wifiNetwork.WifiNetwork;
+import com.gianlucamonica.locator.myLocationManager.utils.db.wifiNetwork.WifiNetworkDAO;
 
 @Database(entities = {
         Building.class,
@@ -28,8 +32,10 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.wifiAP.WifiAPDAO;
         OfflineScan.class,
         OnlineScan.class,
         ScanSummary.class,
-        WifiAP.class
-        }, version = 39)
+        WifiAP.class,
+        WifiNetwork.class,
+        LiveMeasurements.class
+        }, version = 44)
 public abstract class AppDatabase extends RoomDatabase {
 
      public abstract BuildingDAO getBuildingDAO();
@@ -41,5 +47,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ConfigDAO getConfigDAO();
     public abstract MyDao getMyDAO();
     public abstract WifiAPDAO getWifiAPDAO();
-
+    public abstract WifiNetworkDAO getWifiNetworkDAO();
+    public abstract LiveMeasurementsDAO getLiveMeasurementsDAO();
 }
