@@ -35,7 +35,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.wifiNetwork.WifiNet
         WifiAP.class,
         WifiNetwork.class,
         LiveMeasurements.class
-        }, version = 44)
+        }, version = 45)
 public abstract class AppDatabase extends RoomDatabase {
 
      public abstract BuildingDAO getBuildingDAO();

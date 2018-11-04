@@ -39,7 +39,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
                 onUpdate = ForeignKey.CASCADE,
                 onDelete = ForeignKey.CASCADE)*/},
         indices = {@Index(value =
-                {"idBuilding","idAlgorithm","idConfig","type"}, unique = true)} // non posso comparire due righe aventi stesso building,algorithm,idConfig e type
+                {"idBuilding","idBuildingFloor","idAlgorithm","idConfig","type"}, unique = true)} // non posso comparire due righe aventi stesso building,algorithm,idConfig e type
 )
 public class ScanSummary {
 
@@ -49,6 +49,7 @@ public class ScanSummary {
     @NonNull
     int idBuilding;
 
+    @NonNull
     int idBuildingFloor;
 
     @NonNull

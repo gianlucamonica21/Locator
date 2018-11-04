@@ -280,7 +280,7 @@ public class MagnParamFragment extends Fragment {
         Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
 
         try {
-            configList = databaseManager.getAppDatabase().getMyDAO().findConfigByBuildingAndAlgorithm(building.getId(),algorithm.getId());
+            configList = databaseManager.getAppDatabase().getMyDAO().findConfigByBuildingAndAlgorithm(building.getId(),algorithm.getId(),"offline");
             //configList = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(algorithm.getId(),"gridSize");
             Log.i("config trovate",configList.toString());
 

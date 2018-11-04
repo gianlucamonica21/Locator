@@ -13,6 +13,8 @@ import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
+import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
+import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummaryDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamsUtils;
@@ -60,17 +62,19 @@ public class LocateActivity extends AppCompatActivity {
         estimatedGrid = (EditText) findViewById(R.id.estimateGridEditText);
         estimatedGrid.setEnabled(false);
         // recupero parametri indoor
-        Algorithm algorithm;
+        final Algorithm algorithm;
         algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.ALGORITHM);
         AlgorithmName algorithmName = AlgorithmName.MAGNETIC_FP;
         algorithmName = AlgorithmName.valueOf(algorithm.getName());
-        Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
-        Config config = (Config) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.CONFIG);
+        final Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
+        final BuildingFloor buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.FLOOR);
+        final Config config = (Config) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.CONFIG);
 
         try{
             List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().
                     getScanSummaryByBuildingAlgorithm(building.getId(),algorithm.getId(),config.getId());
-            final List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(scanSummary.get(0).getId());
+            final List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().
+                    getOfflineScansById(scanSummary.get(0).getId());
             Log.i("locate activity","scansummary " +scanSummary.toString());
             Log.i("locate activity","offlinescans " +offlineScans.toString());
 
@@ -128,8 +132,14 @@ public class LocateActivity extends AppCompatActivity {
                             if(!actualGrid.getText().toString().equals("")){
                                 actualPos = Integer.parseInt(actualGrid.getText().toString());
                             }
-                            onlineScan.setIdActualPos(actualPos );
+                            onlineScan.setIdActualPos(actualPos);
                             try {
+                                databaseManager.getAppDatabase().getScanSummaryDAO().insert(
+                                        new ScanSummary(building.getId(),buildingFloor.getId(),algorithm.getId(),config.getId(),-1,"online")
+                                );
+                                List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().
+                                        getScanSummaryByBuildingAlgorithm(building.getId(),buildingFloor.getId(),algorithm.getId(),config.getId(),"online");
+                                onlineScan.setIdScan(scanSummaries.get(0).getId());
                                 databaseManager.getAppDatabase().getOnlineScanDAO().insert(onlineScan);
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -151,6 +161,10 @@ public class LocateActivity extends AppCompatActivity {
                                 }
                                 onlineScan.setIdActualPos(actualPos );
                                 try {
+                                    List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().
+                                            getScanSummaryByBuildingAlgorithm(building.getId(),buildingFloor.getId(),algorithm.getId(),config.getId(),"online");
+                                    onlineScan.setIdScan(scanSummaries.get(0).getId());
+                                    Log.i("loc act","id scan online " + scanSummaries.get(0).getId());
                                     databaseManager.getAppDatabase().getOnlineScanDAO().insert(onlineScan);
                                 } catch (Exception e) {
                                     e.printStackTrace();
