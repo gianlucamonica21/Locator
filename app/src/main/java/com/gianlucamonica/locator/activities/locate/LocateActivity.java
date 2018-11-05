@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
@@ -41,6 +42,9 @@ public class LocateActivity extends AppCompatActivity {
 
     private EditText actualGrid;
     private EditText estimatedGrid;
+    private TextView buildingTV;
+    private TextView floorTV;
+    private TextView algorithmTV;
 
     // loop
     final Handler handler = new Handler();
@@ -60,6 +64,10 @@ public class LocateActivity extends AppCompatActivity {
 
         actualGrid = (EditText) findViewById(R.id.actualGridEditText);
         estimatedGrid = (EditText) findViewById(R.id.estimateGridEditText);
+        buildingTV = findViewById(R.id.buildingTextView);
+        floorTV = findViewById(R.id.floorTextView);
+        algorithmTV = findViewById(R.id.algorithmTextView);
+
         estimatedGrid.setEnabled(false);
         // recupero parametri indoor
         final Algorithm algorithm;
@@ -69,6 +77,15 @@ public class LocateActivity extends AppCompatActivity {
         final Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
         final BuildingFloor buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.FLOOR);
         final Config config = (Config) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.CONFIG);
+
+        buildingTV.setText(building.getName());
+        if(buildingFloor != null){
+            floorTV.setText(buildingFloor.getName());
+        }
+        else{
+            floorTV.setText("Nessun Piano");
+        }
+        algorithmTV.setText(algorithm.getName());
 
         try{
             List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().
