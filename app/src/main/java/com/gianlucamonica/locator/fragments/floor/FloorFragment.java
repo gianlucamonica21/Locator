@@ -95,6 +95,7 @@ public class FloorFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 BuildingFloor chosenFloor = getSelectedFloor();
+                Log.i("chosen floor","chosen floor " + chosenFloor);
                 mListener.onFragmentInteraction(chosenFloor, IndoorParamName.FLOOR); // comunico all'activity il floor scelto
             }
 

@@ -223,9 +223,9 @@ public class MagneticOfflineManager implements SensorEventListener {
         if( idAlgorithm != -1 && idBuilding != -1 && idConfig != -1){
             // inserisco in scan summary
             try{
-                // todo inserire config e non gridSize
+                Log.i("magn off man","floor " + idFloor);
                 databaseManager.getAppDatabase().getScanSummaryDAO().insert(
-                        new ScanSummary(idBuilding , idFloor, idAlgorithm, idConfig,  "offline")
+                        new ScanSummary(idBuilding , idFloor, idAlgorithm, idConfig,-1,  "offline")
                 );
             }catch(Exception e){
                 Log.i("catched ", String.valueOf(e));

@@ -15,6 +15,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 import com.gianlucamonica.locator.myLocationManager.utils.db.liveMeasurements.LiveMeasurements;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
@@ -93,8 +94,11 @@ public class MagneticOnlineManager implements SensorEventListener {
         int idAlgorithm= algorithm.getId();
         Config config = (Config) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.CONFIG);
         int idConfig = config.getId();
+        BuildingFloor buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.FLOOR);
+
         try {
-            List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,idConfig);
+            List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().
+                    getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,idConfig);
             idScan = scanSummary.get(0).getId();
             Log.i("idScan", String.valueOf(idScan));
             offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(idScan);

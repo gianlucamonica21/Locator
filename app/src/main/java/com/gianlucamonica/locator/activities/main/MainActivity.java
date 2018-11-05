@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements
                 if(chosenFloor != null){
                     indoorParamsUtils.updateIndoorParams(indoorParams,tag, chosenFloor); // populate indoor params
                 }else{
-                    chosenFloor = new BuildingFloor(-1,"Empty");
+                    //chosenFloor = new BuildingFloor(-1,"Empty");
                     indoorParamsUtils.updateIndoorParams(indoorParams,tag, chosenFloor); // populate indoor params
                 }
                 break;

@@ -12,8 +12,9 @@ import java.util.List;
 public interface MyDao {
     @Query("SELECT config.* FROM config "
             + "INNER JOIN scanSummary ON scanSummary.idConfig = config.id "
-            + "WHERE scanSummary.idBuilding = :idBuilding AND scanSummary.idAlgorithm = :idAlgorithm AND scanSummary.type = :type")
-    public List<Config> findConfigByBuildingAndAlgorithm(int idBuilding, int idAlgorithm, String type);
+            + "WHERE scanSummary.idBuilding = :idBuilding AND scanSummary.idAlgorithm = :idAlgorithm AND scanSummary.idBuildingFloor = :idBuildingFloor " +
+            "AND scanSummary.type = :type")
+    public List<Config> findConfigByBuildingAndAlgorithm(int idBuilding, int idAlgorithm, int idBuildingFloor, String type);
 
     @Query("SELECT offlineScan.* FROM offlineScan "
             + "INNER JOIN scanSummary ON scanSummary.id = offlineScan.idScan "

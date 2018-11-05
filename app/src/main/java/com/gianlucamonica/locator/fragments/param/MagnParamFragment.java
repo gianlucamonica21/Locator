@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamsUtils;
@@ -278,9 +279,11 @@ public class MagnParamFragment extends Fragment {
     public void getSizeFromDB(){
         Algorithm algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.ALGORITHM);
         Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
-
+        BuildingFloor buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.FLOOR);
+        int idFloor = buildingFloor == null ? -1 : buildingFloor.getId();
         try {
-            configList = databaseManager.getAppDatabase().getMyDAO().findConfigByBuildingAndAlgorithm(building.getId(),algorithm.getId(),"offline");
+            configList = databaseManager.getAppDatabase().getMyDAO().
+                    findConfigByBuildingAndAlgorithm(building.getId(),algorithm.getId(),idFloor,"offline");
             //configList = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(algorithm.getId(),"gridSize");
             Log.i("config trovate",configList.toString());
 
