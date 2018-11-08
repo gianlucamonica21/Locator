@@ -69,6 +69,15 @@ public class MagneticOnlineManager implements SensorEventListener {
 
             List<LiveMeasurements> liveMeasurements =
                     databaseManager.getAppDatabase().getLiveMeasurementsDAO().getLiveMeasurements(1,"magn_rss");
+
+            if(liveMeasurements.size() == 0){
+                databaseManager.getAppDatabase().getLiveMeasurementsDAO().insert(
+                        new LiveMeasurements(1,-1 , "magn_rss", 50)
+                );
+                liveMeasurements =
+                        databaseManager.getAppDatabase().getLiveMeasurementsDAO().getLiveMeasurements(1,"magn_rss");
+            }
+
             if(liveMeasurements.size() != 0){
                 double liveMagnitude = liveMeasurements.get(0).getValue();
                 euclideanDistanceAlg = new EuclideanDistanceAlg(offlineScans,liveMagnitude);

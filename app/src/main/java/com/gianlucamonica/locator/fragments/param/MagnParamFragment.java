@@ -52,9 +52,11 @@ public class MagnParamFragment extends Fragment {
 
     private Algorithm algorithm;
     private Building building;
-    private List<Config> configList;
-    int gridSize;
+    private BuildingFloor buildingFloor;
+    private int idFloor;
     private Config config;
+
+    private List<Config> configList;
     private ArrayList<IndoorParams> indoorParams;
     private IndoorParamsUtils indoorParamsUtils;
     private OnFragmentInteractionListener mListener;
@@ -98,25 +100,25 @@ public class MagnParamFragment extends Fragment {
         databaseManager = new DatabaseManager();
         indoorParamsUtils = new IndoorParamsUtils();
 
-
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_param, container, false);
         sizeEditText = v.findViewById(R.id.sizeEditText);
 
         Log.i("param fragment", "indoor"+MyApp.getLocationMiddlewareInstance().isINDOOR_LOC());
         // se outdoor scan button disabled
-        if(!MyApp.getLocationMiddlewareInstance().isINDOOR_LOC()){
-            sizeEditText.setEnabled(false);
-        }
+        //if(!MyApp.getLocationMiddlewareInstance().isINDOOR_LOC()){
+         //   sizeEditText.setEnabled(false);
+       // }
 
         sizeEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                Log.i("clicked","clicked");
                 sizeEditText.showDropDown();
+                mListener.onFragmentInteraction(config, IndoorParamName.CONFIG);
                 return false;
             }
         });
-
 
         sizeEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -124,11 +126,13 @@ public class MagnParamFragment extends Fragment {
                 sizeValue = Integer.parseInt(sizeEditText.getText().toString());
 
                 //controllo se la size scelta è già presente nella tabella config !deve essere già presente se è qui!
-                for (int i = 0; i < configList.size(); i++){
-                    if(configList.get(i).getParName().equals("gridSize")){
-                        if(configList.get(i).getParValue() == sizeValue){
-                            config = configList.get(i); // setto config
-                            break;
+                if(configList != null){
+                    for (int i = 0; i < configList.size(); i++){
+                        if(configList.get(i).getParName().equals("gridSize")){
+                            if(configList.get(i).getParValue() == sizeValue){
+                                config = configList.get(i); // setto config
+                                break;
+                            }
                         }
                     }
                 }
@@ -162,12 +166,14 @@ public class MagnParamFragment extends Fragment {
                 boolean newConfig = true;
 
                 //controllo se la size scelta è già presente nella tabella config
-                for (int i = 0; i < configList.size(); i++){
-                    if(configList.get(i).getParName().equals("gridSize")){
-                        if(configList.get(i).getParValue() == sizeValue){
-                            config = configList.get(i); // setto config
-                            newConfig = false;
-                            break;
+                if(configList != null){
+                    for (int i = 0; i < configList.size(); i++){
+                        if(configList.get(i).getParName().equals("gridSize")){
+                            if(configList.get(i).getParValue() == sizeValue){
+                                config = configList.get(i); // setto config
+                                newConfig = false;
+                                break;
+                            }
                         }
                     }
                 }
@@ -207,10 +213,11 @@ public class MagnParamFragment extends Fragment {
                     }
                 }
 
-                Log.i("passo a main",config.toString());
+                if(configList != null){
+                    Log.i("passo a main",config.toString());
+                }
                 // devo passare la config corrispondente alla size scelta, altrimenti creare una nuova config
                 mListener.onFragmentInteraction(config, IndoorParamName.CONFIG);
-
             }
         });
         // Inflate the layout for this fragment
@@ -257,46 +264,38 @@ public class MagnParamFragment extends Fragment {
     }
 
     public void loadIndoorParams(ArrayList<IndoorParams> indoorParams){
-        Log.i("sono qui","ssssss");
+
         this.indoorParams = indoorParams;
-        for (int i = 0; i < indoorParams.size(); i++){
-            switch (indoorParams.get(i).getName()){
-                case BUILDING:
-                    this.building = (Building) indoorParams.get(i).getParamObject();
-                    break;
-                case ALGORITHM:
-                    this.algorithm = (Algorithm) indoorParams.get(i).getParamObject();
-                    break;
-                case SIZE:
-                    this.gridSize = (int) indoorParams.get(i).getParamObject();
-                    break;
-            }
-        }
+        algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.ALGORITHM);
+        building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
+        buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.FLOOR);
+        idFloor = buildingFloor == null ? -1 : buildingFloor.getId();
+
         getSizeFromDB();
     }
 
-    /* cerco config per l'algoritmo e il building scelto*/
+    /* cerco config per l'algoritmo, building e floor scelto*/
     public void getSizeFromDB(){
-        Algorithm algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.ALGORITHM);
-        Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
-        BuildingFloor buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.FLOOR);
-        int idFloor = buildingFloor == null ? -1 : buildingFloor.getId();
+
+        Log.i("config trovate","cerco config per a: " + algorithm.getId() + " b: " + building.getId() + " f: " + idFloor);
         try {
             configList = databaseManager.getAppDatabase().getMyDAO().
                     findConfigByBuildingAndAlgorithm(building.getId(),algorithm.getId(),idFloor,"offline");
-            //configList = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(algorithm.getId(),"gridSize");
             Log.i("config trovate",configList.toString());
 
-            List<String> size = new ArrayList<>();
-            for(int i = 0; i < configList.size(); i++){
-                if(configList.get(i).getParName().equals("gridSize"))
-                    size.add(String.valueOf(configList.get(i).getParValue()));
+            if(configList != null) {
+                List<String> size = new ArrayList<>();
+                for (int i = 0; i < configList.size(); i++) {
+                    if (configList.get(i).getParName().equals("gridSize"))
+                        size.add(String.valueOf(configList.get(i).getParValue()));
+                }
+
+                // popolo lo spinner con le config trovate
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_dropdown_item_1line, size);
+                sizeEditText.setAdapter(adapter);
             }
-            // popolo lo spinner con le config trovate
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_dropdown_item_1line, size);
-            sizeEditText.setAdapter(adapter);
-        } catch (Exception e) {
+            } catch (Exception e) {
             e.printStackTrace();
         }
     }

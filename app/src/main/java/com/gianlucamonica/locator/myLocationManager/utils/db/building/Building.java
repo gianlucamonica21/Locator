@@ -20,22 +20,21 @@ public class Building implements Serializable{
     @NonNull
     int widht;
     @NonNull
-    double SOLat;
+    double SWLat;
     @NonNull
-    double SOLng;
+    double SWLng;
     @NonNull
     double NELat;
     @NonNull
     double NELng;
 
 
-    public Building(String name, int height, int widht, double SOLat, double SOLng, double NELat, double NELng){
-        this.id = id;
+    public Building(String name, int height, int widht, double SWLat, double SWLng, double NELat, double NELng){
         this.name = name;
         this.height = height;
         this.widht = widht;
-        this.SOLat = SOLat;
-        this.SOLng = SOLng;
+        this.SWLat = SWLat;
+        this.SWLng = SWLng;
         this.NELat = NELat;
         this.NELng = NELng;
     }
@@ -77,21 +76,21 @@ public class Building implements Serializable{
     }
 
     @NonNull
-    public double getSOLat() {
-        return SOLat;
+    public double getSWLat() {
+        return SWLat;
     }
 
-    public void setSOLat(@NonNull double SOLat) {
-        this.SOLat = SOLat;
+    public void setSWLat(@NonNull double SWLat) {
+        this.SWLat = SWLat;
     }
 
     @NonNull
-    public double getSOLng() {
-        return SOLng;
+    public double getSWLng() {
+        return SWLng;
     }
 
-    public void setSOLng(@NonNull double SOLng) {
-        this.SOLng = SOLng;
+    public void setSWLng(@NonNull double SWLng) {
+        this.SWLng = SWLng;
     }
 
     @NonNull
@@ -119,8 +118,8 @@ public class Building implements Serializable{
                 ", name='" + name + '\'' +
                 ", height=" + height +
                 ", widht=" + widht +
-                ", SOLat=" + SOLat +
-                ", SOLng=" + SOLng +
+                ", SWLat=" + SWLat +
+                ", SWLng=" + SWLng +
                 ", NELat=" + NELat +
                 ", NELng=" + NELng +
                 '}';

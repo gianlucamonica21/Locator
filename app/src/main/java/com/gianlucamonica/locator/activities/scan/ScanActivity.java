@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
@@ -14,6 +15,7 @@ import com.gianlucamonica.locator.activities.main.MainActivity;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.MyLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
+import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamsUtils;
@@ -35,6 +37,11 @@ public class ScanActivity extends AppCompatActivity {
     private IndoorParamsUtils indoorParamsUtils;
     private LocationMiddleware locationMiddleware;
 
+    private TextView buildingTV;
+    private TextView floorTV;
+    private TextView algorithmTV;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,20 +52,30 @@ public class ScanActivity extends AppCompatActivity {
         indoorParamsUtils = new IndoorParamsUtils();
         Bundle bundle = getIntent().getExtras();
         indoorParams = (ArrayList<IndoorParams>) bundle.getSerializable("indoorParams");
+        buildingTV = findViewById(R.id.buildingTextView);
+        floorTV = findViewById(R.id.floorTextView);
+        algorithmTV = findViewById(R.id.algorithmTextView);
 
-        Algorithm algorithm;
-        AlgorithmName algorithmName = AlgorithmName.MAGNETIC_FP;
-        for (int i = 0; i < indoorParams.size(); i++){
-            if (indoorParams.get(i).getName() == IndoorParamName.ALGORITHM){
-                algorithm = (Algorithm) indoorParams.get(i).getParamObject();
-                algorithmName = AlgorithmName.valueOf(algorithm.getName());
-            }
+        final Algorithm algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.ALGORITHM);
+        final Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
+        final BuildingFloor buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.FLOOR);
+
+
+
+        buildingTV.setText(building.getName());
+        if(buildingFloor != null){
+            floorTV.setText(buildingFloor.getName());
         }
+        else{
+            floorTV.setText("Nessun Piano");
+        }
+        algorithmTV.setText(algorithm.getName());
 
-        Log.i("scan act","alg name "+ algorithmName);
+
+        Log.i("scan act","alg name "+ AlgorithmName.valueOf(algorithm.getName()));
 
         // setting location middleware
-        locationMiddleware = new LocationMiddleware(algorithmName,indoorParams);
+        locationMiddleware = new LocationMiddleware(AlgorithmName.valueOf(algorithm.getName()),indoorParams);
 
         // setting algorithm in mylocationmanager
         //myLocationManager = new MyLocationManager(algorithmName, indoorParams);

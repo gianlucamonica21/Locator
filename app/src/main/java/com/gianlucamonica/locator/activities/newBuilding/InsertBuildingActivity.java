@@ -33,8 +33,8 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
     private EditText nameEditText;
     private EditText heightEditText;
     private EditText widthEditText;
-    private EditText SOLatEditText;
-    private EditText SOLngEditText;
+    private EditText SWLatEditText;
+    private EditText SWLngEditText;
     private EditText NELatEditText;
     private EditText NELngEditText;
 
@@ -55,8 +55,8 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         heightEditText = (EditText) findViewById(R.id.heightEditText);
         widthEditText = (EditText) findViewById(R.id.widthEditText);
-        SOLatEditText = (EditText) findViewById(R.id.SOLatEditText);
-        SOLngEditText = (EditText) findViewById(R.id.SOLngEditText);
+        SWLatEditText = (EditText) findViewById(R.id.SWLatEditText);
+        SWLngEditText = (EditText) findViewById(R.id.SWLngEditText);
         NELatEditText = (EditText) findViewById(R.id.NELatEditText);
         NELngEditText = (EditText) findViewById(R.id.NELngEditText);
 
@@ -80,8 +80,8 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
         editTextList.add(nameEditText);
         editTextList.add(heightEditText);
         editTextList.add(widthEditText);
-        editTextList.add(SOLatEditText);
-        editTextList.add(SOLngEditText);
+        editTextList.add(SWLatEditText);
+        editTextList.add(SWLngEditText);
         editTextList.add(NELatEditText);
         editTextList.add(NELngEditText);
 
@@ -103,8 +103,8 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
                                 nameEditText.getText().toString(),
                                 Integer.parseInt(heightEditText.getText().toString()),
                                 Integer.parseInt(widthEditText.getText().toString()),
-                                Double.parseDouble(SOLatEditText.getText().toString()),
-                                Double.parseDouble(SOLngEditText.getText().toString()),
+                                Double.parseDouble(SWLatEditText.getText().toString()),
+                                Double.parseDouble(SWLngEditText.getText().toString()),
                                 Double.parseDouble(NELatEditText.getText().toString()),
                                 Double.parseDouble(NELngEditText.getText().toString())
                         ));
@@ -160,8 +160,8 @@ public class InsertBuildingActivity extends AppCompatActivity implements OnMapRe
                     Log.i("clicked on map","clicked");
 
                     if(isOdd(clickNum)){
-                        SOLatEditText.setText(String.valueOf(latLng.latitude));
-                        SOLngEditText.setText(String.valueOf(latLng.longitude));
+                        SWLatEditText.setText(String.valueOf(latLng.latitude));
+                        SWLngEditText.setText(String.valueOf(latLng.longitude));
                     }else{
                         NELatEditText.setText(String.valueOf(latLng.latitude));
                         NELngEditText.setText(String.valueOf(latLng.longitude));
