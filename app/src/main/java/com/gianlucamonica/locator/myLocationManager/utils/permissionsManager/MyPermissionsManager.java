@@ -48,6 +48,12 @@ public class MyPermissionsManager {
                 isWIFIEnabled = wifiManager.isWifiEnabled();
 
                 break;
+            case WIFI_BAR_RSS_FP:
+
+                wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(MyApp.getContext().WIFI_SERVICE);
+                isWIFIEnabled = wifiManager.isWifiEnabled();
+
+                break;
         }
     }
 
@@ -88,6 +94,14 @@ public class MyPermissionsManager {
 
                 break;
             case WIFI_RSS_FP:
+
+                if (!isWIFIEnabled){
+                    showDialog(Settings.ACTION_WIFI_SETTINGS);
+
+                }
+
+                break;
+            case WIFI_BAR_RSS_FP:
 
                 if (!isWIFIEnabled){
                     showDialog(Settings.ACTION_WIFI_SETTINGS);

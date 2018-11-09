@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 @Entity(tableName = "liveMeasurements",indices = {@Index(value =
-        {"idAlgorithm","idAP","name"}, unique = true)})
+        {"idAlgorithm","idAP","name","number"}, unique = true)})
 public class LiveMeasurements {
 
     @PrimaryKey(autoGenerate = true)
@@ -22,12 +22,16 @@ public class LiveMeasurements {
     String name;
 
     @NonNull
+    int number;
+
+    @NonNull
     double value;
 
-    public LiveMeasurements(@NonNull int idAlgorithm, int idAP, @NonNull String name, @NonNull double value) {
+    public LiveMeasurements(@NonNull int idAlgorithm, int idAP, @NonNull String name, int number, @NonNull double value) {
         this.idAlgorithm = idAlgorithm;
         this.name = name;
         this.idAP = idAP;
+        this.number = number;
         this.value = value;
     }
 
@@ -67,6 +71,15 @@ public class LiveMeasurements {
     }
 
     @NonNull
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(@NonNull int number) {
+        this.number = number;
+    }
+
+    @NonNull
     public double getValue() {
         return value;
     }
@@ -80,7 +93,9 @@ public class LiveMeasurements {
         return "LiveMeasurements{" +
                 "id=" + id +
                 ", idAlgorithm=" + idAlgorithm +
+                ", idAP=" + idAP +
                 ", name='" + name + '\'' +
+                ", number=" + number +
                 ", value=" + value +
                 '}';
     }

@@ -75,7 +75,7 @@ public class WifiScanReceiver extends BroadcastReceiver {
                             idAP = databaseManager.getAppDatabase().getWifiAPDAO().getByBssid(BSSID).get(0).getId();
                             Log.i("background","idAP " + idAP);
                             databaseManager.getAppDatabase().getLiveMeasurementsDAO().insert(
-                                    new LiveMeasurements(2,idAP , "wifi_rss", level)
+                                    new LiveMeasurements(2,idAP , "wifi_rss", 1, level)
                             );
 
                         } catch (Exception e) {

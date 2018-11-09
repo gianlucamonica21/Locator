@@ -72,7 +72,7 @@ public class MagneticOnlineManager implements SensorEventListener {
 
             if(liveMeasurements.size() == 0){
                 databaseManager.getAppDatabase().getLiveMeasurementsDAO().insert(
-                        new LiveMeasurements(1,-1 , "magn_rss", 50)
+                        new LiveMeasurements(1,-1 , "magn_rss", 1, 50)
                 );
                 liveMeasurements =
                         databaseManager.getAppDatabase().getLiveMeasurementsDAO().getLiveMeasurements(1,"magn_rss");
@@ -133,7 +133,7 @@ public class MagneticOnlineManager implements SensorEventListener {
             getMagnitude = true;
             //todo inserisco in db live Measurements
             databaseManager.getAppDatabase().getLiveMeasurementsDAO().insert(
-                    new LiveMeasurements(1,-1 , "magn_rss", magnitudeValue)
+                    new LiveMeasurements(1,-1 , "magn_rss", 1, magnitudeValue)
             );
             // set value on the screen
             Toast.makeText(MyApp.getContext(), "scanning...", Toast.LENGTH_SHORT).show();

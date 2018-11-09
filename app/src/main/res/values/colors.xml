@@ -8,4 +8,13 @@
     <color name="primary_material_light_2">#f44336</color>
     <color name="foreground_material_light">#a6000000</color>
     <color name="accent_material_light">#4082ff</color>
+    <color name="accent_material_light_1">#ff4052</color>
+    <color name="accent_material_light_2">#ff4052</color>
+    <color name="accent_material_light_3">#ff4052</color>
+    <color name="primary_material_dark_1">#04ad9d</color>
+    <color name="primary_material_dark_2">#03b1a1</color>
+    <color name="accent_material_dark">#58aea6</color>
+    <color name="primary_dark_material_dark">#4c4949</color>
+    <color name="background_material_light">#414141</color>
+    <color name="background_material_dark">#fdfbfb</color>
 </resources>

@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements
 
                     FragmentTransaction ft2 = getSupportFragmentManager().beginTransaction();
                     ft2.add(R.id.paramLayout, new MagnParamFragment(), new MagnParamFragment().getTag());
-                    ft2.commit();
+                    //ft2.commit();
                 }
                 break;
             case CONFIG:
@@ -204,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements
         if(databaseManager.getAppDatabase().getAlgorithmDAO().getAlgorithms().size() == 0){
             databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(MAGNETIC_FP),true));
             databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.WIFI_RSS_FP),true));
+            databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(AlgorithmName.WIFI_BAR_RSS_FP),true));
         }
         /*if(databaseManager.getAppDatabase().getConfigDAO().getAllConfigs().size() == 0){
             databaseManager.getAppDatabase().getConfigDAO().insert(

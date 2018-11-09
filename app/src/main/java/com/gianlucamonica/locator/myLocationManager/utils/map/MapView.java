@@ -111,7 +111,9 @@ public class MapView extends View {
             }else if( estimateGridName != null && rects.get(i).getName().equals(estimateActualGridName) ) {
                 myPaint.setColor(Color.BLUE);
             }else{
-                myPaint.setColor(Color.parseColor("#CD5C5C"));
+                //myPaint.setColor(Color.parseColor("#CD5C5C"));
+                myPaint.setColor(Color.parseColor("#0A8CB6"));
+
             }
             myPaint.setStrokeWidth(10);
             //rects.get(i).mult(scaleFactor,add);

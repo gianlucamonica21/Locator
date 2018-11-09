@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.gianlucamonica.locator.myLocationManager.impls.magnetic.MagneticFieldAlgorithm;
 import com.gianlucamonica.locator.myLocationManager.impls.wifi.WifiAlgorithm;
+import com.gianlucamonica.locator.myLocationManager.impls.wifiBar.WifiBarAlgorithm;
 import com.gianlucamonica.locator.myLocationManager.locAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.myLocationManager.impls.gps.GPSLocationManager;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
@@ -62,6 +63,17 @@ public class MyLocationManager implements LocalizationAlgorithmInterface {
                     localizationAlgorithmInterface = new WifiAlgorithm(indoorParams);
                 }
 
+                break;
+            case WIFI_BAR_RSS_FP:
+                this.algoName = algoName;
+                permissions = new String[] {Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION};
+
+                checkPermissions();
+
+                if (myPermissionsManager.isWIFIEnabled()){
+                    localizationAlgorithmInterface = new WifiBarAlgorithm(indoorParams);
+                }
                 break;
             case MAGNETIC_FP:
                 this.algoName = algoName;
