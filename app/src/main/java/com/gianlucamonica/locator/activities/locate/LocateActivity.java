@@ -96,7 +96,7 @@ public class LocateActivity extends AppCompatActivity {
             Log.i("locate activity","offlinescans " +offlineScans.toString());
 
 
-
+            Log.i("locate activity","instatiating " + algorithmName);
             locationMiddleware = new LocationMiddleware(algorithmName,indoorParams);
             // setting algorithm in mylocationmanager
             //myLocationManager = new MyLocationManager(algorithmName, indoorParams);
@@ -121,21 +121,6 @@ public class LocateActivity extends AppCompatActivity {
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    /*Thread one = new Thread() {
-                        public void run() {
-                            try {
-                                System.out.println("Does it work?");
-
-                                Thread.sleep(1000);
-
-                                System.out.println("Nope, it doesnt...again.");
-                            } catch(InterruptedException v) {
-                                System.out.println(v);
-                            }
-                        }
-                    };
-
-                    one.start();*/
                     //prima scansione
                     //OnlineScan onlineScan = myLocationManager.locate();
                     OnlineScan onlineScan = locationMiddleware.locate();

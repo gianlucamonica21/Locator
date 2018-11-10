@@ -90,19 +90,19 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
         // per ora qui di modo che posso testare
         myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
         Log.i("loc midd","live gpsacc " + liveGPSAcc + "thres " + GPS_ACC_THRESHOLD);
-        if(liveGPSAcc > GPS_ACC_THRESHOLD){
+        /*if(liveGPSAcc > GPS_ACC_THRESHOLD){
             // istantiate outdoor alg
             Log.i("instantiate","GPS location");
             myLocationManager = new MyLocationManager(AlgorithmName.GPS,indoorParams);
             //Toast.makeText(MyApp.getContext(),"istantiate GPS",Toast.LENGTH_SHORT).show();
             INDOOR_LOC = false;
-         }else {
+         }else {*/
             // istantiate indoor alg
             Log.i("instantiate", "Indoor location");
             myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
             //Toast.makeText(MyApp.getContext(),"istantiate indoor",Toast.LENGTH_SHORT).show();
             INDOOR_LOC = true;
-         }
+         //}
 
         // cancel location updates
         stopListener();

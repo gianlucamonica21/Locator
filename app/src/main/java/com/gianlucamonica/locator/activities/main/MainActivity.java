@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName.MAGNETIC_FP;
+import static com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName.WIFI_BAR_RSS_FP;
 import static com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName.WIFI_RSS_FP;
 
 public class MainActivity extends AppCompatActivity implements
@@ -116,7 +117,8 @@ public class MainActivity extends AppCompatActivity implements
 
                 // caricare fragment differente a seconda di chosenAlgorithm
                 if( chosenAlgorithm.getName().equals(String.valueOf(MAGNETIC_FP)) ||
-                        chosenAlgorithm.getName().equals(String.valueOf(WIFI_RSS_FP)) ){
+                        chosenAlgorithm.getName().equals(String.valueOf(WIFI_RSS_FP)) ||
+                        chosenAlgorithm.getName().equals(String.valueOf(WIFI_BAR_RSS_FP))){
 
                     FragmentTransaction ft2 = getSupportFragmentManager().beginTransaction();
                     ft2.add(R.id.paramLayout, new MagnParamFragment(), new MagnParamFragment().getTag());
@@ -142,7 +144,8 @@ public class MainActivity extends AppCompatActivity implements
         // ********* load info in dynamic fragment in paramLayout *********
         if(chosenAlgorithm != null){
             if(chosenAlgorithm.getName().equals(String.valueOf(AlgorithmName.MAGNETIC_FP)) ||
-                    chosenAlgorithm.getName().equals(String.valueOf(AlgorithmName.WIFI_RSS_FP))){
+                    chosenAlgorithm.getName().equals(String.valueOf(AlgorithmName.WIFI_RSS_FP)) ||
+                            chosenAlgorithm.getName().equals(String.valueOf(WIFI_BAR_RSS_FP))){
 
                 MagnParamFragment magnParamFragment = (MagnParamFragment)
                         getSupportFragmentManager().findFragmentById(R.id.paramLayout);

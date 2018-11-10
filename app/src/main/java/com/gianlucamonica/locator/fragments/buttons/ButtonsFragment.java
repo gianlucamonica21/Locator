@@ -129,7 +129,7 @@ public class ButtonsFragment extends Fragment {
 
                 Log.i("locate button", "indoor " + MyApp.getLocationMiddlewareInstance().isINDOOR_LOC());
 
-                if(MyApp.getLocationMiddlewareInstance().isINDOOR_LOC()) { // sono indoor
+                //if(MyApp.getLocationMiddlewareInstance().isINDOOR_LOC()) { // sono indoor
 
                     Intent intent = new Intent(getActivity(), LocateActivity.class);
                     Bundle bundle = new Bundle();
@@ -137,7 +137,7 @@ public class ButtonsFragment extends Fragment {
                     Log.i("buttonsFrag", indoorParams.toString());
                     intent.putExtras(bundle);
                     startActivity(intent);
-                }else{ //outdoor
+                /*}else{ //outdoor
                     Location location = MyApp.getLocationMiddlewareInstance().locate();
                     double longitude = location.getLongitude();
                     double latitude = location.getLatitude();
@@ -149,7 +149,7 @@ public class ButtonsFragment extends Fragment {
                     intent.putExtra(EXTRA_LNG, latitude);
 
                     startActivity(intent);
-                }
+                }*/
             }
         });
 
