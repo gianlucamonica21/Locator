@@ -25,12 +25,22 @@
         android:layout_height="match_parent"
         android:layout_marginEnd="2dp"
         android:layout_marginStart="2dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="5dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:adjustViewBounds="true"
+            android:background="?android:attr/colorPrimary"
+            android:cropToPadding="true"
+            android:visibility="visible"
+            app:srcCompat="@drawable/outdoor" />
 
         <FrameLayout
             android:id="@+id/buildingLayout"
@@ -106,18 +116,6 @@
 
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:text="You are indoor"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
