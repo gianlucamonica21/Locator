@@ -13,6 +13,8 @@ import android.view.View;
 
 import com.gianlucamonica.locator.myLocationManager.locAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
+import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.locInfo.LocInfo;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.permissionsManager.MyPermissionsManager;
@@ -37,6 +39,8 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
     private Boolean checkGPS;
     private Boolean checkNetwork;
 
+    private DatabaseManager databaseManager;
+
     private MyPermissionsManager myPermissionsManager; // in order to get the necessary perm
     private String[] permissions;
     private float liveGPSAcc = 0; // gps acc just registered
@@ -51,6 +55,7 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
      * @param indoorParams
      */
     public LocationMiddleware(ArrayList<IndoorParams> indoorParams){
+        databaseManager = new DatabaseManager();
         this.indoorParams = indoorParams;
         this.myPermissionsManager = new MyPermissionsManager(AlgorithmName.GPS);
         permissions = new String[] {
@@ -69,6 +74,7 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
         this.indoorParams = indoorParams;
         this.myPermissionsManager = new MyPermissionsManager(AlgorithmName.GPS);
         this.chosenIndoorAlg = algName;
+        databaseManager = new DatabaseManager();
         myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
 
         permissions = new String[] {
@@ -90,20 +96,19 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
         // per ora qui di modo che posso testare
         myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
         Log.i("loc midd","live gpsacc " + liveGPSAcc + "thres " + GPS_ACC_THRESHOLD);
-        /*if(liveGPSAcc > GPS_ACC_THRESHOLD){
+        if(liveGPSAcc > GPS_ACC_THRESHOLD){
             // istantiate outdoor alg
             Log.i("instantiate","GPS location");
             myLocationManager = new MyLocationManager(AlgorithmName.GPS,indoorParams);
-            //Toast.makeText(MyApp.getContext(),"istantiate GPS",Toast.LENGTH_SHORT).show();
             INDOOR_LOC = false;
-         }else {*/
+        }else {
             // istantiate indoor alg
             Log.i("instantiate", "Indoor location");
             myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
-            //Toast.makeText(MyApp.getContext(),"istantiate indoor",Toast.LENGTH_SHORT).show();
             INDOOR_LOC = true;
-         //}
+        }
 
+         databaseManager.getAppDatabase().getLocInfoDAO().insert(new LocInfo(INDOOR_LOC));
         // cancel location updates
         stopListener();
     }

@@ -112,7 +112,7 @@ public class MapView extends View {
                 myPaint.setColor(Color.BLUE);
             }else{
                 //myPaint.setColor(Color.parseColor("#CD5C5C"));
-                myPaint.setColor(Color.parseColor("#0A8CB6"));
+                myPaint.setColor(Color.parseColor("#FF58AEA6"));
 
             }
             myPaint.setStrokeWidth(10);

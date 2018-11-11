@@ -41,6 +41,7 @@ public class BuildingFragment extends Fragment {
 
     private List<Building> buildings;
     Spinner  s;
+    Button newButton;
 
     private DatabaseManager databaseManager;
 
@@ -91,6 +92,8 @@ public class BuildingFragment extends Fragment {
 
         populateSpinner(v);
 
+
+
         // getting selected item from building spinner
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -106,7 +109,7 @@ public class BuildingFragment extends Fragment {
         });
 
         // start activity insert building
-        Button newButton = (Button) v.findViewById(R.id.newBuildingButton);
+        newButton = (Button) v.findViewById(R.id.newBuildingButton);
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +119,11 @@ public class BuildingFragment extends Fragment {
 
         return v;
 
+    }
+
+    public void enableUI(boolean b){
+        s.setEnabled(b);
+        newButton.setEnabled(b);
     }
 
     public List<Building> getBuildingsFromDb(){

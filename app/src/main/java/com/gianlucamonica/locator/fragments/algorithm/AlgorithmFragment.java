@@ -110,6 +110,10 @@ public class AlgorithmFragment extends Fragment {
         return v;
     }
 
+    public void enableUI(boolean b){
+        s.setEnabled(b);
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

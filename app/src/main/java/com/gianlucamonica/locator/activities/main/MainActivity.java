@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements
     private FragmentTransaction ft;
     private boolean INDOOR_LOC;
 
+    private ImageView locImg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,18 +72,16 @@ public class MainActivity extends AppCompatActivity implements
         indoorParamsUtils = new IndoorParamsUtils();
         databaseManager= new DatabaseManager();
 
+        locImg = findViewById(R.id.locImg);
+
         locationMiddleware = new LocationMiddleware(indoorParams);
 
         // forzo indoor per testing
-        locationMiddleware.setINDOOR_LOC(true);
+        this.INDOOR_LOC = databaseManager.getAppDatabase().getLocInfoDAO().getLocInfo();
 
-        this.INDOOR_LOC = locationMiddleware.isINDOOR_LOC();
-        Log.i("main","indoor loc " + this.INDOOR_LOC + "loc midd indoor loc " + locationMiddleware.isINDOOR_LOC());
-        if(this.INDOOR_LOC){
-            Toast.makeText(this,"You are indoor",Toast.LENGTH_LONG).show();
-        }else{
-            Toast.makeText(this,"You are outdoor",Toast.LENGTH_LONG).show();
-        }
+        setLocImg();
+
+        Log.i("main","indoor loc " + this.INDOOR_LOC );
         MyApp.setLocationMiddlewareInstance(locationMiddleware);
 
         initFragments();
@@ -95,6 +96,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFragmentInteraction(Object object, IndoorParamName tag) {
+
+        enableFragments();
+
         if(object != null) {
             Log.i("onFragmentInt", object.toString());
         }
@@ -136,47 +140,47 @@ public class MainActivity extends AppCompatActivity implements
         Log.i("indoorParams",indoorParams.toString());
 
         // ********* passo parametri indoor a button frag *****************
-        ButtonsFragment buttonsFragment = (ButtonsFragment)
-                getSupportFragmentManager().findFragmentById(R.id.buttonsLayout);
-        buttonsFragment.loadIndoorParams(indoorParams);
+        if(INDOOR_LOC){
+            ButtonsFragment buttonsFragment = (ButtonsFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.buttonsLayout);
+            buttonsFragment.loadIndoorParams(indoorParams);
+        }
         // ****************************************************************
 
         // ********* load info in dynamic fragment in paramLayout *********
-        if(chosenAlgorithm != null){
-            if(chosenAlgorithm.getName().equals(String.valueOf(AlgorithmName.MAGNETIC_FP)) ||
-                    chosenAlgorithm.getName().equals(String.valueOf(AlgorithmName.WIFI_RSS_FP)) ||
-                            chosenAlgorithm.getName().equals(String.valueOf(WIFI_BAR_RSS_FP))){
+        if(INDOOR_LOC){
+            if(chosenAlgorithm != null){
+                if(chosenAlgorithm.getName().equals(String.valueOf(AlgorithmName.MAGNETIC_FP)) ||
+                        chosenAlgorithm.getName().equals(String.valueOf(AlgorithmName.WIFI_RSS_FP)) ||
+                        chosenAlgorithm.getName().equals(String.valueOf(WIFI_BAR_RSS_FP))){
 
-                MagnParamFragment magnParamFragment = (MagnParamFragment)
-                        getSupportFragmentManager().findFragmentById(R.id.paramLayout);
-                magnParamFragment.loadIndoorParams(indoorParams);
+                    MagnParamFragment magnParamFragment = (MagnParamFragment)
+                            getSupportFragmentManager().findFragmentById(R.id.paramLayout);
+                    magnParamFragment.loadIndoorParams(indoorParams);
+                }
             }
         }
         // ****************************************************************
 
         // ********* managing scan and locate buttons *********
-        if ( chosenConfig == null){
-            buttonsFragment.manageScanButton(false);
-            buttonsFragment.manageLocateButton(false);
-        }else{
-            buttonsFragment.manageScanButton(true);
-            List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().
-                    getScanSummaryByBuildingAlgorithm(chosenBuilding.getId(),chosenAlgorithm.getId(),chosenConfig.getId());
-            if(scanSummaries.size() > 0){
-                buttonsFragment.manageLocateButton(true);
+        if(INDOOR_LOC){
+            ButtonsFragment buttonsFragment = (ButtonsFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.buttonsLayout);
+            if ( chosenConfig == null){
+                Log.i("main act","sono qui");
+                buttonsFragment.manageScanButton(false);
+                buttonsFragment.manageLocateButton(false);
+            }else{
+                buttonsFragment.manageScanButton(true);
+                List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().
+                        getScanSummaryByBuildingAlgorithm(chosenBuilding.getId(),chosenAlgorithm.getId(),chosenConfig.getId());
+                if(scanSummaries.size() > 0){
+                    buttonsFragment.manageLocateButton(true);
+                }
             }
         }
         // ****************************************************************
 
-        /*
-        if(INDOOR_LOC){
-
-        }
-        else{
-            // OUTDOOR
-            // todo aggiungere tutti i disable del caso
-            //buttonsFragment.manageScanButton(false);
-        }*/
 
     }
 
@@ -194,6 +198,32 @@ public class MainActivity extends AppCompatActivity implements
         // or ft.add(R.id.your_placeholder, new FooFragment());
         // Complete the changes added above
         ft.commit();
+
+    }
+
+    public void enableFragments(){
+        // enabling or not according to INDOOR_LOC
+        BuildingFragment buildingFragment = (BuildingFragment)
+                getSupportFragmentManager().findFragmentById(R.id.buildingLayout);
+        FloorFragment floorFragment = (FloorFragment)
+                getSupportFragmentManager().findFragmentById(R.id.floorLayout);
+        AlgorithmFragment algorithmFragment = (AlgorithmFragment)
+                getSupportFragmentManager().findFragmentById(R.id.algorithmLayout);
+        MagnParamFragment magnParamFragment = (MagnParamFragment)
+                getSupportFragmentManager().findFragmentById(R.id.paramLayout);
+        ButtonsFragment buttonsFragment = (ButtonsFragment)
+                getSupportFragmentManager().findFragmentById(R.id.buttonsLayout);
+
+        boolean enable = false;
+        if(INDOOR_LOC){
+            enable = true;
+        }
+
+        buildingFragment.enableUI(enable);
+        floorFragment.enableUI(enable);
+        algorithmFragment.enableUI(enable);
+        magnParamFragment.enableUI(enable);
+        buttonsFragment.enableUI(enable);
     }
 
     public void initDBTesting(){
@@ -240,6 +270,14 @@ public class MainActivity extends AppCompatActivity implements
         databaseManager.getAppDatabase().getConfigDAO().insert(
                 new Config(2,"sqSize",1)
         );*/
+    }
+
+    public void setLocImg(){
+        if(INDOOR_LOC){
+            locImg.setImageResource(R.drawable.indoor);
+        }else{
+            locImg.setImageResource(R.drawable.outdoor);
+        }
     }
 
     @Override
