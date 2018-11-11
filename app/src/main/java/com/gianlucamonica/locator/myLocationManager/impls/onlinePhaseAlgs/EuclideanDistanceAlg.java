@@ -1,21 +1,35 @@
 package com.gianlucamonica.locator.myLocationManager.impls.onlinePhaseAlgs;
 
+import android.os.Build;
 import android.util.Log;
 
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
+import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
+import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamName;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
+import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamsUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EuclideanDistanceAlg {
 
     private List<OfflineScan> offlineScans;
     private double magnitude;
+    private ArrayList<IndoorParams> indoorParams;
+    private IndoorParamsUtils indoorParamsUtils;
 
+    int buildingHeight = 0;
+    int buildingWidth = 0;
+    int size = 0;
 
-    public EuclideanDistanceAlg(List<OfflineScan> offlineScans, double magnitude){
+    public EuclideanDistanceAlg(List<OfflineScan> offlineScans, double magnitude, ArrayList<IndoorParams> indoorParams){
         this.offlineScans = offlineScans;
         this.magnitude = magnitude;
+        this.indoorParams = indoorParams;
+        this.indoorParamsUtils = new IndoorParamsUtils();
     }
 
     public int compute(AlgorithmName algorithmName){

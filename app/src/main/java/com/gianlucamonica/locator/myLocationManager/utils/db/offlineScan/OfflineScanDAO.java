@@ -7,6 +7,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -29,5 +30,9 @@ public abstract class OfflineScanDAO {
 
     @Query("SELECT * FROM offlineScan WHERE idScan = :idScan")
     public abstract List<OfflineScan>  getOfflineScansById(int idScan);
+
+    @Query("SELECT * FROM offlineScan" +
+            " WHERE idScan in (:idScan)")
+    public abstract List<OfflineScan>  getOfflineScansByIds(List<Integer> idScan);
 
 }

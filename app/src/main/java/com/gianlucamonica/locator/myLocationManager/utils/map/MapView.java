@@ -103,13 +103,13 @@ public class MapView extends View {
 
             if ( estimateGridName != null && rects.get(i).getName().equals(estimateGridName)){
                 if(estimateGridName != null && rects.get(i).getName().equals(estimateActualGridName))
-                    myPaint.setColor(Color.GREEN);
+                    myPaint.setColor(Color.parseColor("#09E87C"));
                 else{
-                    myPaint.setColor(Color.YELLOW);
+                    myPaint.setColor(Color.parseColor("#f4511e"));
                 }
 
             }else if( estimateGridName != null && rects.get(i).getName().equals(estimateActualGridName) ) {
-                myPaint.setColor(Color.BLUE);
+                myPaint.setColor(Color.parseColor("#09A3D5"));
             }else{
                 //myPaint.setColor(Color.parseColor("#CD5C5C"));
                 myPaint.setColor(Color.parseColor("#FF58AEA6"));

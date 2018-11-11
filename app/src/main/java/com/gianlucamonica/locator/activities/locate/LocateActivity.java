@@ -81,18 +81,22 @@ public class LocateActivity extends AppCompatActivity {
         final Config config = (Config) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.CONFIG);
 
         buildingTV.setText(building.getName());
+        int idFloor;
         if(buildingFloor != null){
             floorTV.setText(buildingFloor.getName());
+            idFloor = buildingFloor.getId();
         }
         else{
             floorTV.setText("Nessun Piano");
-        }
+            idFloor = -1;
+       }
         algorithmTV.setText(algorithm.getName());
         sizeTV.setText(String.valueOf(config.getParValue()));
 
         try{
+
             List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().
-                    getScanSummaryByBuildingAlgorithm(building.getId(),algorithm.getId(),config.getId());
+                    getScanSummaryByBuildingAlgorithm(building.getId(),idFloor,algorithm.getId(),config.getId(),"offline");
             final List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().
                     getOfflineScansById(scanSummary.get(0).getId());
             Log.i("locate activity","scansummary " +scanSummary.toString());
@@ -125,7 +129,9 @@ public class LocateActivity extends AppCompatActivity {
                 public void afterTextChanged(Editable s) {
 
                     //prima scansione
-                    //OnlineScan onlineScan = myLocationManager.locate();
+                    if(buildingFloor == null)
+                        Log.i("loc act","piano selezionato: " + "NULL");
+
                     OnlineScan onlineScan = locationMiddleware.locate();
                     if(onlineScan != null){
                         Log.i("locate activity", "onlinescan " + onlineScan.toString());
@@ -142,6 +148,8 @@ public class LocateActivity extends AppCompatActivity {
                                 databaseManager.getAppDatabase().getScanSummaryDAO().insert(
                                         new ScanSummary(building.getId(),buildingFloor.getId(),algorithm.getId(),config.getId(),-1,"online")
                                 );
+
+
                                 List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().
                                         getScanSummaryByBuildingAlgorithm(building.getId(),buildingFloor.getId(),algorithm.getId(),config.getId(),"online");
                                 onlineScan.setIdScan(scanSummaries.get(0).getId());
@@ -154,38 +162,40 @@ public class LocateActivity extends AppCompatActivity {
 
                     //successive altre scansioni
                     handler.postDelayed(runnable = new Runnable(){
-                        public void run(){
+                        public void run() {
                             //do something
                             //OnlineScan onlineScan = myLocationManager.locate();
                             OnlineScan onlineScan = locationMiddleware.locate();
 
-                            if(onlineScan != null){
+                            if (onlineScan != null) {
                                 int actualPos = -1;
-                                if(!actualGrid.getText().toString().equals("")){
+                                if (!actualGrid.getText().toString().equals("")) {
                                     actualPos = Integer.parseInt(actualGrid.getText().toString());
                                 }
-                                onlineScan.setIdActualPos(actualPos );
+                                onlineScan.setIdActualPos(actualPos);
                                 try {
                                     List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().
-                                            getScanSummaryByBuildingAlgorithm(building.getId(),buildingFloor.getId(),algorithm.getId(),config.getId(),"online");
+                                            getScanSummaryByBuildingAlgorithm(building.getId(), buildingFloor.getId(), algorithm.getId(), config.getId(), "online");
                                     onlineScan.setIdScan(scanSummaries.get(0).getId());
-                                    Log.i("loc act","id scan online " + scanSummaries.get(0).getId());
+                                    Log.i("loc act", "id scan online " + scanSummaries.get(0).getId());
                                     databaseManager.getAppDatabase().getOnlineScanDAO().insert(onlineScan);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                            }
 
-                            estimatedGrid.setText(String.valueOf(onlineScan.getIdEstimatedPos()));
-                            Log.i("locate activity", "onlinescan " + onlineScan.toString());
-                            //todo inserire online scan in db
-                            final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
+
+                                estimatedGrid.setText(String.valueOf(onlineScan.getIdEstimatedPos()));
+                                Log.i("locate activity", "onlinescan " + onlineScan.toString());
+                                //todo inserire online scan in db
+                                final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
 
                             // setting the map view
                             MapView mapView = new MapView(MyApp.getContext(),
-                                    String.valueOf(onlineScan.getIdEstimatedPos()), actualGrid.getText().toString()  , indoorParams, offlineScans);
+                                    String.valueOf(onlineScan.getIdEstimatedPos()), actualGrid.getText().toString(), indoorParams, offlineScans);
                             mLinearLayout.addView(mapView);
                             handler.postDelayed(this, delay);
+
+                            }
                         }
                     }, delay);
                 }

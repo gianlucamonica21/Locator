@@ -1,5 +1,6 @@
 package com.gianlucamonica.locator.activities.newFloor;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.activities.main.MainActivity;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
@@ -18,6 +20,7 @@ public class InsertFloorActivity extends AppCompatActivity {
 
     private EditText floorName;
     private Button insertButton;
+    private Button finishButton;
     private boolean valid = true; // for validation form
     private DatabaseManager databaseManager;
 
@@ -28,6 +31,7 @@ public class InsertFloorActivity extends AppCompatActivity {
 
         floorName = (EditText) findViewById(R.id.nameEditText);
         insertButton = (Button) findViewById(R.id.insertButton);
+        finishButton = (Button) findViewById(R.id.finishButton);
         databaseManager = new DatabaseManager();
 
         insertButton.setOnClickListener(new View.OnClickListener() { // onclick button
@@ -67,6 +71,14 @@ public class InsertFloorActivity extends AppCompatActivity {
                 }
 
 
+            }
+        });
+
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InsertFloorActivity.this,MainActivity.class);
+                startActivity(intent);
             }
         });
     }

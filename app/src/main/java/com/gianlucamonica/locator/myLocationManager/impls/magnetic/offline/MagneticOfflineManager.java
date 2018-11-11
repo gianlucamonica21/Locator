@@ -241,7 +241,7 @@ public class MagneticOfflineManager implements SensorEventListener {
             ArrayList<ScanSummary> scanSummary;
 
             scanSummary = (ArrayList<ScanSummary>) databaseManager.getAppDatabase().getScanSummaryDAO().
-                    getScanSummaryByBuildingAlgorithm(idBuilding, idAlgorithm, idConfig);
+                    getScanSummaryByBuildingAlgorithm(idBuilding, idFloor, idAlgorithm, idConfig, "offline");
             return scanSummary.get(0).getId();
         }
         return -1;

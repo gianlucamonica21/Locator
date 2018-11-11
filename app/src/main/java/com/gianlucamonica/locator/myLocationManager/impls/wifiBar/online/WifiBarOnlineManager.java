@@ -125,7 +125,7 @@ public class WifiBarOnlineManager{
                 }
             }
 
-            return  new OnlineScan(1,2,3,new Date());
+            return  null;
 
         }catch (Exception e){
 

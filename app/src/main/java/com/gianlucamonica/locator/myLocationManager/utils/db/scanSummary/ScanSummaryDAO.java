@@ -36,8 +36,8 @@ public abstract class ScanSummaryDAO {
     @Query("SELECT * FROM scanSummary WHERE idBuilding = :idBuilding AND idAlgorithm = :idAlgorithm AND idConfig = :idConfig")
     public abstract List<ScanSummary>  getScanSummaryByBuildingAlgorithm(int idBuilding, int idAlgorithm, int idConfig);
 
-    @Query("SELECT * FROM scanSummary WHERE idBuilding = :idBuilding AND idBuildingFloor = :idBuildingFloor AND idAlgorithm = :idAlgorithm AND idConfig = :idConfig")
-    public abstract List<ScanSummary>  getScanSummaryByBuildingAlgorithm(int idBuilding, int idBuildingFloor, int idAlgorithm, int idConfig);
+    @Query("SELECT * FROM scanSummary WHERE idBuilding = :idBuilding AND idAlgorithm = :idAlgorithm AND idConfig = :idConfig AND type = :type")
+    public abstract List<ScanSummary>  getScanSummaryByBuildingAlgorithm(int idBuilding, int idAlgorithm, int idConfig,String type);
 
     @Query("SELECT * FROM scanSummary WHERE idBuilding = :idBuilding AND idBuildingFloor = :idBuildingFloor AND idAlgorithm = :idAlgorithm AND idConfig = :idConfig AND type = :type")
     public abstract List<ScanSummary>  getScanSummaryByBuildingAlgorithm(int idBuilding, int idBuildingFloor, int idAlgorithm, int idConfig, String type);

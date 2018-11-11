@@ -80,7 +80,7 @@ public class MagneticOnlineManager implements SensorEventListener {
 
             if(liveMeasurements.size() != 0){
                 double liveMagnitude = liveMeasurements.get(0).getValue();
-                euclideanDistanceAlg = new EuclideanDistanceAlg(offlineScans,liveMagnitude);
+                euclideanDistanceAlg = new EuclideanDistanceAlg(offlineScans,liveMagnitude, indoorParams);
                 int index = euclideanDistanceAlg.compute(AlgorithmName.MAGNETIC_FP);
                 Log.i("magn online manag","index " + index);
                 onlineScan = new OnlineScan(idScan,index,0,new Date());
@@ -106,8 +106,31 @@ public class MagneticOnlineManager implements SensorEventListener {
         BuildingFloor buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.FLOOR);
 
         try {
+
+            /*if(buildingFloor == null){
+                Log.i("magn online man","floor null");
+                List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().
+                        getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,idConfig,"offline");
+                Log.i("magn online man","scans NULL: \n" + scanSummary.toString());
+
+                List<Integer> ids = new ArrayList<>();
+                for (ScanSummary s: scanSummary) {
+                    ids.add(s.getId());
+                }
+                offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansByIds(ids);
+                Log.i("magn online man","offliscans id: \n" + ids.toString());
+
+                Log.i("magn online man","offliscans: \n" + offlineScans.toString());
+            }
+            else{
+                Log.i("magn online man","floor NON null");
+                List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().
+                        getScanSummaryByBuildingAlgorithm(idBuilding, buildingFloor.getId(),idAlgorithm,idConfig,"offline");
+                Log.i("magn online man","scans NON NULL: \n" + scanSummary.toString());
+            }*/
+
             List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().
-                    getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,idConfig);
+                    getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,idConfig,"offline");
             idScan = scanSummary.get(0).getId();
             Log.i("idScan", String.valueOf(idScan));
             offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(idScan);
