@@ -99,7 +99,7 @@ public class WifiBarOnlineManager{
                 Log.i("wifi online manager", "wom " + String.valueOf(building.getId() + " " + algorithm.getId() + " " + config.getId()));
 
                 List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getMyDAO().
-                        getOfflineScan(building.getId(),algorithm.getId(), floor, config.getId());
+                        getOfflineScan(building.getId(),algorithm.getId(), floor, config.getId(),"offlinescan");
                 if (offlineScans.size() > 0) {
 
                     List<LiveMeasurements> liveMeasurements =

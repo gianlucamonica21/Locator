@@ -51,6 +51,7 @@ public class WifiBarOfflineManager {
     private BuildingFloor buildingFloor;
     private Algorithm algorithm;
     private Config config;
+    private int idFloor;
 
     private int clickNumber = 0;
     private Grid nowGrid;
@@ -65,6 +66,13 @@ public class WifiBarOfflineManager {
         buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(this.indoorParams, IndoorParamName.FLOOR);
         algorithm = (Algorithm) indoorParamsUtils.getParamObject(this.indoorParams, IndoorParamName.ALGORITHM);
         config = (Config) indoorParamsUtils.getParamObject(this.indoorParams, IndoorParamName.CONFIG);
+
+        if(buildingFloor == null){
+            idFloor = -1;
+        }
+        else{
+            idFloor = buildingFloor.getId();
+        }
     }
 
     private final BroadcastReceiver mWifiScanReceiver = new BroadcastReceiver() {
@@ -86,7 +94,7 @@ public class WifiBarOfflineManager {
                 if( clickNumber == 0){
                     // inserisco in scan summary
                     Log.i("wifi off man", "inserisco scan summary click 0");
-                    scanSummary = new ScanSummary(building.getId(),-1,algorithm.getId(),config.getId(),
+                    scanSummary = new ScanSummary(building.getId(),idFloor,algorithm.getId(),config.getId(),
                             idWifiNetwork ,"offline");
                     databaseManager.getAppDatabase().getScanSummaryDAO().insert(scanSummary);
 
@@ -103,7 +111,7 @@ public class WifiBarOfflineManager {
                             int idWifiAp = databaseManager.getAppDatabase().getWifiAPDAO().getByBssid(BSSID).get(0).getId();
                             List<ScanSummary> scanSummaries = null;
                             scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(
-                                    building.getId(), algorithm.getId(),config.getId());
+                                    building.getId(), idFloor, algorithm.getId(),config.getId(),"offline");
                             databaseManager.getAppDatabase().getOfflineScanDAO().insert(
                                     new OfflineScan(scanSummaries.get(0).getId(), Integer.valueOf(nowGrid.getName()),idWifiAp , level, new Date())
                             );

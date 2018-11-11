@@ -163,7 +163,8 @@ public class FloorFragment extends Fragment {
             for (int i=0; i < buildingFloors.size(); i++){
                 floorsName.add(buildingFloors.get(i).getName());
             }
-            floorsName.add("Nessun piano");
+            if(buildingFloors.size() == 0)
+                floorsName.add("Nessun piano");
 
             // populate floor spinner
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
