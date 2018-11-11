@@ -233,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements
         // inserting building
         if(databaseManager.getAppDatabase().getBuildingDAO().getBuildings().size() == 0)
             databaseManager.getAppDatabase().getBuildingDAO().insert(new Building("Unione",5,5,123,123,123,123));
+
         // inserting algorithms
         if(databaseManager.getAppDatabase().getAlgorithmDAO().getAlgorithms().size() == 0){
             databaseManager.getAppDatabase().getAlgorithmDAO().insert(new Algorithm(String.valueOf(MAGNETIC_FP),true));

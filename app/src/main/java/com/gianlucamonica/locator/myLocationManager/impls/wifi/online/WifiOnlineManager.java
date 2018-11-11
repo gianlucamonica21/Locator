@@ -43,7 +43,7 @@ public class WifiOnlineManager {
     private int idWifiNetwork;
     private ArrayList<AP_RSS> ap_rsses;
     private OnlineScan onlineScan;
-
+    private int idFloor;
     private MapView mapView;
 
     public WifiOnlineManager(ArrayList<IndoorParams> indoorParams){
@@ -53,7 +53,17 @@ public class WifiOnlineManager {
         this.indoorParams = indoorParams;
         algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.ALGORITHM);
         building = (Building) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.BUILDING);
+        buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.FLOOR);
         config = (Config) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.CONFIG);
+
+        if(buildingFloor == null){
+            idFloor = -1;
+        }
+        else{
+            idFloor = buildingFloor.getId();
+        }
+
+
         onlineScan  = null;
     }
 
@@ -62,10 +72,12 @@ public class WifiOnlineManager {
        WifiManager wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         if( wifiInfo != null) {
-            Log.i("wifi online manager", "wom " + String.valueOf(building.getId() + " " + algorithm.getId() + " " + config.getId()));
+            Log.i("wifi online manager", "wom " + String.valueOf(building.getId() + " " + idFloor + " " + algorithm.getId() + " " + config.getId()));
 
             List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getMyDAO().
-                    getOfflineScan(building.getId(),algorithm.getId(),config.getId());
+                    getOfflineScan(building.getId(),idFloor,algorithm.getId(),config.getId(),"offline");
+
+            Log.i("wifi online man","offline scans : \n" + offlineScans.toString());
             if (offlineScans.size() > 0) {
 
                 List<LiveMeasurements> liveMeasurements =
@@ -91,7 +103,7 @@ public class WifiOnlineManager {
             }
         }
 
-        return  new OnlineScan(1,2,3,new Date());
+        return  null;
 
     }
 
