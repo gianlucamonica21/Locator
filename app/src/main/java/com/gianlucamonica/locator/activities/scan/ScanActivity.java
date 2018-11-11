@@ -40,6 +40,7 @@ public class ScanActivity extends AppCompatActivity {
     private TextView buildingTV;
     private TextView floorTV;
     private TextView algorithmTV;
+    private TextView sizeTV;
 
 
     @Override
@@ -55,11 +56,12 @@ public class ScanActivity extends AppCompatActivity {
         buildingTV = findViewById(R.id.buildingTextView);
         floorTV = findViewById(R.id.floorTextView);
         algorithmTV = findViewById(R.id.algorithmTextView);
+        sizeTV = findViewById(R.id.sizeTextView);
 
         final Algorithm algorithm = (Algorithm) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.ALGORITHM);
         final Building building = (Building) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.BUILDING);
         final BuildingFloor buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.FLOOR);
-
+        final Config config = (Config) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.CONFIG);
 
 
         buildingTV.setText(building.getName());
@@ -70,6 +72,7 @@ public class ScanActivity extends AppCompatActivity {
             floorTV.setText("Nessun Piano");
         }
         algorithmTV.setText(algorithm.getName());
+        sizeTV.setText(String.valueOf(config.getParValue()));
 
 
         Log.i("scan act","alg name "+ AlgorithmName.valueOf(algorithm.getName()));

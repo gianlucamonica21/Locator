@@ -45,6 +45,7 @@ public class LocateActivity extends AppCompatActivity {
     private TextView buildingTV;
     private TextView floorTV;
     private TextView algorithmTV;
+    private TextView sizeTV;
 
     // loop
     final Handler handler = new Handler();
@@ -67,6 +68,7 @@ public class LocateActivity extends AppCompatActivity {
         buildingTV = findViewById(R.id.buildingTextView);
         floorTV = findViewById(R.id.floorTextView);
         algorithmTV = findViewById(R.id.algorithmTextView);
+        sizeTV = findViewById(R.id.sizeTextView);
 
         estimatedGrid.setEnabled(false);
         // recupero parametri indoor
@@ -86,6 +88,7 @@ public class LocateActivity extends AppCompatActivity {
             floorTV.setText("Nessun Piano");
         }
         algorithmTV.setText(algorithm.getName());
+        sizeTV.setText(String.valueOf(config.getParValue()));
 
         try{
             List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().
