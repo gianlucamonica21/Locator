@@ -158,66 +158,69 @@ public class MagnParamFragment extends Fragment {
 
                 if( sizeEditText.getText().toString().equals("")){
                     sizeValue = -1;
+                    mListener.onFragmentInteraction(null, IndoorParamName.CONFIG);
                 }else{
                     sizeValue = Integer.parseInt( sizeEditText.getText().toString() ); // getting value
-                }
-                Log.i("after text changed", String.valueOf(sizeValue));
 
-                boolean newConfig = true;
+                    Log.i("after text changed", String.valueOf(sizeValue));
 
-                //controllo se la size scelta è già presente nella tabella config
-                if(configList != null){
-                    for (int i = 0; i < configList.size(); i++){
-                        if(configList.get(i).getParName().equals("gridSize")){
-                            if(configList.get(i).getParValue() == sizeValue){
-                                config = configList.get(i); // setto config
-                                newConfig = false;
-                                break;
+                    boolean newConfig = true;
+
+                    //controllo se la size scelta è già presente nella tabella config
+                    if(configList != null){
+                        for (int i = 0; i < configList.size(); i++){
+                            if(configList.get(i).getParName().equals("gridSize")){
+                                if(configList.get(i).getParValue() == sizeValue){
+                                    config = configList.get(i); // setto config
+                                    newConfig = false;
+                                    break;
+                                }
                             }
                         }
                     }
-                }
 
-                Log.i("new conf", String.valueOf(newConfig));
+                    Log.i("new conf", String.valueOf(newConfig));
 
-                if(newConfig){
-                    Log.i("insert new config","insert");
-                    try {
-                        // controllo se esiste già una config del genere
-                        List<Config> existingConfigs = databaseManager.getAppDatabase().getConfigDAO().
-                                getConfigByIdAlgorithm(algorithm.getId(),"gridSize",sizeValue);
+                    if(newConfig){
+                        Log.i("insert new config","insert");
+                        try {
+                            // controllo se esiste già una config del genere
+                            List<Config> existingConfigs = databaseManager.getAppDatabase().getConfigDAO().
+                                    getConfigByIdAlgorithm(algorithm.getId(),"gridSize",sizeValue);
 
-                        if(existingConfigs.size() == 0){
-                            // inserisco nuova config
-                            databaseManager.getAppDatabase().getConfigDAO().insert(
-                                    new Config(algorithm.getId(),"gridSize",sizeValue)
-                            );
+                            if(existingConfigs.size() == 0){
+                                // inserisco nuova config
+                                databaseManager.getAppDatabase().getConfigDAO().insert(
+                                        new Config(algorithm.getId(),"gridSize",sizeValue)
+                                );
 
-                            // pesco nuova config
-                            List<Config> configs = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(
-                                    algorithm.getId(),"gridSize",sizeValue);
-                            Log.i("pesco nuova config","nuova config "+ configs.toString());
+                                // pesco nuova config
+                                List<Config> configs = databaseManager.getAppDatabase().getConfigDAO().getConfigByIdAlgorithm(
+                                        algorithm.getId(),"gridSize",sizeValue);
+                                Log.i("pesco nuova config","nuova config "+ configs.toString());
 
-                            if(configs.size() == 1){
-                                config = configs.get(0);
+                                if(configs.size() == 1){
+                                    config = configs.get(0);
+                                }
+                            }else{
+                                Log.i("exisConfig","size " + existingConfigs.size());
+                                Log.i("exisConfig","config " + existingConfigs.toString());
+                                // estraggo config già esistente
+                                config = existingConfigs.get(0);
                             }
-                        }else{
-                            Log.i("exisConfig","size " + existingConfigs.size());
-                            Log.i("exisConfig","config " + existingConfigs.toString());
-                            // estraggo config già esistente
-                            config = existingConfigs.get(0);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                }
 
-                if(configList != null){
-                    Log.i("passo a main",config.toString());
+                    if(configList != null){
+                        Log.i("passo a main",config.toString());
+                    }
+                    // devo passare la config corrispondente alla size scelta, altrimenti creare una nuova config
+                    mListener.onFragmentInteraction(config, IndoorParamName.CONFIG);
+
                 }
-                // devo passare la config corrispondente alla size scelta, altrimenti creare una nuova config
-                mListener.onFragmentInteraction(config, IndoorParamName.CONFIG);
             }
         });
         // Inflate the layout for this fragment

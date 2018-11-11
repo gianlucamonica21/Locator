@@ -17,12 +17,14 @@ import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.gps.fragments.MapsActivity;
 import com.gianlucamonica.locator.activities.locate.LocateActivity;
 import com.gianlucamonica.locator.activities.scan.ScanActivity;
+import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
+import com.google.gson.internal.bind.DateTypeAdapter;
 
 import java.util.ArrayList;
 
@@ -57,6 +59,7 @@ public class ButtonsFragment extends Fragment {
     private int gridSize;
     private Config config;
     private ArrayList<IndoorParams> indoorParams;
+    private DatabaseManager databaseManager;
 
     public ButtonsFragment() {
         // Required empty public constructor
@@ -99,6 +102,7 @@ public class ButtonsFragment extends Fragment {
         scanButton =  v.findViewById(R.id.scanButton);
         locateButton = v.findViewById(R.id.locateButton);
 
+        databaseManager = new DatabaseManager();
 
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +124,9 @@ public class ButtonsFragment extends Fragment {
 
                 Log.i("locate button", "indoor " + MyApp.getLocationMiddlewareInstance().isINDOOR_LOC());
 
-                if(MyApp.getLocationMiddlewareInstance().isINDOOR_LOC()) { // sono indoor
+                boolean indoorLoc = databaseManager.getAppDatabase().getLocInfoDAO().getLocInfo();
+
+                if(indoorLoc) { // sono indoor
 
                     Intent intent = new Intent(getActivity(), LocateActivity.class);
                     Bundle bundle = new Bundle();
