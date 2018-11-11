@@ -47,6 +47,8 @@ public class LocateActivity extends AppCompatActivity {
     private TextView algorithmTV;
     private TextView sizeTV;
 
+    private int idFloor;
+
     // loop
     final Handler handler = new Handler();
     final int delay = 5000; //milliseconds
@@ -81,7 +83,7 @@ public class LocateActivity extends AppCompatActivity {
         final Config config = (Config) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.CONFIG);
 
         buildingTV.setText(building.getName());
-        int idFloor;
+
         if(buildingFloor != null){
             floorTV.setText(buildingFloor.getName());
             idFloor = buildingFloor.getId();
@@ -146,12 +148,12 @@ public class LocateActivity extends AppCompatActivity {
                             onlineScan.setIdActualPos(actualPos);
                             try {
                                 databaseManager.getAppDatabase().getScanSummaryDAO().insert(
-                                        new ScanSummary(building.getId(),buildingFloor.getId(),algorithm.getId(),config.getId(),-1,"online")
+                                        new ScanSummary(building.getId(),idFloor,algorithm.getId(),config.getId(),-1,"online")
                                 );
 
 
                                 List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().
-                                        getScanSummaryByBuildingAlgorithm(building.getId(),buildingFloor.getId(),algorithm.getId(),config.getId(),"online");
+                                        getScanSummaryByBuildingAlgorithm(building.getId(),idFloor,algorithm.getId(),config.getId(),"online");
                                 onlineScan.setIdScan(scanSummaries.get(0).getId());
                                 databaseManager.getAppDatabase().getOnlineScanDAO().insert(onlineScan);
                             } catch (Exception e) {
@@ -175,7 +177,8 @@ public class LocateActivity extends AppCompatActivity {
                                 onlineScan.setIdActualPos(actualPos);
                                 try {
                                     List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().
-                                            getScanSummaryByBuildingAlgorithm(building.getId(), buildingFloor.getId(), algorithm.getId(), config.getId(), "online");
+                                            getScanSummaryByBuildingAlgorithm(building.getId(), idFloor, algorithm.getId(),
+                                                    config.getId(), "online");
                                     onlineScan.setIdScan(scanSummaries.get(0).getId());
                                     Log.i("loc act", "id scan online " + scanSummaries.get(0).getId());
                                     databaseManager.getAppDatabase().getOnlineScanDAO().insert(onlineScan);

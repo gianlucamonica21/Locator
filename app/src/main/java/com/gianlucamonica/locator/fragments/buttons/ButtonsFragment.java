@@ -17,6 +17,8 @@ import com.gianlucamonica.locator.R;
 import com.gianlucamonica.locator.activities.gps.fragments.MapsActivity;
 import com.gianlucamonica.locator.activities.locate.LocateActivity;
 import com.gianlucamonica.locator.activities.scan.ScanActivity;
+import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
+import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
@@ -122,10 +124,9 @@ public class ButtonsFragment extends Fragment {
             @Override
             public void onClick(View v) { // quando clicco su scan button
 
-                Log.i("locate button", "indoor " + MyApp.getLocationMiddlewareInstance().isINDOOR_LOC());
 
                 boolean indoorLoc = databaseManager.getAppDatabase().getLocInfoDAO().getLocInfo();
-
+                Log.i("buttons","INDOOR LOC FROM DB: " + indoorLoc);
                 if(indoorLoc) { // sono indoor
 
                     Intent intent = new Intent(getActivity(), LocateActivity.class);
@@ -135,7 +136,8 @@ public class ButtonsFragment extends Fragment {
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }else{ //outdoor
-                    Location location = MyApp.getLocationMiddlewareInstance().locate();
+                    LocationMiddleware locationMiddleware = new LocationMiddleware(AlgorithmName.GPS,null);
+                    Location location = locationMiddleware.locate();
                     double longitude = location.getLongitude();
                     double latitude = location.getLatitude();
 

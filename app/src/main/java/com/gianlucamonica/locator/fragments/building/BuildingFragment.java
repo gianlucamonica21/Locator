@@ -192,11 +192,6 @@ public class BuildingFragment extends Fragment {
         // getting building spinner
         s = (Spinner) v.findViewById(R.id.spinner);
 
-        // se outdoor scan button disabled
-        if(!MyApp.getLocationMiddlewareInstance().isINDOOR_LOC()){
-            s.setEnabled(false);
-        }
-
         // populate scansSpinner
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, buildingsName);

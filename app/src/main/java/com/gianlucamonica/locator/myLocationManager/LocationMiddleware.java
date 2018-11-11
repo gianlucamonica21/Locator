@@ -109,8 +109,7 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
         }
 
          databaseManager.getAppDatabase().getLocInfoDAO().insert(new LocInfo(INDOOR_LOC));
-        // cancel location updates
-        stopListener();
+
     }
 
     /**
@@ -194,6 +193,7 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
         liveGPSAcc = location.getAccuracy();
         Log.i("onLocationChanged","acc: " + liveGPSAcc);
         init();
+        stopListener();
     }
 
     @Override

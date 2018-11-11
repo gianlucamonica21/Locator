@@ -108,12 +108,6 @@ public class MagnParamFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_param, container, false);
         sizeEditText = v.findViewById(R.id.sizeEditText);
 
-        Log.i("param fragment", "indoor"+MyApp.getLocationMiddlewareInstance().isINDOOR_LOC());
-        // se outdoor scan button disabled
-        //if(!MyApp.getLocationMiddlewareInstance().isINDOOR_LOC()){
-         //   sizeEditText.setEnabled(false);
-       // }
-
         sizeEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

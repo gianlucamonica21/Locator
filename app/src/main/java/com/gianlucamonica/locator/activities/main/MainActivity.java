@@ -76,13 +76,12 @@ public class MainActivity extends AppCompatActivity implements
 
         locationMiddleware = new LocationMiddleware(indoorParams);
 
-        // forzo indoor per testing
         this.INDOOR_LOC = databaseManager.getAppDatabase().getLocInfoDAO().getLocInfo();
 
         setLocImg();
 
         Log.i("main","indoor loc " + this.INDOOR_LOC );
-        MyApp.setLocationMiddlewareInstance(locationMiddleware);
+        //MyApp.setLocationMiddlewareInstance(locationMiddleware);
 
         initFragments();
 
