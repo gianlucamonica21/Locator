@@ -104,9 +104,14 @@ public class MagneticOnlineManager implements SensorEventListener {
         Config config = (Config) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.CONFIG);
         int idConfig = config.getId();
         BuildingFloor buildingFloor = (BuildingFloor) indoorParamsUtils.getParamObject(indoorParams,IndoorParamName.FLOOR);
-
+        int idFloor;
         try {
 
+            if(buildingFloor ==  null){
+                idFloor = -1;
+            }else{
+                idFloor = buildingFloor.getId();
+            }
             /*if(buildingFloor == null){
                 Log.i("magn online man","floor null");
                 List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().
@@ -130,7 +135,7 @@ public class MagneticOnlineManager implements SensorEventListener {
             }*/
 
             List<ScanSummary> scanSummary = databaseManager.getAppDatabase().getScanSummaryDAO().
-                    getScanSummaryByBuildingAlgorithm(idBuilding,idAlgorithm,idConfig,"offline");
+                    getScanSummaryByBuildingAlgorithm(idBuilding,idFloor,idAlgorithm,idConfig,"offline");
             idScan = scanSummary.get(0).getId();
             Log.i("idScan", String.valueOf(idScan));
             offlineScans = databaseManager.getAppDatabase().getOfflineScanDAO().getOfflineScansById(idScan);
