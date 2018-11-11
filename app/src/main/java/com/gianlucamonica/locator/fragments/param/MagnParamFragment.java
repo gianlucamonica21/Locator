@@ -7,15 +7,19 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import com.gianlucamonica.locator.R;
+import com.gianlucamonica.locator.activities.main.MainActivity;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
@@ -110,6 +114,17 @@ public class MagnParamFragment extends Fragment {
          //   sizeEditText.setEnabled(false);
        // }
 
+        sizeEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                //close soft keyboard
+                InputMethodManager inputManager = (InputMethodManager) MyApp.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(MyApp.getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+                return false;
+            }
+        });
+
         sizeEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -136,6 +151,11 @@ public class MagnParamFragment extends Fragment {
                         }
                     }
                 }
+
+                //close sfot keyboard
+                InputMethodManager inputManager = (InputMethodManager) MyApp.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(MyApp.getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
 
                 Log.i("passo a main",config.toString());
                 mListener.onFragmentInteraction(config, IndoorParamName.CONFIG);

@@ -75,7 +75,7 @@
 
     <LinearLayout
         android:layout_width="368dp"
-        android:layout_height="36dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="341dp"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
@@ -89,7 +89,50 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/buildingTextView2"
+                android:layout_width="122dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Building"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/floorTextView2"
+                android:layout_width="122dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Floor"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/algorithmTextView2"
+                android:layout_width="122dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Algorithm"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/sizeTextView2"
+                android:layout_width="122dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Size"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
             android:orientation="horizontal">
 
             <TextView
@@ -120,6 +163,7 @@
                 android:layout_weight="1"
                 android:gravity="center" />
         </LinearLayout>
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
