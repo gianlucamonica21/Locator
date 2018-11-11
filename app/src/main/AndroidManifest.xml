@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme5">
-        <activity android:name=".activities.main.MainActivity">
+        <activity android:name=".activities.main.MainActivity"
+            android:windowSoftInputMode="adjustPan"
+        >
             <!--android:theme="@style/AppTheme"-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

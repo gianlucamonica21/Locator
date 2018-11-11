@@ -43,12 +43,14 @@
 
             <AutoCompleteTextView
                 android:id="@+id/sizeEditText"
+                style="@style/Widget.AppCompat.AutoCompleteTextView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="119dp"
                 android:layout_marginBottom="17dp"
                 android:layout_marginTop="25dp"
                 android:layout_weight="1"
                 android:inputType="number"
+                android:dropDownAnchor="@+id/paramTextView"
                 app:layout_constraintBottom_toBottomOf="@+id/sizeTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/sizeTextView"
