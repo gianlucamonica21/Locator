@@ -62,6 +62,7 @@ public class ButtonsFragment extends Fragment {
     private Config config;
     private ArrayList<IndoorParams> indoorParams;
     private DatabaseManager databaseManager;
+    private LocationMiddleware locationMiddleware;
 
     public ButtonsFragment() {
         // Required empty public constructor
@@ -125,8 +126,10 @@ public class ButtonsFragment extends Fragment {
             public void onClick(View v) { // quando clicco su scan button
 
 
-                boolean indoorLoc = databaseManager.getAppDatabase().getLocInfoDAO().getLocInfo();
+                boolean indoorLoc = MyApp.getLocationMiddlewareInstance().isINDOOR_LOC();
+                locationMiddleware = MyApp.getLocationMiddlewareInstance();
                 Log.i("buttons","INDOOR LOC FROM DB: " + indoorLoc);
+
                 if(indoorLoc) { // sono indoor
 
                     Intent intent = new Intent(getActivity(), LocateActivity.class);
@@ -136,7 +139,8 @@ public class ButtonsFragment extends Fragment {
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }else{ //outdoor
-                    LocationMiddleware locationMiddleware = new LocationMiddleware(AlgorithmName.GPS,null);
+
+                    locationMiddleware.istantiate(null);
                     Location location = locationMiddleware.locate();
                     double longitude = location.getLongitude();
                     double latitude = location.getLatitude();

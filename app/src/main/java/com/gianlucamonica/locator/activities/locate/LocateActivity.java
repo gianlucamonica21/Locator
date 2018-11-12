@@ -106,7 +106,8 @@ public class LocateActivity extends AppCompatActivity {
 
 
             Log.i("locate activity","instatiating " + algorithmName);
-            locationMiddleware = new LocationMiddleware(algorithmName,indoorParams);
+            locationMiddleware = MyApp.getLocationMiddlewareInstance();
+            locationMiddleware.istantiate(algorithmName);
             // setting algorithm in mylocationmanager
             //myLocationManager = new MyLocationManager(algorithmName, indoorParams);
 

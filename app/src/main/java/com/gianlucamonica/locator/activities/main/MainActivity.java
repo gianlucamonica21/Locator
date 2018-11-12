@@ -74,14 +74,14 @@ public class MainActivity extends AppCompatActivity implements
 
         locImg = findViewById(R.id.locImg);
 
-        locationMiddleware = new LocationMiddleware(indoorParams);
+        locationMiddleware = new LocationMiddleware(indoorParams); // lui capisce se siamo indoor o outdoor
+        MyApp.setLocationMiddlewareInstance(locationMiddleware);
 
-        this.INDOOR_LOC = databaseManager.getAppDatabase().getLocInfoDAO().getLocInfo();
+        this.INDOOR_LOC = locationMiddleware.isINDOOR_LOC();
 
         setLocImg();
 
         Log.i("main","indoor loc " + this.INDOOR_LOC );
-        //MyApp.setLocationMiddlewareInstance(locationMiddleware);
 
         initFragments();
 

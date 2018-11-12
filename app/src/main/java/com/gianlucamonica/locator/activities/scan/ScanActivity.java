@@ -49,6 +49,8 @@ public class ScanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scan);
         MyApp.setActivity(this);
 
+        final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
+
         databaseManager = new DatabaseManager();
         indoorParamsUtils = new IndoorParamsUtils();
         Bundle bundle = getIntent().getExtras();
@@ -78,15 +80,9 @@ public class ScanActivity extends AppCompatActivity {
         Log.i("scan act","alg name "+ AlgorithmName.valueOf(algorithm.getName()));
 
         // setting location middleware
-        locationMiddleware = new LocationMiddleware(AlgorithmName.valueOf(algorithm.getName()),indoorParams);
+        locationMiddleware = MyApp.getLocationMiddlewareInstance();
+        locationMiddleware.istantiate(AlgorithmName.valueOf(algorithm.getName()));
 
-        // setting algorithm in mylocationmanager
-        //myLocationManager = new MyLocationManager(algorithmName, indoorParams);
-
-        final ViewGroup mLinearLayout = (ViewGroup) findViewById(R.id.constraintLayout);
-
-        // setting the map view
-        //MapView v = (MapView) myLocationManager.build(MapView.class);
         MapView v = (MapView) locationMiddleware.build(MapView.class);
         mLinearLayout.addView(v);
 

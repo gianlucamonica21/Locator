@@ -44,10 +44,9 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
     private MyPermissionsManager myPermissionsManager; // in order to get the necessary perm
     private String[] permissions;
     private float liveGPSAcc = 0; // gps acc just registered
-    private AlgorithmName chosenIndoorAlg = AlgorithmName.MAGNETIC_FP; // default indoor alg
 
     private boolean INDOOR_LOC;
-    private Activity activity; // ?
+    private int updatesNumber = 0;
     private ArrayList<IndoorParams> indoorParams; // indoor algorithm's params such as building, algorithm and grid size
     private MyLocationManager myLocationManager;
 
@@ -70,52 +69,37 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
         }
     }
 
-    public LocationMiddleware(AlgorithmName algName, ArrayList<IndoorParams> indoorParams){
-        this.indoorParams = indoorParams;
-        this.myPermissionsManager = new MyPermissionsManager(AlgorithmName.GPS);
-        this.chosenIndoorAlg = algName;
-        databaseManager = new DatabaseManager();
-        myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
+    public void istantiate(AlgorithmName chosenIndoorAlg){
+        //  new
+        // this.INDOOR_LOC = databaseManager.getAppDatabase().getLocInfoDAO().getLocInfo();
 
-        permissions = new String[] {
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION};
-
-        checkPermissions();  // asking gps permissions
-        initLocManager();
-
-        if(checkGPS || checkNetwork){
-            requestUpdates(); // request location updates
+        if(INDOOR_LOC){
+            myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
+        }else{
+            myLocationManager = new MyLocationManager(AlgorithmName.GPS,indoorParams);
         }
     }
+
 
     /**
      * checks if the user is outside or inside a building and instatiate relative myLocMan
      */
-    public void init(){
-        // per ora qui di modo che posso testare
-        myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
+    private void init(){
+
         Log.i("loc midd","live gpsacc " + liveGPSAcc + "thres " + GPS_ACC_THRESHOLD);
         if(liveGPSAcc > GPS_ACC_THRESHOLD){
-            // istantiate outdoor alg
-            Log.i("instantiate","GPS location");
-            myLocationManager = new MyLocationManager(AlgorithmName.GPS,indoorParams);
-            INDOOR_LOC = false;
+            databaseManager.getAppDatabase().getLocInfoDAO().insert(new LocInfo(false));
         }else {
-            // istantiate indoor alg
-            Log.i("instantiate", "Indoor location");
-            myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
-            INDOOR_LOC = true;
+            databaseManager.getAppDatabase().getLocInfoDAO().insert(new LocInfo(true));
         }
 
-         databaseManager.getAppDatabase().getLocInfoDAO().insert(new LocInfo(INDOOR_LOC));
-
+        updatesNumber++;
     }
 
     /**
      * instatiate locationManager
      */
-    public void initLocManager(){
+    private void initLocManager(){
         locationManager = (LocationManager) MyApp.getContext()
                 .getSystemService(LOCATION_SERVICE);
         // get GPS status
@@ -126,7 +110,7 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
                 .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
-    public void requestUpdates(){
+    private void requestUpdates(){
         if (ActivityCompat.checkSelfPermission(MyApp.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(MyApp.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -143,7 +127,7 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
     }
 
-    public void stopListener() {
+    private void stopListener() {
         if (locationManager != null) {
 
             if (ActivityCompat.checkSelfPermission(MyApp.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -212,10 +196,12 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
     }
 
     public boolean isINDOOR_LOC() {
-        return INDOOR_LOC;
+        if(updatesNumber > 0){
+            return INDOOR_LOC;
+        }else{
+            INDOOR_LOC = databaseManager.getAppDatabase().getLocInfoDAO().getLocInfo();
+            return INDOOR_LOC;
+        }
     }
 
-    public void setINDOOR_LOC(boolean INDOOR_LOC) {
-        this.INDOOR_LOC = INDOOR_LOC;
-    }
 }
