@@ -220,8 +220,8 @@ public class WifiBarOfflineManager {
                 for(int i = 0; i < rects.size(); i = i + 1){
                     float aX = ((rects.get(i).getA().getX()*mV.getScaleFactor())+ mV.getAdd_x());
                     float bX = ((rects.get(i).getB().getX()*mV.getScaleFactor())+ mV.getAdd_x());
-                    float bY = ((rects.get(i).getB().getY()*mV.getScaleFactor())+ mV.getAdd_x());
-                    float aY = ((rects.get(i).getA().getY()*mV.getScaleFactor())+ mV.getAdd_x());
+                    float bY = ((rects.get(i).getB().getY()*mV.getScaleFactor())+ mV.getAdd_y());
+                    float aY = ((rects.get(i).getA().getY()*mV.getScaleFactor())+ mV.getAdd_y());
 
                     if( x >= aX && x <= bX){
                         if( y <= bY && y >= aY){

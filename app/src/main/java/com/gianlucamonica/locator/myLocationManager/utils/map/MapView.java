@@ -231,4 +231,11 @@ public class MapView extends View {
         this.add_x = add_x;
     }
 
+    public int getAdd_y() {
+        return add_y;
+    }
+
+    public void setAdd_y(int add_y) {
+        this.add_y = add_y;
+    }
 }
