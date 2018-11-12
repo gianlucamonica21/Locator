@@ -1,5 +1,9 @@
 package com.gianlucamonica.locator.activities.main;
 
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gianlucamonica.locator.R;
@@ -60,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements
     private boolean INDOOR_LOC;
 
     private ImageView locImg;
+    private TextView locTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements
         databaseManager= new DatabaseManager();
 
         locImg = findViewById(R.id.locImg);
+        locTV = findViewById(R.id.locTextView);
 
         locationMiddleware = new LocationMiddleware(indoorParams); // lui capisce se siamo indoor o outdoor
         MyApp.setLocationMiddlewareInstance(locationMiddleware);
@@ -274,10 +281,22 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void setLocImg(){
+
         if(INDOOR_LOC){
+
+            Drawable myIcon = getResources().getDrawable( R.drawable.indoor );
+            ColorFilter filter = new LightingColorFilter( Color.parseColor("#f17a0a"), Color.parseColor("#f17a0a"));
+            myIcon.setColorFilter(filter);
+
             locImg.setImageResource(R.drawable.indoor);
+            locTV.setText("Indoor");
         }else{
+            Drawable myIcon = getResources().getDrawable( R.drawable.outdoor );
+            ColorFilter filter = new LightingColorFilter( Color.parseColor("#f17a0a"), Color.parseColor("#f17a0a"));
+            myIcon.setColorFilter(filter);
+
             locImg.setImageResource(R.drawable.outdoor);
+            locTV.setText("Outdoor");
         }
     }
 
