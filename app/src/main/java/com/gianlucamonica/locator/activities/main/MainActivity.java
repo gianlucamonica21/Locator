@@ -4,6 +4,9 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,6 +26,7 @@ import com.gianlucamonica.locator.fragments.param.MagnParamFragment;
 import com.gianlucamonica.locator.fragments.scan.ScanFragment;
 import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
+import com.gianlucamonica.locator.myLocationManager.utils.db.currentGPSPosition.CurrentGPSPosition;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamsUtils;
@@ -66,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private ImageView locImg;
     private TextView locTV;
+    private TextView addressTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements
 
         locImg = findViewById(R.id.locImg);
         locTV = findViewById(R.id.locTextView);
+        addressTV = findViewById(R.id.addressTextView);
 
         locationMiddleware = new LocationMiddleware(indoorParams); // lui capisce se siamo indoor o outdoor
         MyApp.setLocationMiddlewareInstance(locationMiddleware);
@@ -298,6 +304,22 @@ public class MainActivity extends AppCompatActivity implements
             locImg.setImageResource(R.drawable.outdoor);
             locTV.setText("Outdoor");
         }
+
+        CurrentGPSPosition currentGPSPosition = databaseManager.getAppDatabase().getCurrentGPSPositionsDAO().getCurrentGPSPositions();
+        Geocoder geocoder = new Geocoder(this);
+
+        try{
+            List<Address> addresses = geocoder.getFromLocation(
+                    currentGPSPosition.getLatitude(),
+                    currentGPSPosition.getLongitude(),
+                    // In this sample, g1et just a single address.
+                    1);
+            addressTV.setText("\n \n You are near \n " + addresses.get(0).getAddressLine(0));
+            Toast.makeText(this,addresses.toString(),Toast.LENGTH_LONG);
+        }catch (Exception e){
+
+        }
+
     }
 
     @Override
