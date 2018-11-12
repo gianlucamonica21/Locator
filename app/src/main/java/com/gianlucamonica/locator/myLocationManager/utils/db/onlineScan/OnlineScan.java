@@ -5,7 +5,6 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
-import android.media.RemoteController;
 import android.support.annotation.NonNull;
 
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
@@ -42,12 +41,19 @@ public class OnlineScan {
     @NonNull
     Date timeStamp;
 
+    @NonNull
+    double latitude;
 
-    public OnlineScan(@NonNull int idScan, @NonNull int idEstimatedPos, @NonNull int idActualPos, @NonNull Date timeStamp) {
+    @NonNull
+    double longitude;
+
+    public OnlineScan(@NonNull int idScan, @NonNull int idEstimatedPos, @NonNull int idActualPos, @NonNull Date timeStamp, double latitude, double longitude) {
         this.idScan = idScan;
         this.idEstimatedPos = idEstimatedPos;
         this.idActualPos = idActualPos;
         this.timeStamp = timeStamp;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public int getId() {
@@ -94,6 +100,24 @@ public class OnlineScan {
         this.timeStamp = timeStamp;
     }
 
+    @NonNull
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(@NonNull double latitude) {
+        this.latitude = latitude;
+    }
+
+    @NonNull
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(@NonNull double longitude) {
+        this.longitude = longitude;
+    }
+
     @Override
     public String toString() {
         return "OnlineScan{" +
@@ -102,6 +126,8 @@ public class OnlineScan {
                 ", idEstimatedPos=" + idEstimatedPos +
                 ", idActualPos=" + idActualPos +
                 ", timeStamp=" + timeStamp +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
                 '}';
     }
 }

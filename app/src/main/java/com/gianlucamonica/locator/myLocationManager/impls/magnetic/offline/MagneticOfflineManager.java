@@ -16,6 +16,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
+import com.gianlucamonica.locator.myLocationManager.utils.db.currentGPSPosition.CurrentGPSPosition;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamName;
@@ -125,8 +126,10 @@ public class MagneticOfflineManager implements SensorEventListener {
                             for (int i = 0; i < zones.size(); i++){
                                 //2) inserisco in offline scan
                                 try {
+                                    CurrentGPSPosition currentGPSPositions = databaseManager.getAppDatabase().getCurrentGPSPositionsDAO().getCurrentGPSPositions();
                                     databaseManager.getAppDatabase().getOfflineScanDAO().insert(
-                                            new OfflineScan(idScan,Integer.parseInt(zones.get(i)), -1, magnitudes.get(i), new Date())
+                                            new OfflineScan(idScan,Integer.parseInt(zones.get(i)), -1, magnitudes.get(i), new Date(),
+                                                    currentGPSPositions.getLatitude(), currentGPSPositions.getLongitude() )
                                     );
                                 } catch (NumberFormatException e) {
                                     e.printStackTrace();
@@ -140,10 +143,10 @@ public class MagneticOfflineManager implements SensorEventListener {
 
             }else{
                 for(int i = 0; i < rects.size(); i = i + 1){
-                    float aX = ((rects.get(i).getA().getX()*mV.getScaleFactor())+ mV.getAdd());
-                    float bX = ((rects.get(i).getB().getX()*mV.getScaleFactor())+ mV.getAdd());
-                    float bY = ((rects.get(i).getB().getY()*mV.getScaleFactor())+ mV.getAdd());
-                    float aY = ((rects.get(i).getA().getY()*mV.getScaleFactor())+ mV.getAdd());
+                    float aX = ((rects.get(i).getA().getX()*mV.getScaleFactor())+ mV.getAdd_x());
+                    float bX = ((rects.get(i).getB().getX()*mV.getScaleFactor())+ mV.getAdd_x());
+                    float bY = ((rects.get(i).getB().getY()*mV.getScaleFactor())+ mV.getAdd_x());
+                    float aY = ((rects.get(i).getA().getY()*mV.getScaleFactor())+ mV.getAdd_x());
 
                     if( x >= aX && x <= bX){
                         if( y <= bY && y >= aY){
@@ -193,8 +196,10 @@ public class MagneticOfflineManager implements SensorEventListener {
                         Log.i("idScan", String.valueOf(idScan));
                         Log.i("inserisco magnitude", String.valueOf(liveMagnitude));
                         try {
+                            CurrentGPSPosition currentGPSPositions = databaseManager.getAppDatabase().getCurrentGPSPositionsDAO().getCurrentGPSPositions();
                             databaseManager.getAppDatabase().getOfflineScanDAO().insert(
-                                    new OfflineScan(idScan,Integer.parseInt(liveGridName), -1, liveMagnitude, new Date()));
+                                    new OfflineScan(idScan,Integer.parseInt(liveGridName), -1, liveMagnitude, new Date(),
+                                            currentGPSPositions.getLatitude(), currentGPSPositions.getLongitude() ));
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                         }

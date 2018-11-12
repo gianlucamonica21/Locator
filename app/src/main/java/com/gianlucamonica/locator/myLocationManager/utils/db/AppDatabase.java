@@ -11,6 +11,8 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.BuildingDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloorDAO;
+import com.gianlucamonica.locator.myLocationManager.utils.db.currentGPSPosition.CurrentGPSPosition;
+import com.gianlucamonica.locator.myLocationManager.utils.db.currentGPSPosition.CurrentGPSPositionDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.liveMeasurements.LiveMeasurements;
 import com.gianlucamonica.locator.myLocationManager.utils.db.liveMeasurements.LiveMeasurementsDAO;
 import com.gianlucamonica.locator.myLocationManager.utils.db.locInfo.LocInfo;
@@ -37,8 +39,9 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.wifiNetwork.WifiNet
         WifiAP.class,
         WifiNetwork.class,
         LiveMeasurements.class,
-        LocInfo.class
-        }, version = 49)
+        LocInfo.class,
+        CurrentGPSPosition.class
+        }, version = 54)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract BuildingDAO getBuildingDAO();
@@ -53,4 +56,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract WifiNetworkDAO getWifiNetworkDAO();
     public abstract LiveMeasurementsDAO getLiveMeasurementsDAO();
     public abstract LocInfoDAO getLocInfoDAO();
+    public abstract CurrentGPSPositionDAO getCurrentGPSPositionsDAO();
 }

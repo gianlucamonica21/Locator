@@ -46,12 +46,21 @@ public class OfflineScan {
     @NonNull
     Date timeStamp;
 
-    public OfflineScan(@NonNull int idScan, @NonNull int idGrid, int idWifiAP, @NonNull double value, Date timeStamp) {
+    @NonNull
+    double latitude;
+
+    @NonNull
+    double longitude;
+
+
+    public OfflineScan(@NonNull int idScan, @NonNull int idGrid, int idWifiAP, @NonNull double value, Date timeStamp, double latitude, double longitude) {
         this.idScan = idScan;
         this.idGrid = idGrid;
         this.idWifiAP = idWifiAP;
         this.value = value;
         this.timeStamp = timeStamp;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     @NonNull
@@ -108,6 +117,24 @@ public class OfflineScan {
         this.timeStamp = timeStamp;
     }
 
+    @NonNull
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(@NonNull double latitude) {
+        this.latitude = latitude;
+    }
+
+    @NonNull
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(@NonNull double longitude) {
+        this.longitude = longitude;
+    }
+
     @Override
     public String toString() {
         return "OfflineScan{" +
@@ -117,6 +144,8 @@ public class OfflineScan {
                 ", idWifiAP=" + idWifiAP +
                 ", value=" + value +
                 ", timeStamp=" + timeStamp +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
                 '}';
     }
 }

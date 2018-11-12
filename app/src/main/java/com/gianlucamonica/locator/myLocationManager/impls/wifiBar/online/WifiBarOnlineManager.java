@@ -1,9 +1,5 @@
 package com.gianlucamonica.locator.myLocationManager.impls.wifiBar.online;
 
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
@@ -18,6 +14,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
+import com.gianlucamonica.locator.myLocationManager.utils.db.currentGPSPosition.CurrentGPSPosition;
 import com.gianlucamonica.locator.myLocationManager.utils.db.liveMeasurements.LiveMeasurements;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
@@ -29,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static android.content.Context.SENSOR_SERVICE;
 import static android.content.Context.WIFI_SERVICE;
 
 public class WifiBarOnlineManager{
@@ -115,8 +111,9 @@ public class WifiBarOnlineManager{
                     int index = euclidDistanceMultipleAPs.compute();
 
                     Toast.makeText(MyApp.getContext(), "scanning...", Toast.LENGTH_SHORT).show();
-
-                    OnlineScan onlineScan = new OnlineScan(offlineScans.get(0).getIdScan(),index,0,new Date());
+                    CurrentGPSPosition currentGPSPositions = databaseManager.getAppDatabase().getCurrentGPSPositionsDAO().getCurrentGPSPositions();
+                    OnlineScan onlineScan = new OnlineScan(offlineScans.get(0).getIdScan(),index,0,new Date(),
+                            currentGPSPositions.getLatitude(),currentGPSPositions.getLongitude() );
                     return onlineScan;
                 } else {
                     Toast.makeText(MyApp.getContext(),

@@ -16,6 +16,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
+import com.gianlucamonica.locator.myLocationManager.utils.db.currentGPSPosition.CurrentGPSPosition;
 import com.gianlucamonica.locator.myLocationManager.utils.db.liveMeasurements.LiveMeasurements;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
@@ -83,7 +84,8 @@ public class MagneticOnlineManager implements SensorEventListener {
                 euclideanDistanceAlg = new EuclideanDistanceAlg(offlineScans,liveMagnitude, indoorParams);
                 int index = euclideanDistanceAlg.compute(AlgorithmName.MAGNETIC_FP);
                 Log.i("magn online manag","index " + index);
-                onlineScan = new OnlineScan(idScan,index,0,new Date());
+                CurrentGPSPosition currentGPSPositions = databaseManager.getAppDatabase().getCurrentGPSPositionsDAO().getCurrentGPSPositions();
+                onlineScan = new OnlineScan(idScan,index,0,new Date(), currentGPSPositions.getLatitude() , currentGPSPositions.getLongitude() );
                 return onlineScan;
             }
 

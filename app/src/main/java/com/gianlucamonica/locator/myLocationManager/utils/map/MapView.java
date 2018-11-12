@@ -27,12 +27,15 @@ public class MapView extends View {
 
     // scale factors for drawing map
     int scaleFactor = 100;
-    int add = 165;
+    int add_x = 100;
+    int add_y = 180;
     boolean draw = true;
     // 2a versione
     private int height;
     private int width;
     private int gridSize;
+
+
 
     private ArrayList<IndoorParams> indoorParams;
     private IndoorParamsUtils indoorParamsUtils;
@@ -57,6 +60,8 @@ public class MapView extends View {
                     Building building = (Building) indoorParams.get(i).getParamObject();
                     this.height = building.getHeight();
                     this.width = building.getWidht();
+                    if(width >= 8)
+                        add_x = 10;
                     break;
                 case CONFIG:
                     Config config = (Config) indoorParamsUtils.getParamObject(indoorParams, IndoorParamName.CONFIG);
@@ -96,6 +101,7 @@ public class MapView extends View {
         underlineText.setTextAlign(Paint.Align.CENTER);
         underlineText.setTextSize(40);
 
+
         for(int i = 0; i < rects.size(); i++){
 
             Paint myPaint = new Paint();
@@ -116,13 +122,13 @@ public class MapView extends View {
 
             }
             myPaint.setStrokeWidth(10);
-            //rects.get(i).mult(scaleFactor,add);
+            //rects.get(i).mult(scaleFactor,add_x);
             Log.i("rects",rects.get(i).toString());
             Rect r = new Rect(
-                    ((rects.get(i).getA().getX()* scaleFactor)+add),
-                    ((rects.get(i).getA().getY()* scaleFactor)+add),
-                    ((rects.get(i).getB().getX()* scaleFactor)+add),
-                    ((rects.get(i).getB().getY()* scaleFactor)+add));
+                    ((rects.get(i).getA().getX()* scaleFactor)+ add_x),
+                    ((rects.get(i).getA().getY()* scaleFactor)+add_y),
+                    ((rects.get(i).getB().getX()* scaleFactor)+ add_x),
+                    ((rects.get(i).getB().getY()* scaleFactor)+add_y));
 
 
             if( offlineScans != null){
@@ -151,9 +157,11 @@ public class MapView extends View {
             }
             textPaint.setTextAlign(Paint.Align.CENTER);
             textPaint.setTextSize(65);
+            if(width >= 8 )
+                textPaint.setTextSize(40);
 
-            float x = ( ((rects.get(i).getA().getX()* scaleFactor)+add) + ((rects.get(i).getB().getX()* scaleFactor)+add) )/2;
-            float y = ( ((rects.get(i).getA().getY()* scaleFactor)+add) + ((rects.get(i).getB().getY()* scaleFactor)+add) )/2;
+            float x = ( ((rects.get(i).getA().getX()* scaleFactor)+ add_x) + ((rects.get(i).getB().getX()* scaleFactor)+ add_x) )/2;
+            float y = ( ((rects.get(i).getA().getY()* scaleFactor)+add_y) + ((rects.get(i).getB().getY()* scaleFactor)+add_y) )/2;
 
             if( offlineScans != null){
                 for(int j = 0; j < offlineScans.size(); j++){
@@ -210,17 +218,17 @@ public class MapView extends View {
     }
 
     /**
-     * @return factor add
+     * @return factor add_x
      */
-    public int getAdd() {
-        return add;
+    public int getAdd_x() {
+        return add_x;
     }
 
     /**
-     * @param add
+     * @param add_x
      */
-    public void setAdd(int add) {
-        this.add = add;
+    public void setAdd_x(int add_x) {
+        this.add_x = add_x;
     }
 
 }

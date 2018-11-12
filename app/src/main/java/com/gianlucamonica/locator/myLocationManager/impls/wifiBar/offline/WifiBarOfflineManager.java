@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -12,12 +13,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.gianlucamonica.locator.myLocationManager.LocationMiddleware;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algConfig.Config;
 import com.gianlucamonica.locator.myLocationManager.utils.db.algorithm.Algorithm;
 import com.gianlucamonica.locator.myLocationManager.utils.db.building.Building;
 import com.gianlucamonica.locator.myLocationManager.utils.db.buildingFloor.BuildingFloor;
+import com.gianlucamonica.locator.myLocationManager.utils.db.currentGPSPosition.CurrentGPSPosition;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 import com.gianlucamonica.locator.myLocationManager.utils.db.wifiAP.WifiAP;
@@ -112,8 +115,11 @@ public class WifiBarOfflineManager {
                             List<ScanSummary> scanSummaries = null;
                             scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(
                                     building.getId(), idFloor, algorithm.getId(),config.getId(),"offline");
+                            CurrentGPSPosition currentGPSPositions = databaseManager.getAppDatabase().
+                                    getCurrentGPSPositionsDAO().getCurrentGPSPositions();
                             databaseManager.getAppDatabase().getOfflineScanDAO().insert(
-                                    new OfflineScan(scanSummaries.get(0).getId(), Integer.valueOf(nowGrid.getName()),idWifiAp , level, new Date())
+                                    new OfflineScan(scanSummaries.get(0).getId(), Integer.valueOf(nowGrid.getName()),idWifiAp ,
+                                            level, new Date(), currentGPSPositions.getLatitude(), currentGPSPositions.getLongitude() )
                             );
 
                             Log.i("wifi info","inserisco in db " + mScanResults.get(i).BSSID + " " + mScanResults.get(i).level
@@ -134,8 +140,10 @@ public class WifiBarOfflineManager {
                             List<ScanSummary> scanSummaries = null;
                             scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().getScanSummaryByBuildingAlgorithm(
                                     building.getId(), algorithm.getId(),config.getId());
+                            CurrentGPSPosition currentGPSPositions = databaseManager.getAppDatabase().getCurrentGPSPositionsDAO().getCurrentGPSPositions();
                             databaseManager.getAppDatabase().getOfflineScanDAO().insert(
-                                    new OfflineScan(scanSummaries.get(0).getId(), Integer.valueOf(nowGrid.getName()),idWifiAp , level, new Date())
+                                    new OfflineScan(scanSummaries.get(0).getId(), Integer.valueOf(nowGrid.getName()),idWifiAp , level, new Date(),
+                                            currentGPSPositions.getLatitude(), currentGPSPositions.getLongitude())
                             );
                             Log.i("wifi info", "wifiAP " +String.valueOf(idWifiAp));
                             Log.i("wifi info","inserisco in db " + mScanResults.get(i).BSSID + " " + mScanResults.get(i).level
@@ -210,10 +218,10 @@ public class WifiBarOfflineManager {
                 Toast.makeText(MyApp.getContext(),"scan is finished",Toast.LENGTH_SHORT).show();
             }else{
                 for(int i = 0; i < rects.size(); i = i + 1){
-                    float aX = ((rects.get(i).getA().getX()*mV.getScaleFactor())+ mV.getAdd());
-                    float bX = ((rects.get(i).getB().getX()*mV.getScaleFactor())+ mV.getAdd());
-                    float bY = ((rects.get(i).getB().getY()*mV.getScaleFactor())+ mV.getAdd());
-                    float aY = ((rects.get(i).getA().getY()*mV.getScaleFactor())+ mV.getAdd());
+                    float aX = ((rects.get(i).getA().getX()*mV.getScaleFactor())+ mV.getAdd_x());
+                    float bX = ((rects.get(i).getB().getX()*mV.getScaleFactor())+ mV.getAdd_x());
+                    float bY = ((rects.get(i).getB().getY()*mV.getScaleFactor())+ mV.getAdd_x());
+                    float aY = ((rects.get(i).getA().getY()*mV.getScaleFactor())+ mV.getAdd_x());
 
                     if( x >= aX && x <= bX){
                         if( y <= bY && y >= aY){

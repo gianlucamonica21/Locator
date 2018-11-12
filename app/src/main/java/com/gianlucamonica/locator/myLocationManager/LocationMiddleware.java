@@ -14,10 +14,12 @@ import android.view.View;
 import com.gianlucamonica.locator.myLocationManager.locAlgInterface.LocalizationAlgorithmInterface;
 import com.gianlucamonica.locator.myLocationManager.utils.AlgorithmName;
 import com.gianlucamonica.locator.myLocationManager.utils.db.DatabaseManager;
+import com.gianlucamonica.locator.myLocationManager.utils.db.currentGPSPosition.CurrentGPSPosition;
 import com.gianlucamonica.locator.myLocationManager.utils.db.locInfo.LocInfo;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.MyApp;
 import com.gianlucamonica.locator.myLocationManager.utils.permissionsManager.MyPermissionsManager;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -85,7 +87,7 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
     /**
      * checks if the user is outside or inside a building and instatiate relative myLocMan
      */
-    private void init(){
+    private void init(Location currentLocation){
 
         Log.i("loc midd","live gpsacc " + liveGPSAcc + "thres " + GPS_ACC_THRESHOLD);
         if(liveGPSAcc > GPS_ACC_THRESHOLD){
@@ -93,6 +95,11 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
         }else {
             databaseManager.getAppDatabase().getLocInfoDAO().insert(new LocInfo(true));
         }
+
+        // inserisco in db posizione corrente
+        databaseManager.getAppDatabase().getCurrentGPSPositionsDAO().insert(
+                new CurrentGPSPosition(currentLocation.getLatitude(),currentLocation.getLongitude())
+        );
 
         updatesNumber++;
     }
@@ -177,7 +184,8 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
     public void onLocationChanged(Location location) {
         liveGPSAcc = location.getAccuracy();
         Log.i("onLocationChanged","acc: " + liveGPSAcc);
-        init();
+        init(location);
+
         //stopListener();
     }
 
