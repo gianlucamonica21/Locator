@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements
                         chosenAlgorithm.getName().equals(String.valueOf(WIFI_RSS_FP)) ||
                         chosenAlgorithm.getName().equals(String.valueOf(WIFI_BAR_RSS_FP))){
 
+                    locationMiddleware.istantiate(AlgorithmName.valueOf(chosenAlgorithm.getName()));
                     FragmentTransaction ft2 = getSupportFragmentManager().beginTransaction();
                     ft2.add(R.id.paramLayout, new MagnParamFragment(), new MagnParamFragment().getTag());
                     //ft2.commit();

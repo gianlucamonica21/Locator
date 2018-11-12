@@ -73,6 +73,7 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
         //  new
         // this.INDOOR_LOC = databaseManager.getAppDatabase().getLocInfoDAO().getLocInfo();
 
+        checkPermissions();  // asking permissions
         if(INDOOR_LOC){
             myLocationManager = new MyLocationManager(chosenIndoorAlg,indoorParams);
         }else{
@@ -177,7 +178,7 @@ public class LocationMiddleware implements LocationListener, LocalizationAlgorit
         liveGPSAcc = location.getAccuracy();
         Log.i("onLocationChanged","acc: " + liveGPSAcc);
         init();
-        stopListener();
+        //stopListener();
     }
 
     @Override
