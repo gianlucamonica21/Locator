@@ -31,4 +31,7 @@ public abstract class BuildingFloorDAO {
     @Query("SELECT * FROM buildingFloor WHERE idBuilding =:idBuilding")
     public abstract List<BuildingFloor> getBuildingsFloorsByIdBuilding(int idBuilding);
 
+    @Query("SELECT id FROM buildingFloor WHERE name = :name AND idBuilding = :idBuilding")
+    public abstract int getBuildingsFloorsByName(String name, int idBuilding);
+
 }

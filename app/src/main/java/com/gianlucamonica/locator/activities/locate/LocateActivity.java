@@ -148,14 +148,13 @@ public class LocateActivity extends AppCompatActivity {
                             }
                             onlineScan.setIdActualPos(actualPos);
                             try {
-                                databaseManager.getAppDatabase().getScanSummaryDAO().insert(
-                                        new ScanSummary(building.getId(),idFloor,algorithm.getId(),config.getId(),-1,"online")
-                                );
-
+                                // vecchio inserimento scan summary
 
                                 List<ScanSummary> scanSummaries = databaseManager.getAppDatabase().getScanSummaryDAO().
-                                        getScanSummaryByBuildingAlgorithm(building.getId(),idFloor,algorithm.getId(),config.getId(),"online");
+                                        getScanSummaryByBuildingAlgorithm(building.getId(),algorithm.getId(),config.getId(),"online");
                                 onlineScan.setIdScan(scanSummaries.get(0).getId());
+                                Log.i("loc act","scan summary trovato: " + scanSummaries.get(0).toString());
+                                Log.i("loc act","sei al piano: " + scanSummaries.get(0).getIdBuildingFloor());
                                 databaseManager.getAppDatabase().getOnlineScanDAO().insert(onlineScan);
                             } catch (Exception e) {
                                 e.printStackTrace();

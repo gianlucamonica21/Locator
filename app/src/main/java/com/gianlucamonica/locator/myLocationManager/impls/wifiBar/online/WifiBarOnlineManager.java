@@ -18,6 +18,7 @@ import com.gianlucamonica.locator.myLocationManager.utils.db.currentGPSPosition.
 import com.gianlucamonica.locator.myLocationManager.utils.db.liveMeasurements.LiveMeasurements;
 import com.gianlucamonica.locator.myLocationManager.utils.db.offlineScan.OfflineScan;
 import com.gianlucamonica.locator.myLocationManager.utils.db.onlineScan.OnlineScan;
+import com.gianlucamonica.locator.myLocationManager.utils.db.scanSummary.ScanSummary;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamName;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParams;
 import com.gianlucamonica.locator.myLocationManager.utils.indoorParams.IndoorParamsUtils;
@@ -40,6 +41,8 @@ public class WifiBarOnlineManager{
     private Algorithm algorithm;
     private Building building;
     private Config config;
+
+    boolean scanSummaryInserted = false;
 
     public WifiBarOnlineManager(ArrayList<IndoorParams> indoorParams) {
         databaseManager = new DatabaseManager();
@@ -83,10 +86,11 @@ public class WifiBarOnlineManager{
 
             }
 
-            //float selfMadeAltitude = (float) (44300 * ( 1 -Math.pow( (SensorManager.PRESSURE_STANDARD_ATMOSPHERE / livePressure), 1/5.255)));
-            //Log.i("WifiBarOnline","computed altitude: " + selfMadeAltitude);
-
-            int floor = (int) ((seaAltitude - actAltitude) / 5);
+            Log.i("wifibar online","sea altitude:" + seaAltitude);
+            Log.i("wifibar online","act altitude:" + actAltitude);
+            double num = seaAltitude + actAltitude;
+            Log.i("wifibar online", "numerator: " + num);
+            int floor = (int) ((num) / 5);
             Log.i("wifibar online","piano stimato: " + floor);
 
             WifiManager wifiManager = (WifiManager) MyApp.getContext().getApplicationContext().getSystemService(WIFI_SERVICE);
@@ -95,8 +99,14 @@ public class WifiBarOnlineManager{
                 Log.i("wifi online manager", "wom " + String.valueOf(building.getId() + " " + algorithm.getId() + " " + config.getId()));
 
                 List<OfflineScan> offlineScans = databaseManager.getAppDatabase().getMyDAO().
-                        getOfflineScan(building.getId(),algorithm.getId(), floor, config.getId(),"offlinescan");
+                        getOfflineScanWifiBar(building.getId(),floor,algorithm.getId(), config.getId(),"offline");
                 if (offlineScans.size() > 0) {
+
+                    // get id floor from db
+                    int idFloor = databaseManager.getAppDatabase().getBuildingFloorDAO().
+                            getBuildingsFloorsByName(String.valueOf(floor),building.getId());
+
+                    Log.i("wifi online manager","id floor " + idFloor + " associato a " + floor);
 
                     List<LiveMeasurements> liveMeasurements =
                             databaseManager.getAppDatabase().getLiveMeasurementsDAO().getLiveMeasurements(2,"wifi_rss");
@@ -114,6 +124,15 @@ public class WifiBarOnlineManager{
                     CurrentGPSPosition currentGPSPositions = databaseManager.getAppDatabase().getCurrentGPSPositionsDAO().getCurrentGPSPositions();
                     OnlineScan onlineScan = new OnlineScan(offlineScans.get(0).getIdScan(),index,0,new Date(),
                             currentGPSPositions.getLatitude(),currentGPSPositions.getLongitude() );
+
+                    if(!scanSummaryInserted){
+                        databaseManager.getAppDatabase().getScanSummaryDAO().insert(
+                                new ScanSummary(building.getId(),idFloor,algorithm.getId(),config.getId(),-1,"online")
+                        );
+
+                        scanSummaryInserted = true;
+                    }
+
                     return onlineScan;
                 } else {
                     Toast.makeText(MyApp.getContext(),

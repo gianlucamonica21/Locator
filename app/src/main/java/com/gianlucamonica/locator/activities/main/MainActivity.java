@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements
 
         this.INDOOR_LOC = locationMiddleware.isINDOOR_LOC();
 
+
         setLocImg();
 
         Log.i("main","indoor loc " + this.INDOOR_LOC );

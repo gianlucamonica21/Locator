@@ -41,7 +41,12 @@ public class AltitudeComputer implements SensorEventListener {
 
                 float liveAltitude = sensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE,livePressure);
                 Log.i("WifiBarOnline","altitude: " + liveAltitude);
-                float selfMadeAltitude = (float) (44300 * ( 1 -Math.pow( (  livePressure / SensorManager.PRESSURE_STANDARD_ATMOSPHERE ), 1/5.255)));
+                double selfMadeAltitude = (float) (44300 * ( 1 -Math.pow( (  livePressure / SensorManager.PRESSURE_STANDARD_ATMOSPHERE ), 1/5.255)));
+
+                selfMadeAltitude =  ( ( ( ( Math.pow(SensorManager.PRESSURE_STANDARD_ATMOSPHERE /
+                                        livePressure,(1/5.257)) -1)
+                                        * ( 20 + 273.15)) ) / 0.0065);
+
                 Log.i("WifiBarOnline","computed altitude: " + selfMadeAltitude);
 
                 databaseManager.getAppDatabase().getLiveMeasurementsDAO().insert(
